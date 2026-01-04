@@ -44,6 +44,12 @@ export class Speedos {
         setInterval(() => {
             // increment speed
             this.previewSpeed += Math.round(sine_rate);
+            // round if needed
+            if (this.round) {
+                this.previewSpeed /= 10;
+                this.previewSpeed = Math.round(this.previewSpeed);
+                this.previewSpeed *= 10;
+            }
             // loop back to 0 when it reaches max
             if (this.previewSpeed > sine_max) {
                 this.previewSpeed = sine_min;

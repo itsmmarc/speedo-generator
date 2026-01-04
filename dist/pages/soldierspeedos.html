@@ -18,6 +18,7 @@
             <li class="menuitem" id="settings_tf"><button>TF2 Settings</button></li>
         </menu>
     </nav>
+    <!-- SPEEDO PREVIEW -->
     <aside>
         <div id="speedo_previews">
             <div class="speedo slot_1"></div>
@@ -31,10 +32,16 @@
             <script type="module" src="../scripts/menus/soldierspeedos.js"></script>
         </div>
     </aside>
+    <!-- CUSTOMIZATION OPTIONS -->
     <main>
         <h1>Soldier Speedos</h1>
         
-        <div class="option_container">
+        <div class="option_container" id="option_rounding">
+            <h2>Rounding</h2>
+            <button id="rounding_enable">Enabled</button>
+            <button id="rounding_disable">Disabled</button>
+        </div>
+        <div class="option_container" id="option_shadows">
             <h2>Shadows</h2>
             <button id="shadows_enable">Enabled</button>
             <button id="shadows_disable">Disabled</button>

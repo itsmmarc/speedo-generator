@@ -61,5 +61,10 @@ const enableShadowsBtn = document.getElementById('shadows_enable');
 const disableShadowsBtn = document.getElementById('shadows_disable');
 enableShadowsBtn.addEventListener('click', () => { speedosObj.drawShadows = true; updateSpeedoStyles(); });
 disableShadowsBtn.addEventListener('click', () => { speedosObj.drawShadows = false; updateSpeedoStyles(); });
+// ROUNDING
+const enableRoundingBtn = document.getElementById('rounding_enable');
+const disableRoundingBtn = document.getElementById('rounding_disable');
+enableRoundingBtn.addEventListener('click', () => { speedosObj.round = true; updateSpeedoStyles(); });
+disableRoundingBtn.addEventListener('click', () => { speedosObj.round = false; updateSpeedoStyles(); });
 // on page first load
 updateSpeedoStyles();
