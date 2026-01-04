@@ -1,16 +1,9 @@
 "use strict";
-const digits = document.getElementsByClassName('digits'); // collection of digit elements
+const digits = document.getElementsByClassName('speedo'); // collection of digit elements
 const digitsArray = Array.prototype.slice.call(digits);
 let speedovalue = 0;
 const framerate = 30;
 const frametime = 1000 / framerate;
-var SpeedometerType;
-(function (SpeedometerType) {
-    SpeedometerType[SpeedometerType["HORIZONTAL"] = 1] = "HORIZONTAL";
-    SpeedometerType[SpeedometerType["VERTICAL"] = 2] = "VERTICAL";
-    SpeedometerType[SpeedometerType["ABSOLUTE"] = 3] = "ABSOLUTE";
-    SpeedometerType[SpeedometerType["HEIGHTO"] = 4] = "HEIGHTO";
-})(SpeedometerType || (SpeedometerType = {}));
 // speedo digit counter
 setInterval(function () {
     digitsArray.forEach(item => {

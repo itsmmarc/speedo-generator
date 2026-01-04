@@ -1,12 +1,10 @@
 type RGB = string;
 
-const digits = document.getElementsByClassName('digits') as HTMLCollection;   // collection of digit elements
+const digits = document.getElementsByClassName('speedo') as HTMLCollection;   // collection of digit elements
 const digitsArray = Array.prototype.slice.call(digits) as HTMLElement[];
 let speedovalue: number = 0;
 const framerate: number = 30;
 const frametime: number = 1000/framerate;
-
-enum SpeedometerType{HORIZONTAL=1, VERTICAL=2, ABSOLUTE=3, HEIGHTO=4}
 
 // speedo digit counter
 setInterval(function(){

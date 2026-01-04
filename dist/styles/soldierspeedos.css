@@ -1,9 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
-.hidden{
-    display: none;
-}
-
 nav{
     background-color: rgba(17, 20, 20, 0.8);
     width: 200px;
@@ -51,10 +47,10 @@ aside{
     right: 0;
 }
 
-.digits{
+.speedo{
     color: white;
     text-align: center;
-    height: 0px;
+    height: 45px;
 
     font-size: 3rem;
     font-weight: 900;
@@ -68,8 +64,17 @@ aside{
 
 .shadow{
     color: rgba(0,0,0,0.8) !important;
+    margin-top: -45px;
     padding-top: 4px;
     padding-left: 4px;
     position:relative;
     z-index: -1;
+}
+
+/* Need this to always be at the bottom to overwrite all other properties */
+.hidden{
+    /*
+    display: none;
+    */
+    color: rgba(0,0,0,0) !important;
 }
