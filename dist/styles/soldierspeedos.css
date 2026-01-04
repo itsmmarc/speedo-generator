@@ -111,11 +111,19 @@ main{
     width: fit-content;
 
     button{
+        color: white;
         background-color: rgb(104,101,100);
         width: 180px;
         height: 80px;
 
     }
+}
+select{
+    color: white;
+    background-color: rgb(104,101,100);
+    width: 180px;
+    height: 40px;
+    
 }
 /* Need this to always be at the bottom to overwrite all other properties */
 .hidden{

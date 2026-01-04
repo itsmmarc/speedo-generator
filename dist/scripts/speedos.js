@@ -1,5 +1,4 @@
 import { Speedo } from './speedo.js';
-import { SpeedoType } from './speedo.js';
 import { m0reColor } from './m0recolors.js';
 import { m0reColors } from './m0recolors.js';
 export var SpeedoSize;
@@ -29,10 +28,10 @@ export class Speedos {
         this.framerate = 30;
         this.frametime = 1000 / this.framerate;
         this.speedo = new Array(4);
-        this.speedo[0] = new Speedo(SpeedoType.NONE, this.colorMain);
-        this.speedo[1] = new Speedo(SpeedoType.HORIZONTAL, this.colorMain);
-        this.speedo[2] = new Speedo(SpeedoType.HEIGHTO, this.colorMain);
-        this.speedo[3] = new Speedo(SpeedoType.NONE, this.colorMain);
+        this.speedo[0] = new Speedo("NONE", this.colorMain);
+        this.speedo[1] = new Speedo("HORIZONTAL", this.colorMain);
+        this.speedo[2] = new Speedo("HEIGHTO", this.colorMain);
+        this.speedo[3] = new Speedo("NONE", this.colorMain);
     }
     startSpeedoPreview() {
         const sine_max = 3500;

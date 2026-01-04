@@ -29,10 +29,10 @@ export class Speedos {
         this.frametime = 1000/this.framerate;
 
         this.speedo = new Array<Speedo>(4);
-        this.speedo[0] = new Speedo(SpeedoType.NONE, this.colorMain);
-        this.speedo[1] = new Speedo(SpeedoType.HORIZONTAL, this.colorMain);
-        this.speedo[2] = new Speedo(SpeedoType.HEIGHTO, this.colorMain);
-        this.speedo[3] = new Speedo(SpeedoType.NONE, this.colorMain);
+        this.speedo[0] = new Speedo("NONE", this.colorMain);
+        this.speedo[1] = new Speedo("HORIZONTAL", this.colorMain);
+        this.speedo[2] = new Speedo("HEIGHTO", this.colorMain);
+        this.speedo[3] = new Speedo("NONE", this.colorMain);
     }
     
     startSpeedoPreview(): void{

@@ -1,11 +1,3 @@
-export var SpeedoType;
-(function (SpeedoType) {
-    SpeedoType[SpeedoType["NONE"] = 0] = "NONE";
-    SpeedoType[SpeedoType["HORIZONTAL"] = 1] = "HORIZONTAL";
-    SpeedoType[SpeedoType["VERTICAL"] = 2] = "VERTICAL";
-    SpeedoType[SpeedoType["ABSOLUTE"] = 3] = "ABSOLUTE";
-    SpeedoType[SpeedoType["HEIGHTO"] = 4] = "HEIGHTO";
-})(SpeedoType || (SpeedoType = {}));
 const SOLDIER_HSPEEDO_CLOSE_MIN = 850;
 const SOLDIER_HSPEEDO_CLOSE_MAX = 1350;
 const SOLDIER_VSPEEDO_CLOSE_MIN = -1;
@@ -28,7 +20,7 @@ export class Speedo {
         this.color = color;
     }
     updateColor(colorMain, colorClose, colorGood) {
-        if (this.speedoType != SpeedoType.HEIGHTO) {
+        if (this.speedoType != "HEIGHTO") {
             if (this.isGood()) {
                 this.color = colorGood;
             }
@@ -46,21 +38,21 @@ export class Speedo {
     }
     isClose() {
         switch (this.speedoType) {
-            case SpeedoType.HORIZONTAL:
+            case "HORIZONTAL":
                 if (this.playerSpeed > SOLDIER_HSPEEDO_CLOSE_MIN && this.playerSpeed < SOLDIER_HSPEEDO_CLOSE_MAX) {
                     return true;
                 }
                 else {
                     return false;
                 }
-            case SpeedoType.VERTICAL:
+            case "VERTICAL":
                 if (this.playerSpeed > SOLDIER_VSPEEDO_CLOSE_MIN && this.playerSpeed < SOLDIER_VSPEEDO_CLOSE_MAX) {
                     return true;
                 }
                 else {
                     return false;
                 }
-            case SpeedoType.ABSOLUTE:
+            case "ABSOLUTE":
                 if (this.playerSpeed > SOLDIER_ASPEEDO_CLOSE_MIN && this.playerSpeed < SOLDIER_ASPEEDO_CLOSE_MAX) {
                     return true;
                 }
@@ -73,21 +65,21 @@ export class Speedo {
     }
     isGood() {
         switch (this.speedoType) {
-            case SpeedoType.HORIZONTAL:
+            case "HORIZONTAL":
                 if (this.playerSpeed > SOLDIER_HSPEEDO_GOOD_MIN && this.playerSpeed < SOLDIER_HSPEEDO_GOOD_MAX) {
                     return true;
                 }
                 else {
                     return false;
                 }
-            case SpeedoType.VERTICAL:
+            case "VERTICAL":
                 if (this.playerSpeed > SOLDIER_VSPEEDO_GOOD_MIN && this.playerSpeed < SOLDIER_VSPEEDO_GOOD_MAX) {
                     return true;
                 }
                 else {
                     return false;
                 }
-            case SpeedoType.ABSOLUTE:
+            case "ABSOLUTE":
                 if (this.playerSpeed > SOLDIER_ASPEEDO_GOOD_MIN && this.playerSpeed < SOLDIER_ASPEEDO_GOOD_MAX) {
                     return true;
                 }

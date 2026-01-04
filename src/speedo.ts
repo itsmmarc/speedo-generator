@@ -1,6 +1,6 @@
 import { Color } from "./color.js";
 
-export enum SpeedoType{NONE=0, HORIZONTAL=1, VERTICAL=2, ABSOLUTE=3, HEIGHTO=4}
+export type SpeedoType = 'NONE' | 'HORIZONTAL' | 'VERTICAL' | 'ABSOLUTE' | 'HEIGHTO';
 
 const SOLDIER_HSPEEDO_CLOSE_MIN: number = 850;
 const SOLDIER_HSPEEDO_CLOSE_MAX: number = 1350;
@@ -28,7 +28,7 @@ export class Speedo {
     }
 
     updateColor(colorMain: Color, colorClose: Color, colorGood: Color): void{
-        if(this.speedoType!=SpeedoType.HEIGHTO){
+        if(this.speedoType!="HEIGHTO"){
             if(this.isGood()){
                 this.color = colorGood;
             } else if(this.isClose()){
@@ -44,15 +44,15 @@ export class Speedo {
 
     isClose(): boolean{
         switch (this.speedoType) {
-            case SpeedoType.HORIZONTAL:
+            case "HORIZONTAL":
                 if(this.playerSpeed>SOLDIER_HSPEEDO_CLOSE_MIN && this.playerSpeed<SOLDIER_HSPEEDO_CLOSE_MAX){
                     return true;
                 } else{ return false;}
-            case SpeedoType.VERTICAL:
+            case "VERTICAL":
                 if(this.playerSpeed>SOLDIER_VSPEEDO_CLOSE_MIN && this.playerSpeed<SOLDIER_VSPEEDO_CLOSE_MAX){
                     return true;
                 } else{ return false;}
-            case SpeedoType.ABSOLUTE:
+            case "ABSOLUTE":
                 if(this.playerSpeed>SOLDIER_ASPEEDO_CLOSE_MIN && this.playerSpeed<SOLDIER_ASPEEDO_CLOSE_MAX){
                     return true;
                 } else{ return false;}
@@ -62,15 +62,15 @@ export class Speedo {
     }
     isGood(): boolean{
         switch (this.speedoType) {
-            case SpeedoType.HORIZONTAL:
+            case "HORIZONTAL":
                 if(this.playerSpeed>SOLDIER_HSPEEDO_GOOD_MIN && this.playerSpeed<SOLDIER_HSPEEDO_GOOD_MAX){
                     return true;
                 } else{ return false;}
-            case SpeedoType.VERTICAL:
+            case "VERTICAL":
                 if(this.playerSpeed>SOLDIER_VSPEEDO_GOOD_MIN && this.playerSpeed<SOLDIER_VSPEEDO_GOOD_MAX){
                     return true;
                 } else{ return false;}
-            case SpeedoType.ABSOLUTE:
+            case "ABSOLUTE":
                 if(this.playerSpeed>SOLDIER_ASPEEDO_GOOD_MIN && this.playerSpeed<SOLDIER_ASPEEDO_GOOD_MAX){
                     return true;
                 } else{ return false;}

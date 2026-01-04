@@ -1,4 +1,3 @@
-import { SpeedoType } from '../speedo.js';
 import { Speedos } from '../speedos.js';
 const NUM_SPEEDOS = 4;
 const speedoColl = document.getElementsByClassName('speedo'); // collection of all speedo class elements
@@ -31,14 +30,14 @@ function updateSpeedoStyles() {
             let speedoObj = speedosObj.speedo[i - 1];
             if (speedoElm.classList.contains(slot)) {
                 // Check if speedo should be visible
-                if (speedoObj.speedoType == SpeedoType.NONE && !speedoElm.classList.contains('hidden')) {
+                if (speedoObj.speedoType == "NONE" && !speedoElm.classList.contains('hidden')) {
                     speedoElm.classList.add('hidden');
                 }
-                else if (speedoObj.speedoType != SpeedoType.NONE && speedoElm.classList.contains('hidden')) {
+                else if (speedoObj.speedoType != "NONE" && speedoElm.classList.contains('hidden')) {
                     speedoElm.classList.remove('hidden');
                 }
                 // check if shadows should be drawn
-                if (speedoObj.speedoType != SpeedoType.NONE) {
+                if (speedoObj.speedoType != "NONE") {
                     if (speedoElm.classList.contains('shadow')) {
                         if (speedosObj.drawShadows && speedoElm.classList.contains('hidden')) {
                             speedoElm.classList.remove('hidden');
@@ -56,6 +55,27 @@ function updateSpeedoStyles() {
 //===================================================================================
 // BUTTONS
 //-----------------------------------------------------------------------------------
+// SLOTS
+const slot1_DropDownMenu = document.getElementById('dropdown_slot_1');
+const slot2_DropDownMenu = document.getElementById('dropdown_slot_2');
+const slot3_DropDownMenu = document.getElementById('dropdown_slot_3');
+const slot4_DropDownMenu = document.getElementById('dropdown_slot_4');
+slot1_DropDownMenu.addEventListener('change', () => {
+    speedosObj.speedo[0].speedoType = slot1_DropDownMenu.selectedOptions[0].value;
+    updateSpeedoStyles();
+});
+slot2_DropDownMenu.addEventListener('change', () => {
+    speedosObj.speedo[1].speedoType = slot2_DropDownMenu.selectedOptions[0].value;
+    updateSpeedoStyles();
+});
+slot3_DropDownMenu.addEventListener('change', () => {
+    speedosObj.speedo[2].speedoType = slot3_DropDownMenu.selectedOptions[0].value;
+    updateSpeedoStyles();
+});
+slot4_DropDownMenu.addEventListener('change', () => {
+    speedosObj.speedo[3].speedoType = slot4_DropDownMenu.selectedOptions[0].value;
+    updateSpeedoStyles();
+});
 // SHADOWS
 const enableShadowsBtn = document.getElementById('shadows_enable');
 const disableShadowsBtn = document.getElementById('shadows_disable');
@@ -66,5 +86,11 @@ const enableRoundingBtn = document.getElementById('rounding_enable');
 const disableRoundingBtn = document.getElementById('rounding_disable');
 enableRoundingBtn.addEventListener('click', () => { speedosObj.round = true; updateSpeedoStyles(); });
 disableRoundingBtn.addEventListener('click', () => { speedosObj.round = false; updateSpeedoStyles(); });
-// on page first load
+//===================================================================================
+// ON PAGE LOAD
+//-----------------------------------------------------------------------------------
 updateSpeedoStyles();
+slot1_DropDownMenu.value = speedosObj.speedo[0].speedoType;
+slot2_DropDownMenu.value = speedosObj.speedo[1].speedoType;
+slot3_DropDownMenu.value = speedosObj.speedo[2].speedoType;
+slot4_DropDownMenu.value = speedosObj.speedo[3].speedoType;
