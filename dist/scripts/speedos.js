@@ -1,12 +1,6 @@
 import { Speedo } from './speedo.js';
 import { m0reColor } from './m0recolors.js';
 import { m0reColors } from './m0recolors.js';
-export var SpeedoSize;
-(function (SpeedoSize) {
-    SpeedoSize[SpeedoSize["SMALL"] = 1] = "SMALL";
-    SpeedoSize[SpeedoSize["MEDIUM"] = 2] = "MEDIUM";
-    SpeedoSize[SpeedoSize["LARGE"] = 3] = "LARGE";
-})(SpeedoSize || (SpeedoSize = {}));
 export class Speedos {
     previewSpeed;
     speedo;
@@ -21,7 +15,7 @@ export class Speedos {
     constructor() {
         this.round = true;
         this.drawShadows = true;
-        this.size = SpeedoSize.MEDIUM;
+        this.size = "MEDIUM";
         this.colorMain = m0reColors.get(m0reColor.WHITE);
         this.colorClose = m0reColors.get(m0reColor.BLUE);
         this.colorGood = m0reColors.get(m0reColor.GREEN);

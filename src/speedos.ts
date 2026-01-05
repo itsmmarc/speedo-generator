@@ -4,7 +4,7 @@ import { Color } from './color.js';
 import { m0reColor } from './m0recolors.js';
 import { m0reColors } from './m0recolors.js';
 
-export enum SpeedoSize{SMALL=1, MEDIUM=2, LARGE=3}
+export type SpeedoSize = 'SMALL' | 'MEDIUM' | 'LARGE';
 
 export class Speedos {
     previewSpeed?: number;
@@ -21,7 +21,7 @@ export class Speedos {
     constructor(){
         this.round = true;
         this.drawShadows = true;
-        this.size = SpeedoSize.MEDIUM;
+        this.size = "MEDIUM";
         this.colorMain = m0reColors.get(m0reColor.WHITE) as Color;
         this.colorClose = m0reColors.get(m0reColor.BLUE) as Color;
         this.colorGood = m0reColors.get(m0reColor.GREEN) as Color;

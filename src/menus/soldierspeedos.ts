@@ -27,12 +27,36 @@ setInterval(() => {
 }, speedosObj.frametime);
 
 function updateSpeedoStyles(){
+    switch (speedosObj.size) {
+        case "SMALL":
+            $('.speedo').removeClass('speedo-size-medium');
+            $('.speedo').removeClass('speedo-size-large');
+
+            $('.speedo').addClass('speedo-size-small');
+            break;
+        case "MEDIUM":
+            $('.speedo').removeClass('speedo-size-small');
+            $('.speedo').removeClass('speedo-size-large');
+
+            $('.speedo').addClass('speedo-size-medium');
+            break;
+        case "LARGE":
+            $('.speedo').removeClass('speedo-size-small');
+            $('.speedo').removeClass('speedo-size-medium');
+
+            $('.speedo').addClass('speedo-size-large');
+            break;
+        default:
+            break;
+    }
+
     speedoElmArray.forEach(speedoElm => {        
         let slot = 'slot_';
         for(let i = 1; i <= NUM_SPEEDOS; i++){
             slot += i;
             let speedoObj = speedosObj.speedo[i-1];
-
+            
+            console.log('checking speedo size');
             if(speedoElm.classList.contains(slot)){
                 // Check if speedo should be visible
                 if(speedoObj.speedoType == "NONE" && !speedoElm.classList.contains('hidden')){
@@ -82,24 +106,34 @@ slot4_DropDownMenu.addEventListener('change', () => {
     speedosObj.speedo[3].speedoType = slot4_DropDownMenu.selectedOptions[0].value as SpeedoType;
     updateSpeedoStyles();
 });
+// SIZE
+const sizeSmallBtn = document.getElementById('size_small') as HTMLElement;
+const sizeMedBtn = document.getElementById('size_medium') as HTMLElement;
+const sizeLargeBtn = document.getElementById('size_large') as HTMLElement;
+
+sizeSmallBtn.addEventListener('click', () => {speedosObj.size = "SMALL"; updateSpeedoStyles()});
+sizeMedBtn.addEventListener('click', () => {speedosObj.size = "MEDIUM"; updateSpeedoStyles()});
+sizeLargeBtn.addEventListener('click', () => {speedosObj.size = "LARGE"; updateSpeedoStyles()});
+
 // SHADOWS
 const enableShadowsBtn = document.getElementById('shadows_enable') as HTMLElement;
 const disableShadowsBtn = document.getElementById('shadows_disable') as HTMLElement;
 
-enableShadowsBtn.addEventListener('click', () =>    {speedosObj.drawShadows = true; updateSpeedoStyles()});
-disableShadowsBtn.addEventListener('click', () =>   {speedosObj.drawShadows = false;updateSpeedoStyles()});
+enableShadowsBtn.addEventListener('click', () => {speedosObj.drawShadows = true; updateSpeedoStyles()});
+disableShadowsBtn.addEventListener('click', () => {speedosObj.drawShadows = false;updateSpeedoStyles()});
 
 // ROUNDING
 const enableRoundingBtn = document.getElementById('rounding_enable') as HTMLElement;
 const disableRoundingBtn = document.getElementById('rounding_disable') as HTMLElement;
 
-enableRoundingBtn.addEventListener('click', () =>    {speedosObj.round = true; updateSpeedoStyles()});
-disableRoundingBtn.addEventListener('click', () =>   {speedosObj.round = false;updateSpeedoStyles()});
+enableRoundingBtn.addEventListener('click', () => {speedosObj.round = true; updateSpeedoStyles()});
+disableRoundingBtn.addEventListener('click', () => {speedosObj.round = false;updateSpeedoStyles()});
 
 //===================================================================================
 // ON PAGE LOAD
 //-----------------------------------------------------------------------------------
 updateSpeedoStyles();
+// set selected dropdowns based on current (default) speedo settings
 slot1_DropDownMenu.value = speedosObj.speedo[0].speedoType;
 slot2_DropDownMenu.value = speedosObj.speedo[1].speedoType;
 slot3_DropDownMenu.value = speedosObj.speedo[2].speedoType;

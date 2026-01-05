@@ -23,11 +23,31 @@ setInterval(() => {
     });
 }, speedosObj.frametime);
 function updateSpeedoStyles() {
+    switch (speedosObj.size) {
+        case "SMALL":
+            $('.speedo').removeClass('speedo-size-medium');
+            $('.speedo').removeClass('speedo-size-large');
+            $('.speedo').addClass('speedo-size-small');
+            break;
+        case "MEDIUM":
+            $('.speedo').removeClass('speedo-size-small');
+            $('.speedo').removeClass('speedo-size-large');
+            $('.speedo').addClass('speedo-size-medium');
+            break;
+        case "LARGE":
+            $('.speedo').removeClass('speedo-size-small');
+            $('.speedo').removeClass('speedo-size-medium');
+            $('.speedo').addClass('speedo-size-large');
+            break;
+        default:
+            break;
+    }
     speedoElmArray.forEach(speedoElm => {
         let slot = 'slot_';
         for (let i = 1; i <= NUM_SPEEDOS; i++) {
             slot += i;
             let speedoObj = speedosObj.speedo[i - 1];
+            console.log('checking speedo size');
             if (speedoElm.classList.contains(slot)) {
                 // Check if speedo should be visible
                 if (speedoObj.speedoType == "NONE" && !speedoElm.classList.contains('hidden')) {
@@ -76,6 +96,13 @@ slot4_DropDownMenu.addEventListener('change', () => {
     speedosObj.speedo[3].speedoType = slot4_DropDownMenu.selectedOptions[0].value;
     updateSpeedoStyles();
 });
+// SIZE
+const sizeSmallBtn = document.getElementById('size_small');
+const sizeMedBtn = document.getElementById('size_medium');
+const sizeLargeBtn = document.getElementById('size_large');
+sizeSmallBtn.addEventListener('click', () => { speedosObj.size = "SMALL"; updateSpeedoStyles(); });
+sizeMedBtn.addEventListener('click', () => { speedosObj.size = "MEDIUM"; updateSpeedoStyles(); });
+sizeLargeBtn.addEventListener('click', () => { speedosObj.size = "LARGE"; updateSpeedoStyles(); });
 // SHADOWS
 const enableShadowsBtn = document.getElementById('shadows_enable');
 const disableShadowsBtn = document.getElementById('shadows_disable');
@@ -90,6 +117,7 @@ disableRoundingBtn.addEventListener('click', () => { speedosObj.round = false; u
 // ON PAGE LOAD
 //-----------------------------------------------------------------------------------
 updateSpeedoStyles();
+// set selected dropdowns based on current (default) speedo settings
 slot1_DropDownMenu.value = speedosObj.speedo[0].speedoType;
 slot2_DropDownMenu.value = speedosObj.speedo[1].speedoType;
 slot3_DropDownMenu.value = speedosObj.speedo[2].speedoType;
