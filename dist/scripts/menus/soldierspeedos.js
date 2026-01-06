@@ -47,7 +47,6 @@ function updateSpeedoStyles() {
         for (let i = 1; i <= NUM_SPEEDOS; i++) {
             slot += i;
             let speedoObj = speedosObj.speedo[i - 1];
-            console.log('checking speedo size');
             if (speedoElm.classList.contains(slot)) {
                 // Check if speedo should be visible
                 if (speedoObj.speedoType == "NONE" && !speedoElm.classList.contains('hidden')) {
@@ -96,29 +95,84 @@ slot4_DropDownMenu.addEventListener('change', () => {
     speedosObj.speedo[3].speedoType = slot4_DropDownMenu.selectedOptions[0].value;
     updateSpeedoStyles();
 });
+// POSITION
+const xSlider = document.getElementById('xpos');
+const ySlider = document.getElementById('ypos');
+const markerElm = document.getElementById('marker');
+const markerStyle = window.getComputedStyle(markerElm);
+const markerSize = [+(markerStyle.getPropertyValue('width').replace("px", "")), +(markerStyle.getPropertyValue('height').replace("px", ""))];
+const markerBoundsElm = document.getElementById('markerbounds');
+const markerBoundsStyle = window.getComputedStyle(markerBoundsElm);
+const markerBoundsWidth = +(markerBoundsStyle.getPropertyValue('width').replace("px", ""));
+const markerBoundsHeight = +(markerBoundsStyle.getPropertyValue('height').replace("px", ""));
+const markerBounds = [markerBoundsWidth - markerSize[0], markerBoundsHeight - markerSize[1]];
+xSlider.addEventListener('input', () => {
+    markerElm.style.left = (+xSlider.value * (markerBounds[0] / 100)).toString();
+});
+xSlider.addEventListener('change', () => {
+    let center = markerBounds[0] / 2;
+    let markerLeft = +markerElm.style.left.replace("px", "");
+    let xOffset = markerLeft - center;
+    xOffset = Math.round(xOffset / markerBoundsWidth * 640); // 640 is the width of screen in 16:9 in tf2 hud units
+    let newXPos = 'cs-0.5';
+    if (markerLeft == 0) {
+        newXPos = '0';
+    }
+    else if (markerLeft == markerBounds[0]) {
+        newXPos = 'rs1';
+    }
+    else if (xOffset > 0) {
+        newXPos = newXPos.concat('+', xOffset.toString());
+    }
+    else if (xOffset < 0) {
+        newXPos = newXPos.concat(xOffset.toString());
+    }
+    speedosObj.position.xpos = newXPos;
+});
+ySlider.addEventListener('input', () => {
+    markerElm.style.top = (+ySlider.value * (markerBounds[1] / 100)).toString();
+});
+ySlider.addEventListener('change', () => {
+    let center = markerBounds[1] / 2;
+    let markerTop = +markerElm.style.top.replace("px", "");
+    let yOffset = markerTop - center;
+    yOffset = Math.round(yOffset / markerBoundsHeight * 480); // 480 is the height of screen in tf2 hud units
+    let newYPos = 'cs-0.5';
+    if (markerTop == 0) {
+        newYPos = '0';
+    }
+    else if (markerTop == markerBounds[1]) {
+        newYPos = 'rs1';
+    }
+    else if (yOffset > 0) {
+        newYPos = newYPos.concat('+', yOffset.toString());
+    }
+    else if (yOffset < 0) {
+        newYPos = newYPos.concat(yOffset.toString());
+    }
+    speedosObj.position.ypos = newYPos;
+});
 // SIZE
-const sizeSmallBtn = document.getElementById('size_small');
-const sizeMedBtn = document.getElementById('size_medium');
-const sizeLargeBtn = document.getElementById('size_large');
-sizeSmallBtn.addEventListener('click', () => { speedosObj.size = "SMALL"; updateSpeedoStyles(); });
-sizeMedBtn.addEventListener('click', () => { speedosObj.size = "MEDIUM"; updateSpeedoStyles(); });
-sizeLargeBtn.addEventListener('click', () => { speedosObj.size = "LARGE"; updateSpeedoStyles(); });
+const speedoSizeElm = document.getElementById('sizes');
+speedoSizeElm.addEventListener('change', () => {
+    speedosObj.size = speedoSizeElm.value;
+    updateSpeedoStyles();
+});
 // SHADOWS
-const enableShadowsBtn = document.getElementById('shadows_enable');
-const disableShadowsBtn = document.getElementById('shadows_disable');
-enableShadowsBtn.addEventListener('click', () => { speedosObj.drawShadows = true; updateSpeedoStyles(); });
-disableShadowsBtn.addEventListener('click', () => { speedosObj.drawShadows = false; updateSpeedoStyles(); });
+const shadowsCBox = document.getElementById('shadows_checkbox');
+shadowsCBox.addEventListener('change', () => { speedosObj.drawShadows = shadowsCBox.checked; updateSpeedoStyles(); });
 // ROUNDING
-const enableRoundingBtn = document.getElementById('rounding_enable');
-const disableRoundingBtn = document.getElementById('rounding_disable');
-enableRoundingBtn.addEventListener('click', () => { speedosObj.round = true; updateSpeedoStyles(); });
-disableRoundingBtn.addEventListener('click', () => { speedosObj.round = false; updateSpeedoStyles(); });
+const roundingCBox = document.getElementById('rounding_checkbox');
+roundingCBox.addEventListener('change', () => { speedosObj.round = roundingCBox.checked; updateSpeedoStyles(); });
 //===================================================================================
 // ON PAGE LOAD
 //-----------------------------------------------------------------------------------
 updateSpeedoStyles();
-// set selected dropdowns based on current (default) speedo settings
+// load default settings based on defaults of speedosObj
 slot1_DropDownMenu.value = speedosObj.speedo[0].speedoType;
 slot2_DropDownMenu.value = speedosObj.speedo[1].speedoType;
 slot3_DropDownMenu.value = speedosObj.speedo[2].speedoType;
 slot4_DropDownMenu.value = speedosObj.speedo[3].speedoType;
+speedoSizeElm.value = speedosObj.size;
+shadowsCBox.checked = speedosObj.drawShadows;
+roundingCBox.checked = speedosObj.round;

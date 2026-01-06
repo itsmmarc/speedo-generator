@@ -1,5 +1,6 @@
 import { SpeedoType } from '../speedo.js';
 import { Speedos } from '../speedos.js'
+import { SpeedoSize } from '../speedos.js';
 
 const NUM_SPEEDOS = 4;
 const speedoColl = document.getElementsByClassName('speedo') as HTMLCollection;    // collection of all speedo class elements
@@ -56,7 +57,6 @@ function updateSpeedoStyles(){
             slot += i;
             let speedoObj = speedosObj.speedo[i-1];
             
-            console.log('checking speedo size');
             if(speedoElm.classList.contains(slot)){
                 // Check if speedo should be visible
                 if(speedoObj.speedoType == "NONE" && !speedoElm.classList.contains('hidden')){
@@ -106,35 +106,97 @@ slot4_DropDownMenu.addEventListener('change', () => {
     speedosObj.speedo[3].speedoType = slot4_DropDownMenu.selectedOptions[0].value as SpeedoType;
     updateSpeedoStyles();
 });
-// SIZE
-const sizeSmallBtn = document.getElementById('size_small') as HTMLElement;
-const sizeMedBtn = document.getElementById('size_medium') as HTMLElement;
-const sizeLargeBtn = document.getElementById('size_large') as HTMLElement;
 
-sizeSmallBtn.addEventListener('click', () => {speedosObj.size = "SMALL"; updateSpeedoStyles()});
-sizeMedBtn.addEventListener('click', () => {speedosObj.size = "MEDIUM"; updateSpeedoStyles()});
-sizeLargeBtn.addEventListener('click', () => {speedosObj.size = "LARGE"; updateSpeedoStyles()});
+// POSITION
+const xSlider = document.getElementById('xpos') as HTMLInputElement;
+const ySlider = document.getElementById('ypos') as HTMLInputElement;
+
+const markerElm = document.getElementById('marker') as HTMLElement;
+const markerStyle = window.getComputedStyle(markerElm) as CSSStyleDeclaration;
+const markerSize = [+(markerStyle.getPropertyValue('width').replace("px","")),+(markerStyle.getPropertyValue('height').replace("px",""))] as number[];
+
+const markerBoundsElm = document.getElementById('markerbounds') as HTMLElement;
+const markerBoundsStyle = window.getComputedStyle(markerBoundsElm) as CSSStyleDeclaration;
+const markerBoundsWidth = +(markerBoundsStyle.getPropertyValue('width').replace("px","")) as number;
+const markerBoundsHeight = +(markerBoundsStyle.getPropertyValue('height').replace("px","")) as number;
+const markerBounds = [markerBoundsWidth - markerSize[0], markerBoundsHeight - markerSize[1]] as number[];
+
+xSlider.addEventListener('input', () =>{
+    markerElm.style.left = (+xSlider.value * (markerBounds[0]/100)).toString();
+})
+xSlider.addEventListener('change', () =>{
+    let center: number = markerBounds[0]/2;
+    let markerLeft = +markerElm.style.left.replace("px","");
+
+    let xOffset: number = markerLeft - center;
+    xOffset = Math.round(xOffset/markerBoundsWidth * 640);  // 640 is the width of screen in 16:9 in tf2 hud units
+
+    let newXPos: string = 'cs-0.5';
+    if(markerLeft==0){
+        newXPos = '0';
+    } else if(markerLeft==markerBounds[0]){
+        newXPos = 'rs1';
+    } else if(xOffset>0){
+        newXPos = newXPos.concat('+', xOffset.toString());
+    } else if(xOffset<0){
+        newXPos = newXPos.concat(xOffset.toString());
+    }
+
+    speedosObj.position.xpos = newXPos;
+})
+
+ySlider.addEventListener('input', () =>{
+    markerElm.style.top = (+ySlider.value * (markerBounds[1]/100)).toString();
+})
+ySlider.addEventListener('change', () =>{
+    let center: number = markerBounds[1]/2;
+    let markerTop = +markerElm.style.top.replace("px","");
+
+    let yOffset: number = markerTop - center;
+    yOffset = Math.round(yOffset/markerBoundsHeight * 480);  // 480 is the height of screen in tf2 hud units
+
+    let newYPos: string = 'cs-0.5';
+    if(markerTop==0){
+        newYPos = '0';
+    } else if(markerTop==markerBounds[1]){
+        newYPos = 'rs1';
+    } else if(yOffset>0){
+        newYPos = newYPos.concat('+', yOffset.toString());
+    } else if(yOffset<0){
+        newYPos = newYPos.concat(yOffset.toString());
+    }
+
+    speedosObj.position.ypos = newYPos;
+})
+
+
+// SIZE
+const speedoSizeElm = document.getElementById('sizes') as HTMLSelectElement;
+
+speedoSizeElm.addEventListener('change', () => {
+    speedosObj.size = speedoSizeElm.value as SpeedoSize;
+    updateSpeedoStyles();
+})
 
 // SHADOWS
-const enableShadowsBtn = document.getElementById('shadows_enable') as HTMLElement;
-const disableShadowsBtn = document.getElementById('shadows_disable') as HTMLElement;
+const shadowsCBox = document.getElementById('shadows_checkbox') as HTMLInputElement;
 
-enableShadowsBtn.addEventListener('click', () => {speedosObj.drawShadows = true; updateSpeedoStyles()});
-disableShadowsBtn.addEventListener('click', () => {speedosObj.drawShadows = false;updateSpeedoStyles()});
+shadowsCBox.addEventListener('change', () => {speedosObj.drawShadows = shadowsCBox.checked; updateSpeedoStyles()});
 
 // ROUNDING
-const enableRoundingBtn = document.getElementById('rounding_enable') as HTMLElement;
-const disableRoundingBtn = document.getElementById('rounding_disable') as HTMLElement;
+const roundingCBox = document.getElementById('rounding_checkbox') as HTMLInputElement;
 
-enableRoundingBtn.addEventListener('click', () => {speedosObj.round = true; updateSpeedoStyles()});
-disableRoundingBtn.addEventListener('click', () => {speedosObj.round = false;updateSpeedoStyles()});
+roundingCBox.addEventListener('change', () => {speedosObj.round = roundingCBox.checked; updateSpeedoStyles()});
 
 //===================================================================================
 // ON PAGE LOAD
 //-----------------------------------------------------------------------------------
 updateSpeedoStyles();
-// set selected dropdowns based on current (default) speedo settings
+// load default settings based on defaults of speedosObj
 slot1_DropDownMenu.value = speedosObj.speedo[0].speedoType;
 slot2_DropDownMenu.value = speedosObj.speedo[1].speedoType;
 slot3_DropDownMenu.value = speedosObj.speedo[2].speedoType;
 slot4_DropDownMenu.value = speedosObj.speedo[3].speedoType;
+speedoSizeElm.value = speedosObj.size;
+shadowsCBox.checked = speedosObj.drawShadows;
+roundingCBox.checked = speedosObj.round;

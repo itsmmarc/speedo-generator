@@ -1,17 +1,18 @@
 export class Color{
-    name: string;
-    rgb: number[];
+    r: number;
+    g: number;
+    b: number;
 
-    constructor(name: string, rgb: number[]){
-        this.name = name;
-        this.rgb = rgb;
+    constructor(r: number, g: number, b: number){
+        this.r = r;
+        this.g = g;
+        this.b = b;
     }
 
     // function to return rgb value in css syntax
     getCSSColor(): string{
         let color: string = '';
-        color = color.concat('rgb(',this.rgb[0].toString(),',',this.rgb[1].toString(),',',this.rgb[2].toString(),')');
-        //let color: string = "rgb(" + this.rgb[0].toString + "," + this.rgb[1].toString + "," + this.rgb[2].toString + ")";
+        color = color.concat('rgb(',this.r.toString(),',',this.g.toString(),',',this.b.toString(),')');
         return color;
     }
 }

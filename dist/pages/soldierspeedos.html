@@ -1,6 +1,6 @@
 <html lang="en">
 <head>
-    <title>Soldier Speedos</title>
+    <title>Speedo Generator</title>
     <link rel="stylesheet" href="../styles/soldierspeedos.css">
 </head>
 
@@ -8,20 +8,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <nav>
         <menu id="menuitems">
-            <li class="menuitem" id="home"><button>Home</button></li>
-            <li class="menuitem" id="speedos_soldier"><button>Soldier Speedos</button></li>
-            <li class="menuitem" id="speedos_demo"><button>Demo Speedos</button></li>
-            <li class="menuitem" id="speedos_bar"><button>Bar Speedos</button></li>
-            <li class="menuitem" id="speedos_graph"><button>Graph Speedos</button></li>
-            <li class="menuitem" id="font_primary"><button>Primary Font</button></li>
-            <li class="menuitem" id="font_secondary"><button>Secondary Font</button></li>
-            <li class="menuitem" id="settings_jump"><button>Jump Settings</button></li>
-            <li class="menuitem" id="settings_tf"><button>TF2 Settings</button></li>
+            <li class="menuitem" id="about"><button>About</button></li>
+            <li class="menuitem" id="speedos_soldier"><button>Speedo Generator</button></li>
         </menu>
     </nav>
     <!-- SPEEDO PREVIEW -->
     <aside>
-        <div id="speedo_previews">
+        <div id="speedo_previews" draggable="true">
             <div class="speedo slot_1"></div>
             <div class="speedo slot_1 shadow"></div>
             <div class="speedo slot_2"></div>
@@ -34,11 +27,12 @@
         </div>
     </aside>
     <!-- CUSTOMIZATION OPTIONS -->
-    <main>
-        <h1>Soldier Speedos</h1>
+    <main class="flex-container">
+        <h1 class="flex-100">Speedo Generator</h1>
         
-        <div class="option_container" id="option_slots">
+        <div class="option_container flex-33" id="option_slots">
             <h2>Active Speedos</h2>
+            <div class="flex-break"></div>
             <select name="slot_1" id="dropdown_slot_1">
                 <option value="NONE">None</option>
                 <option value="HORIZONTAL">Horizontal Speed</option>
@@ -68,21 +62,68 @@
                 <option value="HEIGHTO">Heighto</option>
             </select>
         </div>
-        <div class="option_container" id="option_size">
+
+        <div class="option_container flex-66 flex-container" id="option_position">
+            <h2>Position</h2>
+            <div class="flex-break"></div>
+            <input type="range" id="ypos" value="61">y</button>
+            <div id="position_preview">
+                <div id="markerbounds">
+                    <div id="xhair"></div>
+                    <div id="marker"></div>
+                </div>
+            </div>
+            <div class="flex-break"></div>
+            <input type="range" id="xpos">x</button>
+        </div>
+
+        <div class="option_container flex-33" id="option_size">
             <h2>Size</h2>
-            <button id="size_small">Small</button>
-            <button id="size_medium">Medium</button>
-            <button id="size_large">Large</button>
+            <select name="sizes" id="sizes">
+                <option value="SMALL">Small</option>
+                <option value="MEDIUM">Medium</option>
+                <option value="LARGE">Large</option>
+            </select>
         </div>
-        <div class="option_container" id="option_rounding">
+        
+        <div class="option_container flex-33" id="option_rounding">
             <h2>Rounding</h2>
-            <button id="rounding_enable">Enabled</button>
-            <button id="rounding_disable">Disabled</button>
+            <label class="checkbox">
+                <input type="checkbox" id="rounding_checkbox">
+                    <span class="checkmark"></span>
+                </input>
+            </label>
         </div>
-        <div class="option_container" id="option_shadows">
+
+        <div class="option_container flex-33" id="option_shadows">
             <h2>Shadows</h2>
-            <button id="shadows_enable">Enabled</button>
-            <button id="shadows_disable">Disabled</button>
+            <label class="checkbox">
+                <input type="checkbox" id="shadows_checkbox">
+                    <span class="checkmark"></span>
+                </input>
+            </label>
+        </div>
+
+        <div class="option_container flex-100" id="option_dynamiccolors">
+            <h2>Dynamic Colors</h2>
+            <!-- main, close, good -->
+        </div>
+
+        <div class="option_container flex-100" id="option_dynamiccolors_ranges">
+            <h2>Dynamic Color Ranges</h2>
+            <!-- horizontal close min max, good min max -->
+            <!-- vertical close min max, good min max -->
+            <!-- absolute close min max, good min max -->
+        </div>
+
+        <div class="option_container flex-100" id="option_dynamiccolors_heighto">
+            <h2>Heighto Dynamic Colors</h2>
+            <!-- main, double, triple, maxvel -->
+        </div>
+
+        <div class="option_container flex-100" id="option_dynamiccolors_heighto_ranges">
+            <h2>Heighto Dynamic Color Ranges</h2>
+            <!-- double threshold, triple threshold, maxvel threshold -->
         </div>
     </main>
     

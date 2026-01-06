@@ -3,6 +3,8 @@ import { SpeedoType } from './speedo.js';
 import { Color } from './color.js';
 import { m0reColor } from './m0recolors.js';
 import { m0reColors } from './m0recolors.js';
+import { Range } from './range.js';
+import { VDFElement } from './vdfelement.js';
 
 export type SpeedoSize = 'SMALL' | 'MEDIUM' | 'LARGE';
 
@@ -17,11 +19,12 @@ export class Speedos {
     colorGood: Color;
     framerate: number;
     frametime: number;
+    position: VDFElement;
 
     constructor(){
         this.round = true;
         this.drawShadows = true;
-        this.size = "MEDIUM";
+        this.size = "MEDIUM" as SpeedoSize;
         this.colorMain = m0reColors.get(m0reColor.WHITE) as Color;
         this.colorClose = m0reColors.get(m0reColor.BLUE) as Color;
         this.colorGood = m0reColors.get(m0reColor.GREEN) as Color;
@@ -29,10 +32,12 @@ export class Speedos {
         this.frametime = 1000/this.framerate;
 
         this.speedo = new Array<Speedo>(4);
-        this.speedo[0] = new Speedo("NONE", this.colorMain);
-        this.speedo[1] = new Speedo("HORIZONTAL", this.colorMain);
-        this.speedo[2] = new Speedo("HEIGHTO", this.colorMain);
-        this.speedo[3] = new Speedo("NONE", this.colorMain);
+        this.speedo[0] = new Speedo("NONE" as SpeedoType, this.colorMain);
+        this.speedo[1] = new Speedo("HORIZONTAL" as SpeedoType, this.colorMain);
+        this.speedo[2] = new Speedo("HEIGHTO" as SpeedoType, this.colorMain);
+        this.speedo[3] = new Speedo("NONE" as SpeedoType, this.colorMain);
+
+        this.position = new VDFElement('speedos', 'cs-0.5', 'cs-0.5+54');
     }
     
     startSpeedoPreview(): void{

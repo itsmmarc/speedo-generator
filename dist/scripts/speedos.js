@@ -1,6 +1,7 @@
 import { Speedo } from './speedo.js';
 import { m0reColor } from './m0recolors.js';
 import { m0reColors } from './m0recolors.js';
+import { VDFElement } from './vdfelement.js';
 export class Speedos {
     previewSpeed;
     speedo;
@@ -12,6 +13,7 @@ export class Speedos {
     colorGood;
     framerate;
     frametime;
+    position;
     constructor() {
         this.round = true;
         this.drawShadows = true;
@@ -26,6 +28,7 @@ export class Speedos {
         this.speedo[1] = new Speedo("HORIZONTAL", this.colorMain);
         this.speedo[2] = new Speedo("HEIGHTO", this.colorMain);
         this.speedo[3] = new Speedo("NONE", this.colorMain);
+        this.position = new VDFElement('speedos', 'cs-0.5', 'cs-0.5+54');
     }
     startSpeedoPreview() {
         const sine_max = 3500;
