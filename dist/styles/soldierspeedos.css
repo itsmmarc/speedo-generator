@@ -234,13 +234,11 @@ input#xpos{
     vertical-align: bottom;
 }
 #markerbounds{
+    cursor:move;
+
     width: 640px;
     height: 360px;
     background-color: rgb(150, 230, 255);
-    /*
-    background-image: url("images/hud.webp");
-    background-size: cover;
-    */
     position: relative;
 }
 img{

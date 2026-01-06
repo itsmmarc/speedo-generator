@@ -122,9 +122,31 @@ const markerBoundsHeight = +(markerBoundsStyle.getPropertyValue('height').replac
 const markerBounds = [markerBoundsWidth - markerSize[0], markerBoundsHeight - markerSize[1]] as number[];
 
 xSlider.addEventListener('input', () =>{
-    markerElm.style.left = (+xSlider.value * (markerBounds[0]/100)).toString();
+    updatePosition_x();
 })
-xSlider.addEventListener('change', () =>{
+
+ySlider.addEventListener('input', () =>{
+    updatePosition_y();
+})
+
+markerBoundsElm.addEventListener('drag', (event: MouseEvent) =>{
+    if(event.offsetX > 0){
+        let xValue: number = event.offsetX / markerBoundsWidth * 100;
+        xSlider.value = xValue.toString();
+        
+        updatePosition_x();
+    }
+    if(event.offsetY > 0){
+        let yValue: number = event.offsetY / markerBoundsHeight * 100;
+        ySlider.value = yValue.toString();
+        
+        updatePosition_y();
+    }
+});
+
+function updatePosition_x(){
+    markerElm.style.left = (+xSlider.value * (markerBounds[0]/100)).toString();
+
     let center: number = markerBounds[0]/2;
     let markerLeft = +markerElm.style.left.replace("px","");
 
@@ -143,12 +165,11 @@ xSlider.addEventListener('change', () =>{
     }
 
     speedosObj.position.xpos = newXPos;
-})
+}
 
-ySlider.addEventListener('input', () =>{
+function updatePosition_y(){
     markerElm.style.top = (+ySlider.value * (markerBounds[1]/100)).toString();
-})
-ySlider.addEventListener('change', () =>{
+
     let center: number = markerBounds[1]/2;
     let markerTop = +markerElm.style.top.replace("px","");
 
@@ -167,7 +188,7 @@ ySlider.addEventListener('change', () =>{
     }
 
     speedosObj.position.ypos = newYPos;
-})
+}
 
 // POSITION IMAGE
 let imageUpload = document.getElementById('imageupload') as HTMLInputElement;

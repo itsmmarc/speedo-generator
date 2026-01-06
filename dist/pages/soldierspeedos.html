@@ -68,14 +68,14 @@
             <div class="flex-break"></div>
             <input type="range" id="ypos" value="61">y</button>
             <div id="position_preview">
-                <div id="markerbounds">
+                <div id="markerbounds" draggable="false">
                     <img src="../images/hud.webp" id="position_preview_img">
                     <label for="imageupload" id="imageupload_container">
                         <img src="../images/image_arrow_up_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg">
                         <input type="file" id="imageupload">
                     </label>
-                    <div id="xhair"></div>
-                    <div id="marker"></div>
+                    <div id="xhair" style="pointer-events: none;"></div>
+                    <div id="marker" style="pointer-events: none;"></div>
                 </div>
             </div>
             <div class="flex-break"></div>

@@ -107,9 +107,25 @@ const markerBoundsWidth = +(markerBoundsStyle.getPropertyValue('width').replace(
 const markerBoundsHeight = +(markerBoundsStyle.getPropertyValue('height').replace("px", ""));
 const markerBounds = [markerBoundsWidth - markerSize[0], markerBoundsHeight - markerSize[1]];
 xSlider.addEventListener('input', () => {
-    markerElm.style.left = (+xSlider.value * (markerBounds[0] / 100)).toString();
+    updatePosition_x();
 });
-xSlider.addEventListener('change', () => {
+ySlider.addEventListener('input', () => {
+    updatePosition_y();
+});
+markerBoundsElm.addEventListener('drag', (event) => {
+    if (event.offsetX > 0) {
+        let xValue = event.offsetX / markerBoundsWidth * 100;
+        xSlider.value = xValue.toString();
+        updatePosition_x();
+    }
+    if (event.offsetY > 0) {
+        let yValue = event.offsetY / markerBoundsHeight * 100;
+        ySlider.value = yValue.toString();
+        updatePosition_y();
+    }
+});
+function updatePosition_x() {
+    markerElm.style.left = (+xSlider.value * (markerBounds[0] / 100)).toString();
     let center = markerBounds[0] / 2;
     let markerLeft = +markerElm.style.left.replace("px", "");
     let xOffset = markerLeft - center;
@@ -128,11 +144,9 @@ xSlider.addEventListener('change', () => {
         newXPos = newXPos.concat(xOffset.toString());
     }
     speedosObj.position.xpos = newXPos;
-});
-ySlider.addEventListener('input', () => {
+}
+function updatePosition_y() {
     markerElm.style.top = (+ySlider.value * (markerBounds[1] / 100)).toString();
-});
-ySlider.addEventListener('change', () => {
     let center = markerBounds[1] / 2;
     let markerTop = +markerElm.style.top.replace("px", "");
     let yOffset = markerTop - center;
@@ -151,7 +165,7 @@ ySlider.addEventListener('change', () => {
         newYPos = newYPos.concat(yOffset.toString());
     }
     speedosObj.position.ypos = newYPos;
-});
+}
 // POSITION IMAGE
 let imageUpload = document.getElementById('imageupload');
 let posPreviewImg = document.getElementById('position_preview_img');
