@@ -152,6 +152,22 @@ ySlider.addEventListener('change', () => {
     }
     speedosObj.position.ypos = newYPos;
 });
+// POSITION IMAGE
+let imageUpload = document.getElementById('imageupload');
+let posPreviewImg = document.getElementById('position_preview_img');
+imageUpload.addEventListener('change', () => {
+    changeImage(imageUpload);
+});
+function changeImage(input) {
+    let reader;
+    if (input.files && input.files[0]) {
+        reader = new FileReader();
+        reader.onload = () => {
+            posPreviewImg.setAttribute('src', reader.result);
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 // SIZE
 const speedoSizeElm = document.getElementById('sizes');
 speedoSizeElm.addEventListener('change', () => {

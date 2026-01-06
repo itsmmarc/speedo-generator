@@ -237,9 +237,29 @@ input#xpos{
     width: 640px;
     height: 360px;
     background-color: rgb(150, 230, 255);
+    /*
     background-image: url("images/hud.webp");
     background-size: cover;
+    */
     position: relative;
+}
+img{
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+    position: absolute;
+}
+input[type=file]{
+    visibility: hidden;
+}
+#imageupload_container{
+    right: 0;
+    margin: 5px;
+    position: absolute;
+    cursor: pointer;
+
+    height: 40px;
+    width: 40px;
 }
 #marker{
     top: calc(60% - 26px);
