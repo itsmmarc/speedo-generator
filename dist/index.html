@@ -1,0 +1,144 @@
+<html lang="en">
+<head>
+    <title>Speedo Generator</title>
+    <link rel="stylesheet" href="styles/speedo-generator.css">
+</head>
+
+<body>
+    <!-- NAVIGATION -->
+    <nav>
+        <menu id="menuitems">
+            <li class="menuitem" id="about"><button>About</button></li>
+            <li class="menuitem" id="speedos_soldier"><button>Speedo Generator</button></li>
+        </menu>
+    </nav>
+    <!-- CUSTOMIZATION OPTIONS -->
+    <main class="flex-container">
+        <h1 class="flex-100">Speedo Generator</h1>
+        
+        <div class="row">
+            <div class="column flex-33">
+                <div class="option_container flex-33" id="option_slots">
+                    <h2>Active Speedos</h2>
+                    <div class="flex-break"></div>
+                    <select name="slot_1" id="dropdown_slot_1">
+                        <option value="NONE">None</option>
+                        <option value="HORIZONTAL">Horizontal Speed</option>
+                        <option value="VERTICAL">Vertical Speed</option>
+                        <option value="ABSOLUTE">Absolute Speed</option>
+                        <option value="HEIGHTO">Heighto</option>
+                    </select><br>
+                    <select name="slot_2" id="dropdown_slot_2">
+                        <option value="NONE">None</option>
+                        <option value="HORIZONTAL">Horizontal Speed</option>
+                        <option value="VERTICAL">Vertical Speed</option>
+                        <option value="ABSOLUTE">Absolute Speed</option>
+                        <option value="HEIGHTO">Heighto</option>
+                    </select><br>
+                    <select name="slot_3" id="dropdown_slot_3">
+                        <option value="NONE">None</option>
+                        <option value="HORIZONTAL">Horizontal Speed</option>
+                        <option value="VERTICAL">Vertical Speed</option>
+                        <option value="ABSOLUTE">Absolute Speed</option>
+                        <option value="HEIGHTO">Heighto</option>
+                    </select><br>
+                    <select name="slot_4" id="dropdown_slot_4">
+                        <option value="NONE">None</option>
+                        <option value="HORIZONTAL">Horizontal Speed</option>
+                        <option value="VERTICAL">Vertical Speed</option>
+                        <option value="ABSOLUTE">Absolute Speed</option>
+                        <option value="HEIGHTO">Heighto</option>
+                    </select>
+                </div>
+                <div class="option_container flex-33" id="option_size">
+                    <label>
+                        Size
+                        <select name="sizes" id="sizes">
+                            <option value="SMALL">Small</option>
+                            <option value="MEDIUM">Medium</option>
+                            <option value="LARGE">Large</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="option_container flex-33" id="option_rounding">
+                    <label class="checkbox">
+                        <input type="checkbox" id="rounding_checkbox">
+                            <span class="checkmark"></span>
+                        </input>
+                        Rounding
+                    </label>
+                </div>
+                <div class="option_container flex-33" id="option_shadows">
+                    <label class="checkbox">
+                        <input type="checkbox" id="shadows_checkbox">
+                            <span class="checkmark"></span>
+                        </input>
+                        Shadows
+                    </label>
+                </div>
+            </div>
+            <div class="column flex-66">
+                <div class="option_container flex-66 flex-container" id="option_position">
+                    <h2>Position</h2>
+                    <div class="flex-break"></div>
+                    <input type="range" id="ypos" value="61">y</button>
+                    <div id="position_preview">
+                        <div id="markerbounds" draggable="false">
+                            <img src="images/hud.webp" id="position_preview_img">
+                            <label for="imageupload" id="imageupload_container">
+                                <img src="images/image_arrow_up_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg">
+                                <input type="file" id="imageupload">
+                            </label>
+                            <div id="xhair" style="pointer-events: none;"></div>
+                            <div id="marker" style="pointer-events: none;"></div>
+                        </div>
+                    </div>
+                    <div class="flex-break"></div>
+                    <input type="range" id="xpos">x</button>
+                </div> 
+            </div>
+        </div>
+
+        <div class="option_container flex-100" id="option_dynamiccolors">
+            <h2>Dynamic Colors</h2>
+            <!-- main, close, good -->
+        </div>
+
+        <div class="option_container flex-100" id="option_dynamiccolors_ranges">
+            <h2>Dynamic Color Ranges</h2>
+            <!-- horizontal close min max, good min max -->
+            <!-- vertical close min max, good min max -->
+            <!-- absolute close min max, good min max -->
+        </div>
+
+        <div class="option_container flex-100" id="option_dynamiccolors_heighto">
+            <h2>Heighto Dynamic Colors</h2>
+            <!-- main, double, triple, maxvel -->
+        </div>
+
+        <div class="option_container flex-100" id="option_dynamiccolors_heighto_ranges">
+            <h2>Heighto Dynamic Color Ranges</h2>
+            <!-- double threshold, triple threshold, maxvel threshold -->
+        </div>
+    </main>
+    <!-- SPEEDO PREVIEW -->
+    <aside>
+        <div id="speedo_previews" draggable="true">
+            <div class="speedo slot_1"></div>
+            <div class="speedo slot_1 shadow"></div>
+            <div class="speedo slot_2"></div>
+            <div class="speedo slot_2 shadow"></div>
+            <div class="speedo slot_3"></div>
+            <div class="speedo slot_3 shadow"></div>
+            <div class="speedo slot_4"></div>
+            <div class="speedo slot_4 shadow"></div>
+        </div>
+    </aside>
+    
+    <footer>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script type="module" src="scripts/js/menus/speedo-generator.js"></script>
+    </footer>
+    
+</body>
+</html>

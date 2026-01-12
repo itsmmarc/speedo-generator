@@ -3,8 +3,8 @@
       "target": "esnext",
       "module": "esnext",
       "strict": true,
-      "outDir": "./dist/scripts",
-      "rootDir": "./src",
+      "outDir": "./dist/scripts/js",
+      "rootDir": "./dist/scripts/ts",
       "esModuleInterop": true,
       "skipLibCheck": true
     }
