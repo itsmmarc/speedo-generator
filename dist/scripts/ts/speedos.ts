@@ -2,8 +2,6 @@ import { Speedo } from './speedo.js';
 import { SpeedoType } from './speedo.js';
 import { Color } from './color.js';
 import { m0reColor } from './m0recolors.js';
-import { m0reColors } from './m0recolors.js';
-import { Range } from './range.js';
 import { VDFElement } from './vdfelement.js';
 
 export type SpeedoSize = 'SMALL' | 'MEDIUM' | 'LARGE';
@@ -29,13 +27,13 @@ export class Speedos {
         this.round = true;
         this.drawShadows = true;
         this.size = "MEDIUM" as SpeedoSize;
-        this.colorMain = m0reColors.get(m0reColor.WHITE) as Color;
-        this.colorClose = m0reColors.get(m0reColor.BLUE) as Color;
-        this.colorGood = m0reColors.get(m0reColor.GREEN) as Color;
-        this.colorMain_Heighto = m0reColors.get(m0reColor.WHITE) as Color;
-        this.colorDouble = m0reColors.get(m0reColor.BLUE) as Color;
-        this.colorTriple = m0reColors.get(m0reColor.GREEN) as Color;
-        this.colorMaxVel = m0reColors.get(m0reColor.YELLOW) as Color;
+        this.colorMain = m0reColor.WHITE;
+        this.colorClose = m0reColor.BLUE;
+        this.colorGood = m0reColor.GREEN;
+        this.colorMain_Heighto = m0reColor.WHITE;
+        this.colorDouble = m0reColor.BLUE;
+        this.colorTriple = m0reColor.GREEN;
+        this.colorMaxVel = m0reColor.YELLOW;
         this.framerate = 30;
         this.frametime = 1000/this.framerate;
 

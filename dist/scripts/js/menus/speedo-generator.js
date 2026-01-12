@@ -76,24 +76,24 @@ function updateSpeedoStyles() {
 // BUTTONS
 //-----------------------------------------------------------------------------------
 // SLOTS
-const slot1_DropDownMenu = document.getElementById('dropdown_slot_1');
-const slot2_DropDownMenu = document.getElementById('dropdown_slot_2');
-const slot3_DropDownMenu = document.getElementById('dropdown_slot_3');
-const slot4_DropDownMenu = document.getElementById('dropdown_slot_4');
-slot1_DropDownMenu.addEventListener('change', () => {
-    speedosObj.speedo[0].speedoType = slot1_DropDownMenu.selectedOptions[0].value;
+const slot1Elm = document.getElementById('dropdown_slot_1');
+const slot2Elm = document.getElementById('dropdown_slot_2');
+const slot3Elm = document.getElementById('dropdown_slot_3');
+const slot4Elm = document.getElementById('dropdown_slot_4');
+slot1Elm.addEventListener('change', () => {
+    speedosObj.speedo[0].speedoType = slot1Elm.selectedOptions[0].value;
     updateSpeedoStyles();
 });
-slot2_DropDownMenu.addEventListener('change', () => {
-    speedosObj.speedo[1].speedoType = slot2_DropDownMenu.selectedOptions[0].value;
+slot2Elm.addEventListener('change', () => {
+    speedosObj.speedo[1].speedoType = slot2Elm.selectedOptions[0].value;
     updateSpeedoStyles();
 });
-slot3_DropDownMenu.addEventListener('change', () => {
-    speedosObj.speedo[2].speedoType = slot3_DropDownMenu.selectedOptions[0].value;
+slot3Elm.addEventListener('change', () => {
+    speedosObj.speedo[2].speedoType = slot3Elm.selectedOptions[0].value;
     updateSpeedoStyles();
 });
-slot4_DropDownMenu.addEventListener('change', () => {
-    speedosObj.speedo[3].speedoType = slot4_DropDownMenu.selectedOptions[0].value;
+slot4Elm.addEventListener('change', () => {
+    speedosObj.speedo[3].speedoType = slot4Elm.selectedOptions[0].value;
     updateSpeedoStyles();
 });
 // POSITION
@@ -190,11 +190,11 @@ speedoSizeElm.addEventListener('change', () => {
     updateSpeedoStyles();
 });
 // SHADOWS
-const shadowsCBox = document.getElementById('shadows_checkbox');
-shadowsCBox.addEventListener('change', () => { speedosObj.drawShadows = shadowsCBox.checked; updateSpeedoStyles(); });
+const shadowsElm = document.getElementById('shadows_checkbox');
+shadowsElm.addEventListener('change', () => { speedosObj.drawShadows = shadowsElm.checked; updateSpeedoStyles(); });
 // ROUNDING
-const roundingCBox = document.getElementById('rounding_checkbox');
-roundingCBox.addEventListener('change', () => { speedosObj.round = roundingCBox.checked; updateSpeedoStyles(); });
+const roundingElm = document.getElementById('rounding_checkbox');
+roundingElm.addEventListener('change', () => { speedosObj.round = roundingElm.checked; });
 // COLORS
 const colorMainElm = document.getElementById('colorMain');
 const colorCloseElm = document.getElementById('colorClose');
@@ -228,18 +228,21 @@ colorMaxVelElm.addEventListener('input', () => {
 // ON PAGE LOAD
 //-----------------------------------------------------------------------------------
 updateSpeedoStyles();
+speedosObj_to_Elements();
 // load default settings based on defaults of speedosObj
-slot1_DropDownMenu.value = speedosObj.speedo[0].speedoType;
-slot2_DropDownMenu.value = speedosObj.speedo[1].speedoType;
-slot3_DropDownMenu.value = speedosObj.speedo[2].speedoType;
-slot4_DropDownMenu.value = speedosObj.speedo[3].speedoType;
-speedoSizeElm.value = speedosObj.size;
-shadowsCBox.checked = speedosObj.drawShadows;
-roundingCBox.checked = speedosObj.round;
-colorMainElm.value = speedosObj.colorMain.getInputColor();
-colorCloseElm.value = speedosObj.colorClose.getInputColor();
-colorGoodElm.value = speedosObj.colorGood.getInputColor();
-colorMainHeightoElm.value = speedosObj.colorMain_Heighto.getInputColor();
-colorDoubleElm.value = speedosObj.colorDouble.getInputColor();
-colorTripleElm.value = speedosObj.colorTriple.getInputColor();
-colorMaxVelElm.value = speedosObj.colorMaxVel.getInputColor();
+function speedosObj_to_Elements() {
+    slot1Elm.value = speedosObj.speedo[0].speedoType;
+    slot2Elm.value = speedosObj.speedo[1].speedoType;
+    slot3Elm.value = speedosObj.speedo[2].speedoType;
+    slot4Elm.value = speedosObj.speedo[3].speedoType;
+    speedoSizeElm.value = speedosObj.size;
+    shadowsElm.checked = speedosObj.drawShadows;
+    roundingElm.checked = speedosObj.round;
+    colorMainElm.value = speedosObj.colorMain.getInputColor();
+    colorCloseElm.value = speedosObj.colorClose.getInputColor();
+    colorGoodElm.value = speedosObj.colorGood.getInputColor();
+    colorMainHeightoElm.value = speedosObj.colorMain_Heighto.getInputColor();
+    colorDoubleElm.value = speedosObj.colorDouble.getInputColor();
+    colorTripleElm.value = speedosObj.colorTriple.getInputColor();
+    colorMaxVelElm.value = speedosObj.colorMaxVel.getInputColor();
+}

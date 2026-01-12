@@ -1,45 +1,23 @@
 import { Color } from "./color.js";
-export var m0reColor;
-(function (m0reColor) {
-    m0reColor[m0reColor["WHITE"] = 0] = "WHITE";
-    m0reColor[m0reColor["TAN"] = 1] = "TAN";
-    m0reColor[m0reColor["GREY"] = 2] = "GREY";
-    m0reColor[m0reColor["BLACK"] = 3] = "BLACK";
-    m0reColor[m0reColor["MAROON"] = 4] = "MAROON";
-    m0reColor[m0reColor["RED"] = 5] = "RED";
-    m0reColor[m0reColor["SALMON"] = 6] = "SALMON";
-    m0reColor[m0reColor["ORANGE"] = 7] = "ORANGE";
-    m0reColor[m0reColor["YELLOW"] = 8] = "YELLOW";
-    m0reColor[m0reColor["OLIVE"] = 9] = "OLIVE";
-    m0reColor[m0reColor["GREEN"] = 10] = "GREEN";
-    m0reColor[m0reColor["FOREST"] = 11] = "FOREST";
-    m0reColor[m0reColor["TEAL"] = 12] = "TEAL";
-    m0reColor[m0reColor["CYAN"] = 13] = "CYAN";
-    m0reColor[m0reColor["BLUE"] = 14] = "BLUE";
-    m0reColor[m0reColor["NAVY"] = 15] = "NAVY";
-    m0reColor[m0reColor["PURPLE"] = 16] = "PURPLE";
-    m0reColor[m0reColor["VIOLET"] = 17] = "VIOLET";
-    m0reColor[m0reColor["PINK"] = 18] = "PINK";
-    m0reColor[m0reColor["MAGENTA"] = 19] = "MAGENTA";
-})(m0reColor || (m0reColor = {}));
-export const m0reColors = new Map();
-m0reColors.set(m0reColor.WHITE, new Color(255, 255, 255));
-m0reColors.set(m0reColor.TAN, new Color(235, 226, 202));
-m0reColors.set(m0reColor.GREY, new Color(150, 152, 154));
-m0reColors.set(m0reColor.BLACK, new Color(0, 0, 0));
-m0reColors.set(m0reColor.MAROON, new Color(150, 50, 255));
-m0reColors.set(m0reColor.RED, new Color(255, 0, 0));
-m0reColors.set(m0reColor.SALMON, new Color(250, 125, 115));
-m0reColors.set(m0reColor.ORANGE, new Color(255, 155, 75));
-m0reColors.set(m0reColor.YELLOW, new Color(255, 190, 0));
-m0reColors.set(m0reColor.OLIVE, new Color(180, 200, 100));
-m0reColors.set(m0reColor.GREEN, new Color(0, 255, 85));
-m0reColors.set(m0reColor.FOREST, new Color(0, 135, 55));
-m0reColors.set(m0reColor.TEAL, new Color(81, 181, 182));
-m0reColors.set(m0reColor.CYAN, new Color(98, 219, 220));
-m0reColors.set(m0reColor.BLUE, new Color(35, 125, 235));
-m0reColors.set(m0reColor.NAVY, new Color(90, 120, 200));
-m0reColors.set(m0reColor.PURPLE, new Color(150, 50, 235));
-m0reColors.set(m0reColor.VIOLET, new Color(190, 150, 210));
-m0reColors.set(m0reColor.PINK, new Color(250, 185, 240));
-m0reColors.set(m0reColor.MAGENTA, new Color(255, 0, 127));
+export const m0reColor = {
+    WHITE: new Color(255, 255, 255),
+    TAN: new Color(235, 226, 202),
+    GREY: new Color(150, 152, 154),
+    BLACK: new Color(0, 0, 0),
+    MAROON: new Color(150, 50, 255),
+    RED: new Color(255, 0, 0),
+    SALMON: new Color(250, 125, 115),
+    ORANGE: new Color(255, 155, 75),
+    YELLOW: new Color(255, 190, 0),
+    OLIVE: new Color(180, 200, 100),
+    GREEN: new Color(0, 255, 85),
+    FOREST: new Color(0, 135, 55),
+    TEAL: new Color(81, 181, 182),
+    CYAN: new Color(98, 219, 220),
+    BLUE: new Color(35, 125, 235),
+    NAVY: new Color(90, 120, 200),
+    PURPLE: new Color(150, 50, 235),
+    VIOLET: new Color(190, 150, 210),
+    PINK: new Color(250, 185, 240),
+    MAGENTA: new Color(255, 0, 127)
+};

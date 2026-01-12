@@ -1,6 +1,5 @@
 import { Speedo } from './speedo.js';
 import { m0reColor } from './m0recolors.js';
-import { m0reColors } from './m0recolors.js';
 import { VDFElement } from './vdfelement.js';
 export class Speedos {
     previewSpeed;
@@ -22,13 +21,13 @@ export class Speedos {
         this.round = true;
         this.drawShadows = true;
         this.size = "MEDIUM";
-        this.colorMain = m0reColors.get(m0reColor.WHITE);
-        this.colorClose = m0reColors.get(m0reColor.BLUE);
-        this.colorGood = m0reColors.get(m0reColor.GREEN);
-        this.colorMain_Heighto = m0reColors.get(m0reColor.WHITE);
-        this.colorDouble = m0reColors.get(m0reColor.BLUE);
-        this.colorTriple = m0reColors.get(m0reColor.GREEN);
-        this.colorMaxVel = m0reColors.get(m0reColor.YELLOW);
+        this.colorMain = m0reColor.WHITE;
+        this.colorClose = m0reColor.BLUE;
+        this.colorGood = m0reColor.GREEN;
+        this.colorMain_Heighto = m0reColor.WHITE;
+        this.colorDouble = m0reColor.BLUE;
+        this.colorTriple = m0reColor.GREEN;
+        this.colorMaxVel = m0reColor.YELLOW;
         this.framerate = 30;
         this.frametime = 1000 / this.framerate;
         this.speedo = new Array(4);

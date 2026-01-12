@@ -174,12 +174,13 @@ body{
     
         input#ypos{
             height: 360px;
+            margin-right: 5px;
             writing-mode: vertical-lr;
             width: 16px;
         }
         input#xpos{
             width: 640px;
-            margin-left: 27px;
+            margin-left: 23px;
             vertical-align: bottom;
         }
         #markerbounds{
