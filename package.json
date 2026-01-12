@@ -15,7 +15,10 @@
     "vite": "^7.2.4"
   },
   "dependencies": {
+    "@types/jszip": "^3.4.0",
+    "@types/node": "^25.0.6",
     "file-saver": "^2.0.5",
-    "jszip": "^3.10.1"
+    "jszip": "^3.10.1",
+    "jszip-utils": "^0.1.0"
   }
 }

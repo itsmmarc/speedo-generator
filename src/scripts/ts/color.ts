@@ -27,6 +27,12 @@ export class Color{
         return color;
     }
 
+    getVMTColor(): string{
+        let color: string = '';
+        color = color.concat('\"{ ', this.r.toString(), ' ', this.g.toString(), ' ', this.b.toString(), ' }\"');
+        return color;
+    }
+
     static input_to_color(s: string): Color{
         let color: Color = new Color();
         let r_hex: string = s.charAt(1) + s.charAt(2);

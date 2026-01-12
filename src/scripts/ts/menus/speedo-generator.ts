@@ -2,6 +2,7 @@ import { SpeedoType } from '../speedo.js';
 import { Speedos } from '../speedos.js'
 import { SpeedoSize } from '../speedos.js';
 import { Color } from '../color.js';
+import { zipSpeedos } from '../zip.js';
 
 const NUM_SPEEDOS = 4;
 const speedoColl = document.getElementsByClassName('speedo') as HTMLCollection;    // collection of all speedo class elements
@@ -265,27 +266,34 @@ colorMaxVelElm.addEventListener('input', () => {
 });
 
 // COLOR RANGES
-const sliderMin = document.getElementById('colorMain-min-slider') as HTMLInputElement;
-const sliderMax = document.getElementById('colorMain-max-slider') as HTMLInputElement;
-const textMin = document.getElementById('colorMain-min-text') as HTMLInputElement;
-const textMax = document.getElementById('colorMain-max-text') as HTMLInputElement;
-const rangeGap: number = 0;
+// const sliderMin = document.getElementById('colorMain-min-slider') as HTMLInputElement;
+// const sliderMax = document.getElementById('colorMain-max-slider') as HTMLInputElement;
+// const textMin = document.getElementById('colorMain-min-text') as HTMLInputElement;
+// const textMax = document.getElementById('colorMain-max-text') as HTMLInputElement;
+// const rangeGap: number = 0;
 // const sliderTrack = document.getElementById('colorMain-track') as HTMLElement;
 // const slidermaxValue = sliderMin.max;
 
-sliderMin.addEventListener('input', () =>{
-    if(parseInt(sliderMin.value) >= parseInt(sliderMax.value)){
-        sliderMin.value = (parseInt(sliderMax.value) - rangeGap).toString();
-    }
-    textMin.value = sliderMin.value;
-})
+// sliderMin.addEventListener('input', () =>{
+//     if(parseInt(sliderMin.value) >= parseInt(sliderMax.value)){
+//         sliderMin.value = (parseInt(sliderMax.value) - rangeGap).toString();
+//     }
+//     textMin.value = sliderMin.value;
+// })
 
-sliderMax.addEventListener('input', () =>{
-    if(parseInt(sliderMax.value) <= parseInt(sliderMin.value)){
-        sliderMax.value = (parseInt(sliderMin.value) + rangeGap).toString();
-    }
-    textMax.value = sliderMax.value;
-})
+// sliderMax.addEventListener('input', () =>{
+//     if(parseInt(sliderMax.value) <= parseInt(sliderMin.value)){
+//         sliderMax.value = (parseInt(sliderMin.value) + rangeGap).toString();
+//     }
+//     textMax.value = sliderMax.value;
+// })
+
+// DOWNLOAD
+const downloadElm = document.getElementById('download-btn') as HTMLButtonElement;
+
+downloadElm.addEventListener('click', () =>{
+    zipSpeedos(speedosObj);
+});
 
 //===================================================================================
 // ON PAGE LOAD

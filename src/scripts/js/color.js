@@ -21,6 +21,11 @@ export class Color {
         color = color.concat('#', r_hex, g_hex, b_hex);
         return color;
     }
+    getVMTColor() {
+        let color = '';
+        color = color.concat('\"{ ', this.r.toString(), ' ', this.g.toString(), ' ', this.b.toString(), ' }\"');
+        return color;
+    }
     static input_to_color(s) {
         let color = new Color();
         let r_hex = s.charAt(1) + s.charAt(2);
