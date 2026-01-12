@@ -1,4 +1,5 @@
 import { Speedos } from '../speedos.js';
+import { Color } from '../color.js';
 const NUM_SPEEDOS = 4;
 const speedoColl = document.getElementsByClassName('speedo'); // collection of all speedo class elements
 const speedoElmArray = Array.prototype.slice.call(speedoColl);
@@ -194,6 +195,35 @@ shadowsCBox.addEventListener('change', () => { speedosObj.drawShadows = shadowsC
 // ROUNDING
 const roundingCBox = document.getElementById('rounding_checkbox');
 roundingCBox.addEventListener('change', () => { speedosObj.round = roundingCBox.checked; updateSpeedoStyles(); });
+// COLORS
+const colorMainElm = document.getElementById('colorMain');
+const colorCloseElm = document.getElementById('colorClose');
+const colorGoodElm = document.getElementById('colorGood');
+const colorMainHeightoElm = document.getElementById('colorMain_Heighto');
+const colorDoubleElm = document.getElementById('colorDouble');
+const colorTripleElm = document.getElementById('colorTriple');
+const colorMaxVelElm = document.getElementById('colorMaxVel');
+colorMainElm.addEventListener('input', () => {
+    speedosObj.colorMain = Color.input_to_color(colorMainElm.value);
+});
+colorCloseElm.addEventListener('input', () => {
+    speedosObj.colorClose = Color.input_to_color(colorCloseElm.value);
+});
+colorGoodElm.addEventListener('input', () => {
+    speedosObj.colorGood = Color.input_to_color(colorGoodElm.value);
+});
+colorMainHeightoElm.addEventListener('input', () => {
+    speedosObj.colorMain_Heighto = Color.input_to_color(colorMainHeightoElm.value);
+});
+colorDoubleElm.addEventListener('input', () => {
+    speedosObj.colorDouble = Color.input_to_color(colorDoubleElm.value);
+});
+colorTripleElm.addEventListener('input', () => {
+    speedosObj.colorTriple = Color.input_to_color(colorTripleElm.value);
+});
+colorMaxVelElm.addEventListener('input', () => {
+    speedosObj.colorMaxVel = Color.input_to_color(colorMaxVelElm.value);
+});
 //===================================================================================
 // ON PAGE LOAD
 //-----------------------------------------------------------------------------------
@@ -206,3 +236,10 @@ slot4_DropDownMenu.value = speedosObj.speedo[3].speedoType;
 speedoSizeElm.value = speedosObj.size;
 shadowsCBox.checked = speedosObj.drawShadows;
 roundingCBox.checked = speedosObj.round;
+colorMainElm.value = speedosObj.colorMain.getInputColor();
+colorCloseElm.value = speedosObj.colorClose.getInputColor();
+colorGoodElm.value = speedosObj.colorGood.getInputColor();
+colorMainHeightoElm.value = speedosObj.colorMain_Heighto.getInputColor();
+colorDoubleElm.value = speedosObj.colorDouble.getInputColor();
+colorTripleElm.value = speedosObj.colorTriple.getInputColor();
+colorMaxVelElm.value = speedosObj.colorMaxVel.getInputColor();

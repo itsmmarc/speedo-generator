@@ -17,6 +17,10 @@ export class Speedos {
     colorMain: Color;
     colorClose: Color;
     colorGood: Color;
+    colorMain_Heighto: Color;
+    colorDouble: Color;
+    colorTriple: Color;
+    colorMaxVel: Color;
     framerate: number;
     frametime: number;
     position: VDFElement;
@@ -28,6 +32,10 @@ export class Speedos {
         this.colorMain = m0reColors.get(m0reColor.WHITE) as Color;
         this.colorClose = m0reColors.get(m0reColor.BLUE) as Color;
         this.colorGood = m0reColors.get(m0reColor.GREEN) as Color;
+        this.colorMain_Heighto = m0reColors.get(m0reColor.WHITE) as Color;
+        this.colorDouble = m0reColors.get(m0reColor.BLUE) as Color;
+        this.colorTriple = m0reColors.get(m0reColor.GREEN) as Color;
+        this.colorMaxVel = m0reColors.get(m0reColor.YELLOW) as Color;
         this.framerate = 30;
         this.frametime = 1000/this.framerate;
 
@@ -64,7 +72,7 @@ export class Speedos {
             // update speed & color of all speedo slots
             this.speedo.forEach(speedo => {
                 speedo.playerSpeed = this.previewSpeed!;
-                speedo.updateColor(this.colorMain, this.colorClose, this.colorGood);
+                speedo.updateColor(this);
                 //console.log(speedo.color.getCSSColor());
             });
         }, this.frametime);

@@ -1,15 +1,18 @@
-const SOLDIER_HSPEEDO_CLOSE_MIN = 850;
-const SOLDIER_HSPEEDO_CLOSE_MAX = 1350;
-const SOLDIER_VSPEEDO_CLOSE_MIN = -1;
-const SOLDIER_VSPEEDO_CLOSE_MAX = -1;
-const SOLDIER_ASPEEDO_CLOSE_MIN = SOLDIER_HSPEEDO_CLOSE_MIN;
-const SOLDIER_ASPEEDO_CLOSE_MAX = SOLDIER_HSPEEDO_CLOSE_MAX;
-const SOLDIER_HSPEEDO_GOOD_MIN = 1050;
-const SOLDIER_HSPEEDO_GOOD_MAX = 1150;
-const SOLDIER_VSPEEDO_GOOD_MIN = -1;
-const SOLDIER_VSPEEDO_GOOD_MAX = -1;
-const SOLDIER_ASPEEDO_GOOD_MIN = SOLDIER_HSPEEDO_GOOD_MIN;
-const SOLDIER_ASPEEDO_GOOD_MAX = SOLDIER_HSPEEDO_GOOD_MAX;
+const HSPEEDO_CLOSE_MIN = 850;
+const HSPEEDO_CLOSE_MAX = 1350;
+const HSPEEDO_GOOD_MIN = 1050;
+const HSPEEDO_GOOD_MAX = 1150;
+const VSPEEDO_CLOSE_MIN = -1;
+const VSPEEDO_CLOSE_MAX = -1;
+const VSPEEDO_GOOD_MIN = -1;
+const VSPEEDO_GOOD_MAX = -1;
+const ASPEEDO_CLOSE_MIN = HSPEEDO_CLOSE_MIN;
+const ASPEEDO_CLOSE_MAX = HSPEEDO_CLOSE_MAX;
+const ASPEEDO_GOOD_MIN = HSPEEDO_GOOD_MIN;
+const ASPEEDO_GOOD_MAX = HSPEEDO_GOOD_MAX;
+const HEIGHTO_DOUBLE_THRESH = 1260;
+const HEIGHTO_TRIPLE_THRESH = 2160;
+const HEIGHTO_MAXVEL_THRESH = 7700;
 export class Speedo {
     playerSpeed;
     color;
@@ -19,41 +22,70 @@ export class Speedo {
         this.speedoType = speedoType;
         this.color = color;
     }
-    updateColor(colorMain, colorClose, colorGood) {
+    updateColor(speedos) {
         if (this.speedoType != "HEIGHTO") {
             if (this.isGood()) {
-                this.color = colorGood;
+                this.color = speedos.colorGood;
             }
             else if (this.isClose()) {
-                this.color = colorClose;
+                this.color = speedos.colorClose;
             }
             else {
-                this.color = colorMain;
+                this.color = speedos.colorMain;
             }
         }
         else {
-            // implement heighto colors here
+            if (this.isDouble()) {
+                this.color = speedos.colorDouble;
+            }
+            else if (this.isTriple()) {
+                this.color = speedos.colorTriple;
+            }
+            else if (this.isMaxVel()) {
+                this.color = speedos.colorMaxVel;
+            }
+            else {
+                this.color = speedos.colorMain_Heighto;
+            }
             return;
         }
+    }
+    isDouble() {
+        if (this.playerSpeed > HEIGHTO_DOUBLE_THRESH && this.playerSpeed < HEIGHTO_TRIPLE_THRESH) {
+            return true;
+        }
+        return false;
+    }
+    isTriple() {
+        if (this.playerSpeed > HEIGHTO_TRIPLE_THRESH && this.playerSpeed < HEIGHTO_MAXVEL_THRESH) {
+            return true;
+        }
+        return false;
+    }
+    isMaxVel() {
+        if (this.playerSpeed > HEIGHTO_MAXVEL_THRESH) {
+            return true;
+        }
+        return false;
     }
     isClose() {
         switch (this.speedoType) {
             case "HORIZONTAL":
-                if (this.playerSpeed > SOLDIER_HSPEEDO_CLOSE_MIN && this.playerSpeed < SOLDIER_HSPEEDO_CLOSE_MAX) {
+                if (this.playerSpeed > HSPEEDO_CLOSE_MIN && this.playerSpeed < HSPEEDO_CLOSE_MAX) {
                     return true;
                 }
                 else {
                     return false;
                 }
             case "VERTICAL":
-                if (this.playerSpeed > SOLDIER_VSPEEDO_CLOSE_MIN && this.playerSpeed < SOLDIER_VSPEEDO_CLOSE_MAX) {
+                if (this.playerSpeed > VSPEEDO_CLOSE_MIN && this.playerSpeed < VSPEEDO_CLOSE_MAX) {
                     return true;
                 }
                 else {
                     return false;
                 }
             case "ABSOLUTE":
-                if (this.playerSpeed > SOLDIER_ASPEEDO_CLOSE_MIN && this.playerSpeed < SOLDIER_ASPEEDO_CLOSE_MAX) {
+                if (this.playerSpeed > ASPEEDO_CLOSE_MIN && this.playerSpeed < ASPEEDO_CLOSE_MAX) {
                     return true;
                 }
                 else {
@@ -66,21 +98,21 @@ export class Speedo {
     isGood() {
         switch (this.speedoType) {
             case "HORIZONTAL":
-                if (this.playerSpeed > SOLDIER_HSPEEDO_GOOD_MIN && this.playerSpeed < SOLDIER_HSPEEDO_GOOD_MAX) {
+                if (this.playerSpeed > HSPEEDO_GOOD_MIN && this.playerSpeed < HSPEEDO_GOOD_MAX) {
                     return true;
                 }
                 else {
                     return false;
                 }
             case "VERTICAL":
-                if (this.playerSpeed > SOLDIER_VSPEEDO_GOOD_MIN && this.playerSpeed < SOLDIER_VSPEEDO_GOOD_MAX) {
+                if (this.playerSpeed > VSPEEDO_GOOD_MIN && this.playerSpeed < VSPEEDO_GOOD_MAX) {
                     return true;
                 }
                 else {
                     return false;
                 }
             case "ABSOLUTE":
-                if (this.playerSpeed > SOLDIER_ASPEEDO_GOOD_MIN && this.playerSpeed < SOLDIER_ASPEEDO_GOOD_MAX) {
+                if (this.playerSpeed > ASPEEDO_GOOD_MIN && this.playerSpeed < ASPEEDO_GOOD_MAX) {
                     return true;
                 }
                 else {
