@@ -270,8 +270,8 @@ const sliderMax = document.getElementById('colorMain-max-slider') as HTMLInputEl
 const textMin = document.getElementById('colorMain-min-text') as HTMLInputElement;
 const textMax = document.getElementById('colorMain-max-text') as HTMLInputElement;
 const rangeGap: number = 0;
-const sliderTrack = document.getElementById('colorMain-track') as HTMLElement;
-const slidermaxValue = sliderMin.max;
+// const sliderTrack = document.getElementById('colorMain-track') as HTMLElement;
+// const slidermaxValue = sliderMin.max;
 
 sliderMin.addEventListener('input', () =>{
     if(parseInt(sliderMin.value) >= parseInt(sliderMax.value)){
