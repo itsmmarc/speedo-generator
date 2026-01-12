@@ -264,6 +264,29 @@ colorMaxVelElm.addEventListener('input', () => {
     speedosObj.colorMaxVel = Color.input_to_color(colorMaxVelElm.value);
 });
 
+// COLOR RANGES
+const sliderMin = document.getElementById('colorMain-min-slider') as HTMLInputElement;
+const sliderMax = document.getElementById('colorMain-max-slider') as HTMLInputElement;
+const textMin = document.getElementById('colorMain-min-text') as HTMLInputElement;
+const textMax = document.getElementById('colorMain-max-text') as HTMLInputElement;
+const rangeGap: number = 0;
+const sliderTrack = document.getElementById('colorMain-track') as HTMLElement;
+const slidermaxValue = sliderMin.max;
+
+sliderMin.addEventListener('input', () =>{
+    if(parseInt(sliderMin.value) >= parseInt(sliderMax.value)){
+        sliderMin.value = (parseInt(sliderMax.value) - rangeGap).toString();
+    }
+    textMin.value = sliderMin.value;
+})
+
+sliderMax.addEventListener('input', () =>{
+    if(parseInt(sliderMax.value) <= parseInt(sliderMin.value)){
+        sliderMax.value = (parseInt(sliderMin.value) + rangeGap).toString();
+    }
+    textMax.value = sliderMax.value;
+})
+
 //===================================================================================
 // ON PAGE LOAD
 //-----------------------------------------------------------------------------------
