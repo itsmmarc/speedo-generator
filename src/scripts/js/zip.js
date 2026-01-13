@@ -1,13 +1,37 @@
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
-export function zipSpeedos(speedos) {
-    let zip = new JSZip();
+import { unzip } from 'unzipit';
+export async function zipSpeedos(speedos) {
+    const hud_resources_url = 'http://localhost:5173/files/hudresources.zip';
     const speedo_materials_path = 'YOURHUD/materials/vgui/replay/thumbnails/speedo/';
-    zip.file(''.concat(speedo_materials_path, 'speedo_config.vmt'), generateSpeedoConfig_vmt(speedos));
-    zip.file('YOURHUD/speedo/speedo_config.res', generateSpeedoConfig_res(speedos));
-    zip.generateAsync({ type: "blob" }).then(function (content) {
-        saveAs(content, "test.zip");
+    const speedo_resource_path = 'YOURHUD/speedo/';
+    importHudResources(hud_resources_url).then((zip) => {
+        zip.file('README.md', createReadme());
+        zip.file(''.concat(speedo_materials_path, 'speedo_config.vmt'), generateSpeedoConfig_vmt(speedos));
+        zip.file(''.concat(speedo_resource_path, 'speedo_config.res'), generateSpeedoConfig_res(speedos));
+        zip.generateAsync({ type: "blob" }).then(function (content) {
+            saveAs(content, 'test.zip');
+        });
     });
+}
+async function importHudResources(url) {
+    const { entries } = await unzip(url);
+    const names = Object.keys(entries);
+    const blobs = await Promise.all(Object.values(entries).map(e => e.blob()));
+    const arraySize = names.length;
+    for (let i = 0; i < arraySize; i++) {
+        let s = names[i].split('/');
+        s[0] = 'YOURHUD';
+        names[i] = s.join('/');
+    }
+    // names and blobs are now parallel arrays so do whatever you want.
+    const blobsByName = Object.fromEntries(names.map((name, i) => [name, blobs[i]]));
+    let zip = new JSZip();
+    for (let i = 0; i < arraySize; i++) {
+        // console.log(names[i]);
+        zip.file(names[i], blobsByName[names[i]]);
+    }
+    return zip;
 }
 function generateSpeedoConfig_vmt(speedos) {
     let s = '';
@@ -93,4 +117,11 @@ function generateSpeedoConfig_res(speedos) {
     }
     s = s.concat('\t}\n}\n');
     return s;
+}
+function createReadme() {
+    return '# mmarc Speedo Generator\n\n' + '## Installation:\n'
+        + '1. Drag and drop the contents of `YOURHUD` into your HUD\'s folder. eg: `tf/custom/m0rehud/`\.\n'
+        + '2. Add the following line to the top of your HUD\'s `resource/ui/hudplayerclass.res`\n'
+        + '#base ../../speedo/speedo.res\n'
+        + '3. Enjoy :)';
 }
