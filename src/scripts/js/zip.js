@@ -59,12 +59,12 @@ function generateSpeedoConfig_vmt(speedos) {
 }
 function generateSpeedoConfig_res(speedos) {
     let s = '';
-    let i = 0;
+    let i = 1;
     speedos.speedo.forEach(speedo => {
         if (speedo.speedoType == "NONE") {
             s = s.concat('//');
         }
-        s = s.concat('#base slot/', (i + 1).toString(), '/');
+        s = s.concat('#base slot/', (i++).toString(), '/');
         switch (speedo.speedoType) {
             case "ABSOLUTE":
                 s = s.concat('aspeedo.res\n');
