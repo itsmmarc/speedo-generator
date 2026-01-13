@@ -1,0 +1,15 @@
+"UnlitGeneric" {
+    //==============================================================
+    // RANGES
+    //--------------------------------------------------------------
+    // Double Range
+    $doubleMin 1259     // write to this
+    $doubleMax 2160     // write to this
+
+    // Triple Range 
+    $tripleMin 2159     // write to this
+    $tripleMax 7500     // write to this
+
+    // Max Velocity nge
+    $maxVelMin 7699     // write to this
+}

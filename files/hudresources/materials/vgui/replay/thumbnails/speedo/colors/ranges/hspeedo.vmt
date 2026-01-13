@@ -1,0 +1,16 @@
+"UnlitGeneric" {
+    //==============================================================
+    // RANGES
+    //--------------------------------------------------------------
+    // close range
+    $closeMin 849   // write to this
+    $closeMax 1050  // write to this
+
+    // good range
+    $goodMin 1049   // write to this
+    $goodMax 1150   // write to this
+
+    // above range
+    $closeMinB 1149 // write to this
+    $closeMaxB 1350 // write to this
+}
