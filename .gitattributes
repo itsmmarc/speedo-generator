@@ -1,0 +1,8 @@
+* text=auto
+
+*.vdf linguist-detectable=true
+*.res linguist-detectable=true linguist-language=vdf
+*.vmt linguist-detectable=true linguist-language=vdf
+
+.gitattributes export-ignore
+.gitignore export-ignore
