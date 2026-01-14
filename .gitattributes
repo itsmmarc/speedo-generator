@@ -4,9 +4,10 @@ node_modules/** linguist-vendored=true
 src/scripts/js/** linguist-generated=true
 src/styles/css/** linguist-generated=true
 
-*.vdf linguist-detectable=true
-*.res linguist-detectable=true linguist-language=vdf
-*.vmt linguist-detectable=true linguist-language=vdf
+# Marking vdf as vendored even though it was code that I wrote as it misrepresents the project by considering ~80% of code to be VDF
+*.vdf linguist-detectable=true linguist-vendored=true
+*.res linguist-detectable=true linguist-language=vdf linguist-vendored=true
+*.vmt linguist-detectable=true linguist-language=vdf linguist-vendored=true
 
 .gitattributes export-ignore
 .gitignore export-ignore
