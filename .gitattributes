@@ -1,8 +1,8 @@
 * text=auto
 
-node_modules/* linguist-vendored=true
-src/scripts/js/* linguist-generated=true
-src/styles/css/* linguist-generated=true
+node_modules/** linguist-vendored=true
+src/scripts/js/** linguist-generated=true
+src/styles/css/** linguist-generated=true
 
 *.vdf linguist-detectable=true
 *.res linguist-detectable=true linguist-language=vdf
