@@ -35,8 +35,8 @@ async function importHudResources(url) {
 }
 function generateSpeedoConfig_vmt(speedos) {
     let s = '';
-    // font %PLACERHOLDER%
-    s = s.concat('#base fonts/roboto/digits.vmt\n');
+    // font
+    s = s.concat('#base fonts/', speedos.font, '/digits.vmt');
     s = s.concat('\nUnlitGeneric{\n');
     // rounding
     s = s.concat('\t$roundAmount ');
@@ -102,8 +102,8 @@ function generateSpeedoConfig_res(speedos) {
     }
     s = s.concat('\t\twide ', size, '\n');
     s = s.concat('\t\ttall ', size, '\n');
-    s = s.concat('\t\txpos ', speedos.position.xpos, '\n');
-    s = s.concat('\t\typos ', speedos.position.ypos, '\n');
+    s = s.concat('\t\txpos ', speedos.vdfElm.xpos, '\n');
+    s = s.concat('\t\typos ', speedos.vdfElm.ypos, '\n');
     let shadowsVisible;
     if (speedos.drawShadows) {
         shadowsVisible = '1';

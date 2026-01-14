@@ -16,7 +16,8 @@ export class Speedos {
     colorMaxVel;
     framerate;
     frametime;
-    position;
+    vdfElm;
+    font;
     constructor() {
         this.round = true;
         this.drawShadows = true;
@@ -35,7 +36,8 @@ export class Speedos {
         this.speedo[1] = new Speedo("HORIZONTAL", this.colorMain);
         this.speedo[2] = new Speedo("HEIGHTO", this.colorMain);
         this.speedo[3] = new Speedo("NONE", this.colorMain);
-        this.position = new VDFElement('speedos', 'cs-0.5', 'cs-0.5+54');
+        this.vdfElm = new VDFElement('speedos', 'cs-0.5', 'cs-0.5+54');
+        this.font = 'roboto';
     }
     startSpeedoPreview() {
         const sine_max = 3500;

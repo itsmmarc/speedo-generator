@@ -47,8 +47,8 @@ async function importHudResources(url: string): Promise<JSZip>{
 function generateSpeedoConfig_vmt(speedos: Speedos): string{
     let s: string = '';
 
-    // font %PLACERHOLDER%
-    s = s.concat('#base fonts/roboto/digits.vmt\n');
+    // font
+    s = s.concat('#base fonts/', speedos.font, '/digits.vmt');
 
     s = s.concat('\nUnlitGeneric{\n');
 
@@ -121,8 +121,8 @@ function generateSpeedoConfig_res(speedos: Speedos): string{
     }
     s = s.concat('\t\twide ', size, '\n');
     s = s.concat('\t\ttall ', size, '\n');
-    s = s.concat('\t\txpos ', speedos.position.xpos, '\n');
-    s = s.concat('\t\typos ', speedos.position.ypos, '\n');
+    s = s.concat('\t\txpos ', speedos.vdfElm.xpos, '\n');
+    s = s.concat('\t\typos ', speedos.vdfElm.ypos, '\n');
 
     let shadowsVisible: string;
     if(speedos.drawShadows){

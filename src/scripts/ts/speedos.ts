@@ -5,6 +5,7 @@ import { m0reColor } from './m0recolors.js';
 import { VDFElement } from './vdfelement.js';
 
 export type SpeedoSize = 'SMALL' | 'MEDIUM' | 'LARGE';
+export type Font = 'bahnschrift' | 'coolvetica' | 'coolvetica_italic' | 'eternal' | 'montserrat' | 'nk57' | 'poppins' | 'quake' | 'renogare' | 'roboto' | 'square' | 'surface';
 
 export class Speedos {
     previewSpeed?: number;
@@ -21,7 +22,8 @@ export class Speedos {
     colorMaxVel: Color;
     framerate: number;
     frametime: number;
-    position: VDFElement;
+    vdfElm: VDFElement;
+    font: Font;
 
     constructor(){
         this.round = true;
@@ -43,7 +45,8 @@ export class Speedos {
         this.speedo[2] = new Speedo("HEIGHTO" as SpeedoType, this.colorMain);
         this.speedo[3] = new Speedo("NONE" as SpeedoType, this.colorMain);
 
-        this.position = new VDFElement('speedos', 'cs-0.5', 'cs-0.5+54');
+        this.vdfElm = new VDFElement('speedos', 'cs-0.5', 'cs-0.5+54');
+        this.font = 'roboto';
     }
     
     startSpeedoPreview(): void{

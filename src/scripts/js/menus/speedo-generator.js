@@ -1,6 +1,7 @@
 import { Speedos } from '../speedos.js';
 import { Color } from '../color.js';
 import { zipSpeedos } from '../zip.js';
+import { matchClassStartingWith } from '../util.js';
 const NUM_SPEEDOS = 4;
 const speedoColl = document.getElementsByClassName('speedo'); // collection of all speedo class elements
 const speedoElmArray = Array.prototype.slice.call(speedoColl);
@@ -42,6 +43,83 @@ function updateSpeedoStyles() {
             $('.speedo').addClass('speedo-size-large');
             break;
         default:
+            break;
+    }
+    switch (speedosObj.font) {
+        case "bahnschrift":
+            if (!$('.speedo').hasClass('font-bahnschrift')) {
+                $('.speedo').removeClass((index, className) => { return matchClassStartingWith('font', className); });
+                $('.speedo').addClass('font-bahnschrift');
+            }
+            break;
+        case "coolvetica":
+            if (!$('.speedo').hasClass('font-coolvetica')) {
+                $('.speedo').removeClass((index, className) => { return matchClassStartingWith('font', className); });
+                $('.speedo').addClass('font-coolvetica');
+            }
+            break;
+        case "coolvetica_italic":
+            if (!$('.speedo').hasClass('font-coolvetica-italic')) {
+                $('.speedo').removeClass((index, className) => { return matchClassStartingWith('font', className); });
+                $('.speedo').addClass('font-coolvetica_italic');
+            }
+            break;
+        case "eternal":
+            if (!$('.speedo').hasClass('font-eternal')) {
+                $('.speedo').removeClass((index, className) => { return matchClassStartingWith('font', className); });
+                $('.speedo').addClass('font-eternal');
+            }
+            break;
+        case "montserrat":
+            if (!$('.speedo').hasClass('font-montserrat')) {
+                $('.speedo').removeClass((index, className) => { return matchClassStartingWith('font', className); });
+                $('.speedo').addClass('font-montserrat');
+            }
+            break;
+        case "nk57":
+            if (!$('.speedo').hasClass('font-nk57')) {
+                $('.speedo').removeClass((index, className) => { return matchClassStartingWith('font', className); });
+                $('.speedo').addClass('font-nk57');
+            }
+            break;
+        case "poppins":
+            if (!$('.speedo').hasClass('font-poppins')) {
+                $('.speedo').removeClass((index, className) => { return matchClassStartingWith('font', className); });
+                $('.speedo').addClass('font-poppins');
+            }
+            break;
+        case "quake":
+            if (!$('.speedo').hasClass('font-quake')) {
+                $('.speedo').removeClass((index, className) => { return matchClassStartingWith('font', className); });
+                $('.speedo').addClass('font-quake');
+            }
+            break;
+        case "renogare":
+            if (!$('.speedo').hasClass('font-renogare')) {
+                $('.speedo').removeClass((index, className) => { return matchClassStartingWith('font', className); });
+                $('.speedo').addClass('font-renogare');
+            }
+            break;
+        case "roboto":
+            if (!$('.speedo').hasClass('font-roboto')) {
+                $('.speedo').removeClass((index, className) => { return matchClassStartingWith('font', className); });
+                $('.speedo').addClass('font-roboto');
+            }
+            break;
+        case "square":
+            if (!$('.speedo').hasClass('font-square')) {
+                $('.speedo').removeClass((index, className) => { return matchClassStartingWith('font', className); });
+                $('.speedo').addClass('font-square');
+            }
+            break;
+        case "surface":
+            if (!$('.speedo').hasClass('font-surface')) {
+                $('.speedo').removeClass((index, className) => { return matchClassStartingWith('font', className); });
+                $('.speedo').addClass('font-surface');
+            }
+            break;
+        default:
+            console.log('error in speeds object font, ', speedosObj.font, ' is not a valid font');
             break;
     }
     speedoElmArray.forEach(speedoElm => {
@@ -145,7 +223,7 @@ function updatePosition_x() {
     else if (xOffset < 0) {
         newXPos = newXPos.concat(xOffset.toString());
     }
-    speedosObj.position.xpos = newXPos;
+    speedosObj.vdfElm.xpos = newXPos;
 }
 function updatePosition_y() {
     markerElm.style.top = (+ySlider.value * (markerBounds[1] / 100)).toString();
@@ -166,7 +244,7 @@ function updatePosition_y() {
     else if (yOffset < 0) {
         newYPos = newYPos.concat(yOffset.toString());
     }
-    speedosObj.position.ypos = newYPos;
+    speedosObj.vdfElm.ypos = newYPos;
 }
 // POSITION IMAGE
 let imageUpload = document.getElementById('imageupload');
@@ -184,6 +262,12 @@ function changeImage(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+// FONT
+const speedoFontElm = document.getElementById('fonts');
+speedoFontElm.addEventListener('change', () => {
+    speedosObj.font = speedoFontElm.value;
+    updateSpeedoStyles();
+});
 // SIZE
 const speedoSizeElm = document.getElementById('sizes');
 speedoSizeElm.addEventListener('change', () => {
@@ -261,6 +345,7 @@ function speedosObj_to_Elements() {
     slot2Elm.value = speedosObj.speedo[1].speedoType;
     slot3Elm.value = speedosObj.speedo[2].speedoType;
     slot4Elm.value = speedosObj.speedo[3].speedoType;
+    speedoFontElm.value = speedosObj.font;
     speedoSizeElm.value = speedosObj.size;
     shadowsElm.checked = speedosObj.drawShadows;
     roundingElm.checked = speedosObj.round;

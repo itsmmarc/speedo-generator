@@ -270,22 +270,6 @@ aside .speedo {
   color: white;
   text-align: center;
   height: 45px;
-  font-size: 3rem;
-  font-weight: 900;
-  font-family: "Roboto", sans-serif;
-  font-optical-sizing: auto;
-  font-style: normal;
-  font-variation-settings: "wdth" 100;
-  position: relative;
-  z-index: 0;
-}
-aside .shadow {
-  color: rgba(0, 0, 0, 0.8) !important;
-  margin-top: -45px;
-  padding-top: 4px;
-  padding-left: 4px;
-  position: relative;
-  z-index: -1;
 }
 aside .speedo-size-small {
   font-size: 2rem;
@@ -307,6 +291,44 @@ aside .speedo-size-large {
 }
 aside .speedo-size-large.shadow {
   margin-top: -60px;
+}
+aside .font-roboto {
+  font-size: 3rem;
+  font-weight: 900;
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+  position: relative;
+  z-index: 0;
+}
+aside .font-montserrat {
+  font-size: 3rem;
+  font-weight: 400;
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+  position: relative;
+  z-index: 0;
+}
+aside .font-poppins {
+  font-size: 3rem;
+  font-weight: 900;
+  font-family: "Poppins", sans-serif;
+  font-optical-sizing: auto;
+  font-style: italic;
+  font-variation-settings: "wdth" 100;
+  position: relative;
+  z-index: 0;
+}
+aside .shadow {
+  color: rgba(0, 0, 0, 0.8) !important;
+  margin-top: -45px;
+  padding-top: 4px;
+  padding-left: 4px;
+  position: relative;
+  z-index: -1;
 }
 
 /* Util */
