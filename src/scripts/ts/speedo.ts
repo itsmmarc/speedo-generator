@@ -3,25 +3,6 @@ import { Speedos } from "./speedos.js";
 
 export type SpeedoType = 'NONE' | 'HORIZONTAL' | 'VERTICAL' | 'ABSOLUTE' | 'HEIGHTO';
 
-const HSPEEDO_CLOSE_MIN: number = 850;
-const HSPEEDO_CLOSE_MAX: number = 1350;
-const HSPEEDO_GOOD_MIN: number = 1050;
-const HSPEEDO_GOOD_MAX: number = 1150;
-
-const VSPEEDO_CLOSE_MIN: number = -1;
-const VSPEEDO_CLOSE_MAX: number = -1;
-const VSPEEDO_GOOD_MIN: number = -1;
-const VSPEEDO_GOOD_MAX: number = -1;
-
-const ASPEEDO_CLOSE_MIN: number = HSPEEDO_CLOSE_MIN;
-const ASPEEDO_CLOSE_MAX: number = HSPEEDO_CLOSE_MAX;
-const ASPEEDO_GOOD_MIN: number = HSPEEDO_GOOD_MIN;
-const ASPEEDO_GOOD_MAX: number = HSPEEDO_GOOD_MAX;
-
-const HEIGHTO_DOUBLE_THRESH: number = 1260
-const HEIGHTO_TRIPLE_THRESH: number = 2160
-const HEIGHTO_MAXVEL_THRESH: number = 7700
-
 export class Speedo {
     playerSpeed: number;
     color: Color;
@@ -35,19 +16,19 @@ export class Speedo {
 
     updateColor(speedos: Speedos): void{
         if(this.speedoType!="HEIGHTO"){
-            if(this.isGood()){
+            if(this.isGood(speedos)){
                 this.color = speedos.colorGood;
-            } else if(this.isClose()){
+            } else if(this.isClose(speedos)){
                 this.color = speedos.colorClose;
             } else{
                 this.color = speedos.colorMain;
             }
         } else{
-            if(this.isDouble()){
+            if(this.isDouble(speedos)){
                 this.color = speedos.colorDouble;
-            } else if(this.isTriple()){
+            } else if(this.isTriple(speedos)){
                 this.color = speedos.colorTriple;
-            } else if(this.isMaxVel()){
+            } else if(this.isMaxVel(speedos)){
                 this.color = speedos.colorMaxVel;
             } else{
                 this.color = speedos.colorMain_Heighto;
@@ -56,57 +37,57 @@ export class Speedo {
         }
     }
 
-    isDouble(): boolean{
-        if(this.playerSpeed>HEIGHTO_DOUBLE_THRESH && this.playerSpeed<HEIGHTO_TRIPLE_THRESH){
+    isDouble(speedos: Speedos): boolean{
+        if(this.playerSpeed>speedos.HeightoThresholds.double && this.playerSpeed<speedos.HeightoThresholds.triple){
             return true;
         }
         return false;
     }
 
-    isTriple(): boolean{
-        if(this.playerSpeed>HEIGHTO_TRIPLE_THRESH && this.playerSpeed<HEIGHTO_MAXVEL_THRESH){
+    isTriple(speedos: Speedos): boolean{
+        if(this.playerSpeed>speedos.HeightoThresholds.triple && this.playerSpeed<speedos.HeightoThresholds.maxVel){
             return true;
         }
         return false;
     }
 
-    isMaxVel(): boolean{
-        if(this.playerSpeed>HEIGHTO_MAXVEL_THRESH){
+    isMaxVel(speedos: Speedos): boolean{
+        if(this.playerSpeed>speedos.HeightoThresholds.maxVel){
             return true;
         }
         return false;
     }
 
-    isClose(): boolean{
+    isClose(speedos: Speedos): boolean{
         switch (this.speedoType) {
             case "HORIZONTAL":
-                if(this.playerSpeed>HSPEEDO_CLOSE_MIN && this.playerSpeed<HSPEEDO_CLOSE_MAX){
+                if(this.playerSpeed>speedos.HSpeedoRange.closeMin && this.playerSpeed<speedos.HSpeedoRange.closeMax){
                     return true;
                 } else{ return false;}
             case "VERTICAL":
-                if(this.playerSpeed>VSPEEDO_CLOSE_MIN && this.playerSpeed<VSPEEDO_CLOSE_MAX){
+                if(this.playerSpeed>speedos.VSpeedoRange.closeMin && this.playerSpeed<speedos.VSpeedoRange.closeMax){
                     return true;
                 } else{ return false;}
             case "ABSOLUTE":
-                if(this.playerSpeed>ASPEEDO_CLOSE_MIN && this.playerSpeed<ASPEEDO_CLOSE_MAX){
+                if(this.playerSpeed>speedos.ASpeedoRange.closeMin && this.playerSpeed<speedos.ASpeedoRange.closeMax){
                     return true;
                 } else{ return false;}
             default:
                 return false;
         }
     }
-    isGood(): boolean{
+    isGood(speedos: Speedos): boolean{
         switch (this.speedoType) {
             case "HORIZONTAL":
-                if(this.playerSpeed>HSPEEDO_GOOD_MIN && this.playerSpeed<HSPEEDO_GOOD_MAX){
+                if(this.playerSpeed>speedos.HSpeedoRange.goodMin && this.playerSpeed<speedos.HSpeedoRange.goodMax){
                     return true;
                 } else{ return false;}
             case "VERTICAL":
-                if(this.playerSpeed>VSPEEDO_GOOD_MIN && this.playerSpeed<VSPEEDO_GOOD_MAX){
+                if(this.playerSpeed>speedos.VSpeedoRange.goodMin && this.playerSpeed<speedos.VSpeedoRange.goodMax){
                     return true;
                 } else{ return false;}
             case "ABSOLUTE":
-                if(this.playerSpeed>ASPEEDO_GOOD_MIN && this.playerSpeed<ASPEEDO_GOOD_MAX){
+                if(this.playerSpeed>speedos.ASpeedoRange.goodMin && this.playerSpeed<speedos.ASpeedoRange.goodMax){
                     return true;
                 } else{ return false;}
             default:

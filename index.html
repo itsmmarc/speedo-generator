@@ -126,57 +126,145 @@
             </div>
         </div>
 
-        <h2>Dynamic Colors</h2>
+        
         <div class="row">
-            <div class="option_container flex-100">
-                <label>
-                    <input type="color" id="colorMain" />
-                    Main
-                </label>
+            <div class="column flex-50">
+                <h2>Dynamic Colors</h2>
+                <div class="option_container flex-100">
+                    <label>
+                        <input type="color" id="colorMain" />
+                        Main
+                    </label>
+                </div>
+                <div class="option_container flex-100">
+                    <label>
+                        <input type="color" id="colorClose" />
+                        Close
+                    </label>
+                </div>
+                <div class="option_container flex-100">
+                    <label>
+                        <input type="color" id="colorGood" />
+                        Good
+                    </label>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="option_container flex-100">
-                <label>
-                    <input type="color" id="colorClose" />
-                    Close
-                </label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="option_container flex-100">
-                <label>
-                    <input type="color" id="colorGood" />
-                    Good
-                </label>
+            <div class="column flex-50">
+                <h2>Dynamic Color Ranges</h2>
+                <div class="option_container flex-100">
+                    <h3>Horizontal Speedo</h3>
+                    <div class="range-sliders">
+                        <div class="slider-track" id="track-hspeedo-close"></div>
+                        <input type="range" class="range-sliders dual" id="slider-hspeedo-close-min" min="0" max="3500" />
+                        <input type="range" class="range-sliders dual" id="slider-hspeedo-close-max" min="0" max="3500" />
+                    </div>
+                    <input type="text" class="range-text left" id="text-hspeedo-close-min" min="0" max="3500" />
+                    <input type="text" class="range-text right" id="text-hspeedo-close-max" min="0" max="3500" />
+                    <br>
+                    <div class="range-sliders">
+                        <div class="slider-track" id="track-hspeedo-good"></div>
+                        <input type="range" class="range-sliders dual" id="slider-hspeedo-good-min" min="0" max="3500" />
+                        <input type="range" class="range-sliders dual" id="slider-hspeedo-good-max" min="0" max="3500" />
+                    </div>
+                    <input type="text" class="range-text left" id="text-hspeedo-good-min" min="0" max="3500" />
+                    <input type="text" class="range-text right" id="text-hspeedo-good-max" min="0" max="3500" />
+                </div>
+                <div class="option_container flex-100">
+                    <h3>Vertical Speedo</h3>
+                    <div class="range-sliders">
+                        <div class="slider-track" id="track-vspeedo-close"></div>
+                        <input type="range" class="range-sliders dual" id="slider-vspeedo-close-min" min="0" max="3500" />
+                        <input type="range" class="range-sliders dual" id="slider-vspeedo-close-max" min="0" max="3500" />
+                    </div>
+                    <input type="text" class="range-text left" id="text-vspeedo-close-min" min="0" max="3500" />
+                    <input type="text" class="range-text right" id="text-vspeedo-close-max" min="0" max="3500" />
+                    <br>
+                    <div class="range-sliders">
+                        <div class="slider-track" id="track-vspeedo-good"></div>
+                        <input type="range" class="range-sliders dual" id="slider-vspeedo-good-min" min="0" max="3500" />
+                        <input type="range" class="range-sliders dual" id="slider-vspeedo-good-max" min="0" max="3500" />
+                    </div>
+                    <input type="text" class="range-text left" id="text-vspeedo-good-min" min="0" max="3500" />
+                    <input type="text" class="range-text right" id="text-vspeedo-good-max" min="0" max="3500" />
+                </div>
+                <div class="option_container flex-100">
+                    <h3>Absolute Speedo</h3>
+                    <div class="range-sliders">
+                        <div class="slider-track" id="track-aspeedo-close"></div>
+                        <input type="range" class="range-sliders dual" id="slider-aspeedo-close-min" min="0" max="3500" />
+                        <input type="range" class="range-sliders dual" id="slider-aspeedo-close-max" min="0" max="3500" />
+                    </div>
+                    <input type="text" class="range-text left" id="text-aspeedo-close-min" min="0" max="3500" />
+                    <input type="text" class="range-text right" id="text-aspeedo-close-max" min="0" max="3500" />
+                    <br>
+                    <div class="range-sliders">
+                        <div class="slider-track" id="track-aspeedo-good"></div>
+                        <input type="range" class="range-sliders dual" id="slider-aspeedo-good-min" min="0" max="3500" />
+                        <input type="range" class="range-sliders dual" id="slider-aspeedo-good-max" min="0" max="3500" />
+                    </div>
+                    <input type="text" class="range-text left" id="text-aspeedo-good-min" min="0" max="3500" />
+                    <input type="text" class="range-text right" id="text-aspeedo-good-max" min="0" max="3500" />
+                </div>
             </div>
         </div>
 
-        <h2>Heighto Dynamic Colors</h2>
         <div class="row">
-            <div class="option_container flex-100">
-                <label>
-                    <input type="color" id="colorMain_Heighto" />
-                    Main
-                </label>
+            <div class="column flex-50">
+                <h2>Heighto Dynamic Colors</h2>
+                <div class="row">
+                    <div class="option_container flex-100">
+                        <label>
+                            <input type="color" id="colorMain_Heighto" />
+                            Main
+                        </label>
+                    </div>
+                    <div class="option_container flex-100">
+                        <label>
+                            <input type="color" id="colorDouble" />
+                            Double
+                        </label>
+                    </div>
+                    <div class="option_container flex-100">
+                        <label>
+                            <input type="color" id="colorTriple" />
+                            Triple
+                        </label>
+                    </div>
+                    <div class="option_container flex-100">
+                        <label>
+                            <input type="color" id="colorMaxVel" />
+                            Max Velocity
+                        </label>
+                    </div>
+                </div>
             </div>
-            <div class="option_container flex-100">
-                <label>
-                    <input type="color" id="colorDouble" />
-                    Double
-                </label>
-            </div>
-            <div class="option_container flex-100">
-                <label>
-                    <input type="color" id="colorTriple" />
-                    Triple
-                </label>
-            </div>
-            <div class="option_container flex-100">
-                <label>
-                    <input type="color" id="colorMaxVel" />
-                    Max Velocity
-                </label>
+
+            <div class="column flex-50">
+                <h2>Heighto Dynamic Color Thresholds</h2>
+                <div class="option_container flex-100">
+                    <h3>Double Threshold</h3>
+                    <div class="range-sliders">
+                        <div class="slider-track" id="track-heighto-double"></div>
+                        <input type="range" class="range-sliders dual" id="slider-heighto-double" min="0" max="9999" />
+                    </div>
+                    <input type="text" class="range-text left" id="text-heighto-double" min="0" max="9999" />
+                </div>
+                <div class="option_container flex-100">
+                    <h3>Triple Threshold</h3>
+                    <div class="range-sliders">
+                        <div class="slider-track" id="track-heighto-triple"></div>
+                        <input type="range" class="range-sliders dual" id="slider-heighto-triple" min="0" max="9999" />
+                    </div>
+                    <input type="text" class="range-text left" id="text-heighto-triple" min="0" max="9999" />
+                </div>
+                <div class="option_container flex-100">
+                    <h3>Max Velocity Threshold</h3>
+                    <div class="range-sliders">
+                        <div class="slider-track" id="track-heighto-maxvel"></div>
+                        <input type="range" class="range-sliders dual" id="slider-heighto-maxvel" min="0" max="9999" />
+                    </div>
+                    <input type="text" class="range-text left" id="text-heighto-maxvel" min="0" max="9999" />
+                </div>
             </div>
         </div>
     </main>

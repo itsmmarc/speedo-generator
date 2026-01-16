@@ -14,6 +14,10 @@ export class Speedos {
     colorDouble;
     colorTriple;
     colorMaxVel;
+    HSpeedoRange;
+    VSpeedoRange;
+    ASpeedoRange;
+    HeightoThresholds;
     framerate;
     frametime;
     vdfElm;
@@ -29,6 +33,10 @@ export class Speedos {
         this.colorDouble = m0reColor.BLUE;
         this.colorTriple = m0reColor.GREEN;
         this.colorMaxVel = m0reColor.YELLOW;
+        this.HSpeedoRange = { closeMin: 850, closeMax: 1350, goodMin: 1050, goodMax: 1150 };
+        this.VSpeedoRange = { closeMin: -1, closeMax: -1, goodMin: -1, goodMax: -1 };
+        this.ASpeedoRange = { closeMin: 850, closeMax: 1350, goodMin: 1050, goodMax: 1150 };
+        this.HeightoThresholds = { double: 1260, triple: 2160, maxVel: 7700 };
         this.framerate = 30;
         this.frametime = 1000 / this.framerate;
         this.speedo = new Array(4);

@@ -1,18 +1,3 @@
-const HSPEEDO_CLOSE_MIN = 850;
-const HSPEEDO_CLOSE_MAX = 1350;
-const HSPEEDO_GOOD_MIN = 1050;
-const HSPEEDO_GOOD_MAX = 1150;
-const VSPEEDO_CLOSE_MIN = -1;
-const VSPEEDO_CLOSE_MAX = -1;
-const VSPEEDO_GOOD_MIN = -1;
-const VSPEEDO_GOOD_MAX = -1;
-const ASPEEDO_CLOSE_MIN = HSPEEDO_CLOSE_MIN;
-const ASPEEDO_CLOSE_MAX = HSPEEDO_CLOSE_MAX;
-const ASPEEDO_GOOD_MIN = HSPEEDO_GOOD_MIN;
-const ASPEEDO_GOOD_MAX = HSPEEDO_GOOD_MAX;
-const HEIGHTO_DOUBLE_THRESH = 1260;
-const HEIGHTO_TRIPLE_THRESH = 2160;
-const HEIGHTO_MAXVEL_THRESH = 7700;
 export class Speedo {
     playerSpeed;
     color;
@@ -24,10 +9,10 @@ export class Speedo {
     }
     updateColor(speedos) {
         if (this.speedoType != "HEIGHTO") {
-            if (this.isGood()) {
+            if (this.isGood(speedos)) {
                 this.color = speedos.colorGood;
             }
-            else if (this.isClose()) {
+            else if (this.isClose(speedos)) {
                 this.color = speedos.colorClose;
             }
             else {
@@ -35,13 +20,13 @@ export class Speedo {
             }
         }
         else {
-            if (this.isDouble()) {
+            if (this.isDouble(speedos)) {
                 this.color = speedos.colorDouble;
             }
-            else if (this.isTriple()) {
+            else if (this.isTriple(speedos)) {
                 this.color = speedos.colorTriple;
             }
-            else if (this.isMaxVel()) {
+            else if (this.isMaxVel(speedos)) {
                 this.color = speedos.colorMaxVel;
             }
             else {
@@ -50,42 +35,42 @@ export class Speedo {
             return;
         }
     }
-    isDouble() {
-        if (this.playerSpeed > HEIGHTO_DOUBLE_THRESH && this.playerSpeed < HEIGHTO_TRIPLE_THRESH) {
+    isDouble(speedos) {
+        if (this.playerSpeed > speedos.HeightoThresholds.double && this.playerSpeed < speedos.HeightoThresholds.triple) {
             return true;
         }
         return false;
     }
-    isTriple() {
-        if (this.playerSpeed > HEIGHTO_TRIPLE_THRESH && this.playerSpeed < HEIGHTO_MAXVEL_THRESH) {
+    isTriple(speedos) {
+        if (this.playerSpeed > speedos.HeightoThresholds.triple && this.playerSpeed < speedos.HeightoThresholds.maxVel) {
             return true;
         }
         return false;
     }
-    isMaxVel() {
-        if (this.playerSpeed > HEIGHTO_MAXVEL_THRESH) {
+    isMaxVel(speedos) {
+        if (this.playerSpeed > speedos.HeightoThresholds.maxVel) {
             return true;
         }
         return false;
     }
-    isClose() {
+    isClose(speedos) {
         switch (this.speedoType) {
             case "HORIZONTAL":
-                if (this.playerSpeed > HSPEEDO_CLOSE_MIN && this.playerSpeed < HSPEEDO_CLOSE_MAX) {
+                if (this.playerSpeed > speedos.HSpeedoRange.closeMin && this.playerSpeed < speedos.HSpeedoRange.closeMax) {
                     return true;
                 }
                 else {
                     return false;
                 }
             case "VERTICAL":
-                if (this.playerSpeed > VSPEEDO_CLOSE_MIN && this.playerSpeed < VSPEEDO_CLOSE_MAX) {
+                if (this.playerSpeed > speedos.VSpeedoRange.closeMin && this.playerSpeed < speedos.VSpeedoRange.closeMax) {
                     return true;
                 }
                 else {
                     return false;
                 }
             case "ABSOLUTE":
-                if (this.playerSpeed > ASPEEDO_CLOSE_MIN && this.playerSpeed < ASPEEDO_CLOSE_MAX) {
+                if (this.playerSpeed > speedos.ASpeedoRange.closeMin && this.playerSpeed < speedos.ASpeedoRange.closeMax) {
                     return true;
                 }
                 else {
@@ -95,24 +80,24 @@ export class Speedo {
                 return false;
         }
     }
-    isGood() {
+    isGood(speedos) {
         switch (this.speedoType) {
             case "HORIZONTAL":
-                if (this.playerSpeed > HSPEEDO_GOOD_MIN && this.playerSpeed < HSPEEDO_GOOD_MAX) {
+                if (this.playerSpeed > speedos.HSpeedoRange.goodMin && this.playerSpeed < speedos.HSpeedoRange.goodMax) {
                     return true;
                 }
                 else {
                     return false;
                 }
             case "VERTICAL":
-                if (this.playerSpeed > VSPEEDO_GOOD_MIN && this.playerSpeed < VSPEEDO_GOOD_MAX) {
+                if (this.playerSpeed > speedos.VSpeedoRange.goodMin && this.playerSpeed < speedos.VSpeedoRange.goodMax) {
                     return true;
                 }
                 else {
                     return false;
                 }
             case "ABSOLUTE":
-                if (this.playerSpeed > ASPEEDO_GOOD_MIN && this.playerSpeed < ASPEEDO_GOOD_MAX) {
+                if (this.playerSpeed > speedos.ASpeedoRange.goodMin && this.playerSpeed < speedos.ASpeedoRange.goodMax) {
                     return true;
                 }
                 else {

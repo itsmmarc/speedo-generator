@@ -53,11 +53,11 @@ function generateSpeedoConfig_vmt(speedos: Speedos): string{
     s = s.concat('\nUnlitGeneric{\n');
 
     // rounding
-    s = s.concat('\t$roundAmount ');
+    s = s.concat('\t$round ');
     if(speedos.round){
-        s = s.concat('10\n');
-    } else{
         s = s.concat('1\n');
+    } else{
+        s = s.concat('0\n');
     }
 
     // colors
@@ -68,6 +68,21 @@ function generateSpeedoConfig_vmt(speedos: Speedos): string{
     s = s.concat('\t$colorDouble\t', speedos.colorDouble.getVMTColor(), '\n');
     s = s.concat('\t$colorTriple\t', speedos.colorTriple.getVMTColor(), '\n');
     s = s.concat('\t$colorMaxVel\t', speedos.colorMaxVel.getVMTColor(), '\n');
+    s = s.concat('\t$hCloseMin\t', speedos.HSpeedoRange.closeMin.toString(), '\n');
+    s = s.concat('\t$hCloseMax\t', speedos.HSpeedoRange.closeMax.toString(), '\n');
+    s = s.concat('\t$hGoodMin\t', speedos.HSpeedoRange.goodMin.toString(), '\n');
+    s = s.concat('\t$hGoodMin\t', speedos.HSpeedoRange.goodMax.toString(), '\n');
+    s = s.concat('\t$vCloseMin\t', speedos.HSpeedoRange.closeMin.toString(), '\n');
+    s = s.concat('\t$vCloseMax\t', speedos.HSpeedoRange.closeMax.toString(), '\n');
+    s = s.concat('\t$vGoodMin\t', speedos.HSpeedoRange.goodMin.toString(), '\n');
+    s = s.concat('\t$vGoodMin\t', speedos.HSpeedoRange.goodMax.toString(), '\n');
+    s = s.concat('\t$aCloseMin\t', speedos.HSpeedoRange.closeMin.toString(), '\n');
+    s = s.concat('\t$aCloseMax\t', speedos.HSpeedoRange.closeMax.toString(), '\n');
+    s = s.concat('\t$aGoodMin\t', speedos.HSpeedoRange.goodMin.toString(), '\n');
+    s = s.concat('\t$aGoodMin\t', speedos.HSpeedoRange.goodMax.toString(), '\n');
+    s = s.concat('\t$doubleMin\t', speedos.HeightoThresholds.double.toString(), '\n');
+    s = s.concat('\t$tripleMin\t', speedos.HeightoThresholds.triple.toString(), '\n');
+    s = s.concat('\t$maxVelMin\t', speedos.HeightoThresholds.maxVel.toString(), '\n');
     s = s.concat('}');
 
     return s;

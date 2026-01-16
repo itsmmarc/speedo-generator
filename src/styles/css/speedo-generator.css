@@ -81,6 +81,20 @@ main h2 {
   font-variation-settings: "wdth" 100;
   position: relative;
   z-index: 0;
+  margin-bottom: 9px;
+}
+main h3 {
+  color: rgb(174, 178, 178);
+  font-size: 1.5rem;
+  font-weight: 900;
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+  position: relative;
+  z-index: 0;
+  margin-bottom: 9px;
+  margin-top: 9px;
 }
 main label {
   color: rgb(174, 178, 178);
@@ -94,11 +108,11 @@ main label {
   z-index: 0;
 }
 main .option_container {
+  position: relative;
   margin-bottom: 10px;
   height: -moz-fit-content;
   height: fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
+  width: 100%;
 }
 main .option_container button {
   color: white;
@@ -219,18 +233,19 @@ main #xhair {
   background-color: rgb(0, 255, 221);
 }
 main .range-sliders {
-  position: relative;
-  width: 500px;
+  position: absolute;
+  margin-left: 9.5%;
+  width: 80%;
 }
 main .range-text {
-  position: relative;
-  left: 510px;
-  width: 200px;
+  position: absolute;
+  width: 9%;
 }
 main input[type=range].dual {
   pointer-events: none;
   position: absolute;
   width: 100%;
+  margin: 2px;
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
@@ -239,19 +254,27 @@ main input[type=range].dual {
 main input[type=range].dual::-webkit-slider-thumb {
   pointer-events: auto;
   -webkit-appearance: none;
-  height: 1.5em;
-  width: 1.5em;
   cursor: pointer;
   background-color: #3264fe;
-  margin-top: -2px;
-  border-radius: 50%;
+  width: 7px;
+  height: 25px;
+  margin-left: 0px;
+  margin-top: -9px;
+  position: relative;
 }
-main input[type=range].dual::-webkit-slider-thumb :active {
+main input[type=range].dual::-webkit-slider-thumb:active {
   background-color: white;
   border: 1px solid #3264fe;
 }
-main input[type=text] {
-  width: 48%;
+main .slider-track {
+  width: 100%;
+  height: 5px;
+  pointer-events: none;
+  position: absolute;
+  margin: 2px;
+  top: 0;
+  bottom: 0;
+  border-radius: 5px;
 }
 
 /* Speedo Preview */
@@ -332,6 +355,14 @@ aside .shadow {
 }
 
 /* Util */
+.left {
+  left: 0;
+}
+
+.right {
+  right: 0;
+}
+
 .row {
   display: flex;
   flex-direction: row;

@@ -6,6 +6,7 @@ import { VDFElement } from './vdfelement.js';
 
 export type SpeedoSize = 'SMALL' | 'MEDIUM' | 'LARGE';
 export type Font = 'bahnschrift' | 'coolvetica' | 'coolvetica_italic' | 'eternal' | 'montserrat' | 'nk57' | 'poppins' | 'quake' | 'renogare' | 'roboto' | 'square' | 'surface';
+export type Range = {closeMin: number, closeMax: number, goodMin: number, goodMax: number};
 
 export class Speedos {
     previewSpeed?: number;
@@ -20,6 +21,10 @@ export class Speedos {
     colorDouble: Color;
     colorTriple: Color;
     colorMaxVel: Color;
+    HSpeedoRange: Range;
+    VSpeedoRange: Range;
+    ASpeedoRange: Range;
+    HeightoThresholds: {double: number, triple: number, maxVel: number};
     framerate: number;
     frametime: number;
     vdfElm: VDFElement;
@@ -36,6 +41,10 @@ export class Speedos {
         this.colorDouble = m0reColor.BLUE;
         this.colorTriple = m0reColor.GREEN;
         this.colorMaxVel = m0reColor.YELLOW;
+        this.HSpeedoRange = {closeMin: 850, closeMax: 1350, goodMin: 1050, goodMax: 1150};
+        this.VSpeedoRange = {closeMin: -1, closeMax: -1, goodMin: -1, goodMax: -1};
+        this.ASpeedoRange = {closeMin: 850, closeMax: 1350, goodMin: 1050, goodMax: 1150};
+        this.HeightoThresholds = {double: 1260, triple: 2160, maxVel: 7700};
         this.framerate = 30;
         this.frametime = 1000/this.framerate;
 

@@ -9,22 +9,6 @@ const speedosObj = new Speedos();
 //===================================================================================
 // PREVIEW RENDERING
 //-----------------------------------------------------------------------------------
-speedosObj.startSpeedoPreview();
-setInterval(() => {
-    speedoElmArray.forEach(speedoElm => {
-        let slot = 'slot_';
-        for (let i = 1; i <= NUM_SPEEDOS; i++) {
-            slot += i;
-            let speedoObj = speedosObj.speedo[i - 1];
-            if (speedoElm.classList.contains(slot)) {
-                speedoElm.textContent = speedoObj.playerSpeed.toString();
-                speedoElm.style.setProperty('color', speedoObj.color.getCSSColor());
-                //console.log('set color of ',slot,' to ',speedoObj.color.getCSSColor());
-            }
-            slot = slot.slice(0, -1);
-        }
-    });
-}, speedosObj.frametime);
 function updateSpeedoStyles() {
     switch (speedosObj.size) {
         case "SMALL":
@@ -290,45 +274,298 @@ const colorTripleElm = document.getElementById('colorTriple');
 const colorMaxVelElm = document.getElementById('colorMaxVel');
 colorMainElm.addEventListener('input', () => {
     speedosObj.colorMain = Color.input_to_color(colorMainElm.value);
+    slider_dual_fill_color(speedosObj.colorClose, track_hspeedo_close, slider_hspeedo_close_min, slider_hspeedo_close_max);
+    slider_dual_fill_color(speedosObj.colorClose, track_vspeedo_close, slider_vspeedo_close_min, slider_vspeedo_close_max);
+    slider_dual_fill_color(speedosObj.colorClose, track_aspeedo_close, slider_aspeedo_close_min, slider_aspeedo_close_max);
+    slider_dual_fill_color(speedosObj.colorGood, track_hspeedo_good, slider_hspeedo_good_min, slider_hspeedo_good_max);
+    slider_dual_fill_color(speedosObj.colorGood, track_vspeedo_good, slider_vspeedo_good_min, slider_vspeedo_good_max);
+    slider_dual_fill_color(speedosObj.colorGood, track_aspeedo_good, slider_aspeedo_good_min, slider_aspeedo_good_max);
 });
 colorCloseElm.addEventListener('input', () => {
     speedosObj.colorClose = Color.input_to_color(colorCloseElm.value);
+    slider_dual_fill_color(speedosObj.colorClose, track_hspeedo_close, slider_hspeedo_close_min, slider_hspeedo_close_max);
+    slider_dual_fill_color(speedosObj.colorClose, track_vspeedo_close, slider_vspeedo_close_min, slider_vspeedo_close_max);
+    slider_dual_fill_color(speedosObj.colorClose, track_aspeedo_close, slider_aspeedo_close_min, slider_aspeedo_close_max);
 });
 colorGoodElm.addEventListener('input', () => {
     speedosObj.colorGood = Color.input_to_color(colorGoodElm.value);
+    slider_dual_fill_color(speedosObj.colorGood, track_hspeedo_good, slider_hspeedo_good_min, slider_hspeedo_good_max);
+    slider_dual_fill_color(speedosObj.colorGood, track_vspeedo_good, slider_vspeedo_good_min, slider_vspeedo_good_max);
+    slider_dual_fill_color(speedosObj.colorGood, track_aspeedo_good, slider_aspeedo_good_min, slider_aspeedo_good_max);
 });
 colorMainHeightoElm.addEventListener('input', () => {
     speedosObj.colorMain_Heighto = Color.input_to_color(colorMainHeightoElm.value);
+    slider_fill_color(speedosObj.colorDouble, track_heighto_double, slider_heighto_double);
+    slider_fill_color(speedosObj.colorTriple, track_heighto_triple, slider_heighto_triple);
+    slider_fill_color(speedosObj.colorMaxVel, track_heighto_maxVel, slider_heighto_maxVel);
 });
 colorDoubleElm.addEventListener('input', () => {
     speedosObj.colorDouble = Color.input_to_color(colorDoubleElm.value);
+    slider_fill_color(speedosObj.colorDouble, track_heighto_double, slider_heighto_double);
 });
 colorTripleElm.addEventListener('input', () => {
     speedosObj.colorTriple = Color.input_to_color(colorTripleElm.value);
+    slider_fill_color(speedosObj.colorTriple, track_heighto_triple, slider_heighto_triple);
 });
 colorMaxVelElm.addEventListener('input', () => {
     speedosObj.colorMaxVel = Color.input_to_color(colorMaxVelElm.value);
+    slider_fill_color(speedosObj.colorMaxVel, track_heighto_maxVel, slider_heighto_maxVel);
 });
 // COLOR RANGES
-// const sliderMin = document.getElementById('colorMain-min-slider') as HTMLInputElement;
-// const sliderMax = document.getElementById('colorMain-max-slider') as HTMLInputElement;
-// const textMin = document.getElementById('colorMain-min-text') as HTMLInputElement;
-// const textMax = document.getElementById('colorMain-max-text') as HTMLInputElement;
-// const rangeGap: number = 0;
-// const sliderTrack = document.getElementById('colorMain-track') as HTMLElement;
-// const slidermaxValue = sliderMin.max;
-// sliderMin.addEventListener('input', () =>{
-//     if(parseInt(sliderMin.value) >= parseInt(sliderMax.value)){
-//         sliderMin.value = (parseInt(sliderMax.value) - rangeGap).toString();
-//     }
-//     textMin.value = sliderMin.value;
-// })
-// sliderMax.addEventListener('input', () =>{
-//     if(parseInt(sliderMax.value) <= parseInt(sliderMin.value)){
-//         sliderMax.value = (parseInt(sliderMin.value) + rangeGap).toString();
-//     }
-//     textMax.value = sliderMax.value;
-// })
+const rangeGap = 0;
+// hspeedo
+const slider_hspeedo_close_min = document.getElementById('slider-hspeedo-close-min');
+const slider_hspeedo_close_max = document.getElementById('slider-hspeedo-close-max');
+const text_hspeedo_close_min = document.getElementById('text-hspeedo-close-min');
+const text_hspeedo_close_max = document.getElementById('text-hspeedo-close-max');
+const track_hspeedo_close = document.getElementById('track-hspeedo-close');
+const slider_hspeedo_good_min = document.getElementById('slider-hspeedo-good-min');
+const slider_hspeedo_good_max = document.getElementById('slider-hspeedo-good-max');
+const text_hspeedo_good_min = document.getElementById('text-hspeedo-good-min');
+const text_hspeedo_good_max = document.getElementById('text-hspeedo-good-max');
+const track_hspeedo_good = document.getElementById('track-hspeedo-good');
+slider_hspeedo_close_min.addEventListener('input', () => {
+    process_hspeedo_close_min();
+});
+slider_hspeedo_close_max.addEventListener('input', () => {
+    process_hspeedo_close_max();
+});
+slider_hspeedo_good_min.addEventListener('input', () => {
+    process_hspeedo_good_min();
+});
+slider_hspeedo_good_max.addEventListener('input', () => {
+    process_hspeedo_good_max();
+});
+text_hspeedo_close_min.addEventListener('change', () => {
+    slider_hspeedo_close_min.value = text_hspeedo_close_min.value;
+    process_hspeedo_close_min();
+});
+text_hspeedo_close_max.addEventListener('change', () => {
+    slider_hspeedo_close_max.value = text_hspeedo_close_max.value;
+    process_hspeedo_close_max();
+});
+text_hspeedo_good_min.addEventListener('change', () => {
+    slider_hspeedo_good_min.value = text_hspeedo_good_min.value;
+    process_hspeedo_good_min();
+});
+text_hspeedo_good_max.addEventListener('change', () => {
+    slider_hspeedo_good_max.value = text_hspeedo_good_max.value;
+    process_hspeedo_good_max();
+});
+function process_hspeedo_close_min() {
+    slider_process_min(slider_hspeedo_close_min, slider_hspeedo_close_max, text_hspeedo_close_min);
+    slider_dual_fill_color(speedosObj.colorClose, track_hspeedo_close, slider_hspeedo_close_min, slider_hspeedo_close_max);
+    speedosObj.HSpeedoRange.closeMin = parseInt(slider_hspeedo_close_min.value);
+}
+function process_hspeedo_close_max() {
+    slider_process_max(slider_hspeedo_close_min, slider_hspeedo_close_max, text_hspeedo_close_max);
+    slider_dual_fill_color(speedosObj.colorClose, track_hspeedo_close, slider_hspeedo_close_min, slider_hspeedo_close_max);
+    speedosObj.HSpeedoRange.closeMax = parseInt(slider_hspeedo_close_max.value);
+}
+function process_hspeedo_good_min() {
+    slider_process_min(slider_hspeedo_good_min, slider_hspeedo_good_max, text_hspeedo_good_min);
+    slider_dual_fill_color(speedosObj.colorGood, track_hspeedo_good, slider_hspeedo_good_min, slider_hspeedo_good_max);
+    speedosObj.HSpeedoRange.goodMin = parseInt(slider_hspeedo_good_min.value);
+}
+function process_hspeedo_good_max() {
+    slider_process_max(slider_hspeedo_good_min, slider_hspeedo_good_max, text_hspeedo_good_max);
+    slider_dual_fill_color(speedosObj.colorGood, track_hspeedo_good, slider_hspeedo_good_min, slider_hspeedo_good_max);
+    speedosObj.HSpeedoRange.goodMax = parseInt(slider_hspeedo_good_max.value);
+}
+// vspeedo
+const slider_vspeedo_close_min = document.getElementById('slider-vspeedo-close-min');
+const slider_vspeedo_close_max = document.getElementById('slider-vspeedo-close-max');
+const text_vspeedo_close_min = document.getElementById('text-vspeedo-close-min');
+const text_vspeedo_close_max = document.getElementById('text-vspeedo-close-max');
+const track_vspeedo_close = document.getElementById('track-vspeedo-close');
+const slider_vspeedo_good_min = document.getElementById('slider-vspeedo-good-min');
+const slider_vspeedo_good_max = document.getElementById('slider-vspeedo-good-max');
+const text_vspeedo_good_min = document.getElementById('text-vspeedo-good-min');
+const text_vspeedo_good_max = document.getElementById('text-vspeedo-good-max');
+const track_vspeedo_good = document.getElementById('track-vspeedo-good');
+slider_vspeedo_close_min.addEventListener('input', () => {
+    process_vspeedo_close_min();
+});
+slider_vspeedo_close_max.addEventListener('input', () => {
+    process_vspeedo_close_max();
+});
+slider_vspeedo_good_min.addEventListener('input', () => {
+    process_vspeedo_good_min();
+});
+slider_vspeedo_good_max.addEventListener('input', () => {
+    process_vspeedo_good_max();
+});
+text_vspeedo_close_min.addEventListener('change', () => {
+    slider_vspeedo_close_min.value = text_vspeedo_close_min.value;
+    process_vspeedo_close_min();
+});
+text_vspeedo_close_max.addEventListener('change', () => {
+    slider_vspeedo_close_max.value = text_vspeedo_close_max.value;
+    process_vspeedo_close_max();
+});
+text_vspeedo_good_min.addEventListener('change', () => {
+    slider_vspeedo_good_min.value = text_vspeedo_good_min.value;
+    process_vspeedo_good_min();
+});
+text_vspeedo_good_max.addEventListener('change', () => {
+    slider_vspeedo_good_max.value = text_vspeedo_good_max.value;
+    process_vspeedo_good_max();
+});
+function process_vspeedo_close_min() {
+    slider_process_min(slider_vspeedo_close_min, slider_vspeedo_close_max, text_vspeedo_close_min);
+    slider_dual_fill_color(speedosObj.colorClose, track_vspeedo_close, slider_vspeedo_close_min, slider_vspeedo_close_max);
+    speedosObj.VSpeedoRange.closeMin = parseInt(slider_vspeedo_close_min.value);
+}
+function process_vspeedo_close_max() {
+    slider_process_max(slider_vspeedo_close_min, slider_vspeedo_close_max, text_vspeedo_close_max);
+    slider_dual_fill_color(speedosObj.colorClose, track_vspeedo_close, slider_vspeedo_close_min, slider_vspeedo_close_max);
+    speedosObj.VSpeedoRange.closeMax = parseInt(slider_vspeedo_close_max.value);
+}
+function process_vspeedo_good_min() {
+    slider_process_min(slider_vspeedo_good_min, slider_vspeedo_good_max, text_vspeedo_good_min);
+    slider_dual_fill_color(speedosObj.colorGood, track_vspeedo_good, slider_vspeedo_good_min, slider_vspeedo_good_max);
+    speedosObj.VSpeedoRange.goodMin = parseInt(slider_vspeedo_good_min.value);
+}
+function process_vspeedo_good_max() {
+    slider_process_max(slider_vspeedo_good_min, slider_vspeedo_good_max, text_vspeedo_good_max);
+    slider_dual_fill_color(speedosObj.colorGood, track_vspeedo_good, slider_vspeedo_good_min, slider_vspeedo_good_max);
+    speedosObj.VSpeedoRange.goodMax = parseInt(slider_vspeedo_good_max.value);
+}
+// aspeedo
+const slider_aspeedo_close_min = document.getElementById('slider-aspeedo-close-min');
+const slider_aspeedo_close_max = document.getElementById('slider-aspeedo-close-max');
+const text_aspeedo_close_min = document.getElementById('text-aspeedo-close-min');
+const text_aspeedo_close_max = document.getElementById('text-aspeedo-close-max');
+const track_aspeedo_close = document.getElementById('track-aspeedo-close');
+const slider_aspeedo_good_min = document.getElementById('slider-aspeedo-good-min');
+const slider_aspeedo_good_max = document.getElementById('slider-aspeedo-good-max');
+const text_aspeedo_good_min = document.getElementById('text-aspeedo-good-min');
+const text_aspeedo_good_max = document.getElementById('text-aspeedo-good-max');
+const track_aspeedo_good = document.getElementById('track-aspeedo-good');
+slider_aspeedo_close_min.addEventListener('input', () => {
+    process_aspeedo_close_min();
+});
+slider_aspeedo_close_max.addEventListener('input', () => {
+    process_aspeedo_close_max();
+});
+slider_aspeedo_good_min.addEventListener('input', () => {
+    process_aspeedo_good_min();
+});
+slider_aspeedo_good_max.addEventListener('input', () => {
+    process_aspeedo_good_max();
+});
+text_aspeedo_close_min.addEventListener('change', () => {
+    slider_aspeedo_close_min.value = text_aspeedo_close_min.value;
+    process_aspeedo_close_min();
+});
+text_aspeedo_close_max.addEventListener('change', () => {
+    slider_aspeedo_close_max.value = text_aspeedo_close_max.value;
+    process_aspeedo_close_max();
+});
+text_aspeedo_good_min.addEventListener('change', () => {
+    slider_aspeedo_good_min.value = text_aspeedo_good_min.value;
+    process_aspeedo_good_min();
+});
+text_aspeedo_good_max.addEventListener('change', () => {
+    slider_aspeedo_good_max.value = text_aspeedo_good_max.value;
+    process_aspeedo_good_max();
+});
+function process_aspeedo_close_min() {
+    slider_process_min(slider_aspeedo_close_min, slider_aspeedo_close_max, text_aspeedo_close_min);
+    slider_dual_fill_color(speedosObj.colorClose, track_aspeedo_close, slider_aspeedo_close_min, slider_aspeedo_close_max);
+    speedosObj.ASpeedoRange.closeMin = parseInt(slider_aspeedo_close_min.value);
+}
+function process_aspeedo_close_max() {
+    slider_process_max(slider_aspeedo_close_min, slider_aspeedo_close_max, text_aspeedo_close_max);
+    slider_dual_fill_color(speedosObj.colorClose, track_aspeedo_close, slider_aspeedo_close_min, slider_aspeedo_close_max);
+    speedosObj.ASpeedoRange.closeMax = parseInt(slider_aspeedo_close_max.value);
+}
+function process_aspeedo_good_min() {
+    slider_process_min(slider_aspeedo_good_min, slider_aspeedo_good_max, text_aspeedo_good_min);
+    slider_dual_fill_color(speedosObj.colorGood, track_aspeedo_good, slider_aspeedo_good_min, slider_aspeedo_good_max);
+    speedosObj.ASpeedoRange.goodMin = parseInt(slider_aspeedo_good_min.value);
+}
+function process_aspeedo_good_max() {
+    slider_process_max(slider_aspeedo_good_min, slider_aspeedo_good_max, text_aspeedo_good_max);
+    slider_dual_fill_color(speedosObj.colorGood, track_aspeedo_good, slider_aspeedo_good_min, slider_aspeedo_good_max);
+    speedosObj.ASpeedoRange.goodMax = parseInt(slider_aspeedo_good_max.value);
+}
+// heighto
+const slider_heighto_double = document.getElementById('slider-heighto-double');
+const text_heighto_double = document.getElementById('text-heighto-double');
+const track_heighto_double = document.getElementById('track-heighto-double');
+const slider_heighto_triple = document.getElementById('slider-heighto-triple');
+const text_heighto_triple = document.getElementById('text-heighto-triple');
+const track_heighto_triple = document.getElementById('track-heighto-triple');
+const slider_heighto_maxVel = document.getElementById('slider-heighto-maxvel');
+const text_heighto_maxVel = document.getElementById('text-heighto-maxvel');
+const track_heighto_maxVel = document.getElementById('track-heighto-maxvel');
+slider_heighto_double.addEventListener('input', () => {
+    process_heighto_double();
+});
+slider_heighto_triple.addEventListener('input', () => {
+    process_heighto_triple();
+});
+slider_heighto_maxVel.addEventListener('input', () => {
+    process_heighto_maxVel();
+});
+text_heighto_double.addEventListener('change', () => {
+    slider_heighto_double.value = text_heighto_double.value;
+    process_heighto_double();
+});
+text_heighto_triple.addEventListener('change', () => {
+    slider_heighto_triple.value = text_heighto_triple.value;
+    process_heighto_triple();
+});
+text_heighto_maxVel.addEventListener('change', () => {
+    slider_heighto_maxVel.value = text_heighto_maxVel.value;
+    process_heighto_maxVel();
+});
+function process_heighto_double() {
+    text_heighto_double.value = slider_heighto_double.value;
+    slider_fill_color(speedosObj.colorDouble, track_heighto_double, slider_heighto_double);
+    speedosObj.HeightoThresholds.double = parseInt(slider_heighto_double.value);
+}
+function process_heighto_triple() {
+    text_heighto_triple.value = slider_heighto_triple.value;
+    slider_fill_color(speedosObj.colorTriple, track_heighto_triple, slider_heighto_triple);
+    speedosObj.HeightoThresholds.triple = parseInt(slider_heighto_triple.value);
+}
+function process_heighto_maxVel() {
+    text_heighto_maxVel.value = slider_heighto_maxVel.value;
+    slider_fill_color(speedosObj.colorMaxVel, track_heighto_maxVel, slider_heighto_maxVel);
+    speedosObj.HeightoThresholds.maxVel = parseInt(slider_heighto_maxVel.value);
+}
+// all sliders
+function slider_process_min(sliderMin, sliderMax, textMin) {
+    if (parseInt(sliderMin.value) >= parseInt(sliderMax.value)) {
+        sliderMin.value = (parseInt(sliderMax.value) - rangeGap).toString();
+    }
+    if (textMin) {
+        textMin.value = sliderMin.value;
+    }
+}
+function slider_process_max(sliderMin, sliderMax, textMax) {
+    if (parseInt(sliderMax.value) <= parseInt(sliderMin.value)) {
+        sliderMax.value = (parseInt(sliderMin.value) + rangeGap).toString();
+    }
+    if (textMax) {
+        textMax.value = sliderMax.value;
+    }
+}
+function slider_dual_fill_color(colorFocus, sliderTrack, sliderMin, sliderMax) {
+    let colorMainCSS = speedosObj.colorMain.getCSSColor();
+    let colorFocusCSS = colorFocus.getCSSColor();
+    let percent1 = ((parseInt(sliderMin.value) / parseInt(sliderMin.max)) * 100).toString();
+    let percent2 = ((parseInt(sliderMax.value) / parseInt(sliderMax.max)) * 100).toString();
+    sliderTrack.style.background = ''.concat('linear-gradient( to right, ', colorMainCSS, ', ', colorMainCSS, ' ', percent1, '%, ', colorFocusCSS, ' ', percent1, '%, ', colorFocusCSS, ' ', percent2, '%, ', colorMainCSS, ' ', percent2, '% )');
+}
+function slider_fill_color(color, sliderTrack, slider) {
+    let colorNull = speedosObj.colorMain_Heighto.getCSSColor();
+    let colorFocus = color.getCSSColor();
+    let percent = ((parseInt(slider.value) / parseInt(slider.max)) * 100).toString();
+    sliderTrack.style.background = ''.concat('linear-gradient( to right, ', colorNull, ', ', colorNull, ' ', percent, '%, ', colorFocus, ' ', percent, '%)');
+}
 // DOWNLOAD
 const downloadElm = document.getElementById('download-btn');
 downloadElm.addEventListener('click', () => {
@@ -337,8 +574,41 @@ downloadElm.addEventListener('click', () => {
 //===================================================================================
 // ON PAGE LOAD
 //-----------------------------------------------------------------------------------
-updateSpeedoStyles();
-speedosObj_to_Elements();
+window.onload = () => {
+    updateSpeedoStyles();
+    speedosObj_to_Elements();
+    process_hspeedo_close_min();
+    process_hspeedo_close_max();
+    process_hspeedo_good_min();
+    process_hspeedo_good_max();
+    process_vspeedo_close_min();
+    process_vspeedo_close_max();
+    process_vspeedo_good_min();
+    process_vspeedo_good_max();
+    process_aspeedo_close_min();
+    process_aspeedo_close_max();
+    process_aspeedo_good_min();
+    process_aspeedo_good_max();
+    process_heighto_double();
+    process_heighto_triple();
+    process_heighto_maxVel();
+    speedosObj.startSpeedoPreview();
+    setInterval(() => {
+        speedoElmArray.forEach(speedoElm => {
+            let slot = 'slot_';
+            for (let i = 1; i <= NUM_SPEEDOS; i++) {
+                slot += i;
+                let speedoObj = speedosObj.speedo[i - 1];
+                if (speedoElm.classList.contains(slot)) {
+                    speedoElm.textContent = speedoObj.playerSpeed.toString();
+                    speedoElm.style.setProperty('color', speedoObj.color.getCSSColor());
+                    //console.log('set color of ',slot,' to ',speedoObj.color.getCSSColor());
+                }
+                slot = slot.slice(0, -1);
+            }
+        });
+    }, speedosObj.frametime);
+};
 // load default settings based on defaults of speedosObj
 function speedosObj_to_Elements() {
     slot1Elm.value = speedosObj.speedo[0].speedoType;
@@ -356,4 +626,19 @@ function speedosObj_to_Elements() {
     colorDoubleElm.value = speedosObj.colorDouble.getInputColor();
     colorTripleElm.value = speedosObj.colorTriple.getInputColor();
     colorMaxVelElm.value = speedosObj.colorMaxVel.getInputColor();
+    slider_hspeedo_close_min.value = speedosObj.HSpeedoRange.closeMin.toString();
+    slider_hspeedo_close_max.value = speedosObj.HSpeedoRange.closeMax.toString();
+    slider_hspeedo_good_min.value = speedosObj.HSpeedoRange.goodMin.toString();
+    slider_hspeedo_good_max.value = speedosObj.HSpeedoRange.goodMax.toString();
+    slider_vspeedo_close_min.value = speedosObj.VSpeedoRange.closeMin.toString();
+    slider_vspeedo_close_max.value = speedosObj.VSpeedoRange.closeMax.toString();
+    slider_vspeedo_good_min.value = speedosObj.VSpeedoRange.goodMin.toString();
+    slider_vspeedo_good_max.value = speedosObj.VSpeedoRange.goodMax.toString();
+    slider_aspeedo_close_min.value = speedosObj.ASpeedoRange.closeMin.toString();
+    slider_aspeedo_close_max.value = speedosObj.ASpeedoRange.closeMax.toString();
+    slider_aspeedo_good_min.value = speedosObj.ASpeedoRange.goodMin.toString();
+    slider_aspeedo_good_max.value = speedosObj.ASpeedoRange.goodMax.toString();
+    slider_heighto_double.value = speedosObj.HeightoThresholds.double.toString();
+    slider_heighto_triple.value = speedosObj.HeightoThresholds.triple.toString();
+    slider_heighto_maxVel.value = speedosObj.HeightoThresholds.maxVel.toString();
 }
