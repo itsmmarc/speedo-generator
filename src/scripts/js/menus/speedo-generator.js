@@ -10,7 +10,7 @@ const speedosObj = new Speedos();
 // PREVIEW RENDERING
 //-----------------------------------------------------------------------------------
 function updateSpeedoStyles() {
-    switch (speedosObj.size) {
+    switch (speedosObj.getSize()) {
         case "SMALL":
             $('.speedo').removeClass('speedo-size-medium');
             $('.speedo').removeClass('speedo-size-large');
@@ -164,12 +164,12 @@ const xSlider = document.getElementById('xpos');
 const ySlider = document.getElementById('ypos');
 const markerElm = document.getElementById('marker');
 const markerStyle = window.getComputedStyle(markerElm);
-const markerSize = [+(markerStyle.getPropertyValue('width').replace("px", "")), +(markerStyle.getPropertyValue('height').replace("px", ""))];
+const markerSize = { width: (+(markerStyle.getPropertyValue('width').replace("px", ""))), height: (+(markerStyle.getPropertyValue('height').replace("px", ""))) };
 const markerBoundsElm = document.getElementById('markerbounds');
 const markerBoundsStyle = window.getComputedStyle(markerBoundsElm);
 const markerBoundsWidth = +(markerBoundsStyle.getPropertyValue('width').replace("px", ""));
 const markerBoundsHeight = +(markerBoundsStyle.getPropertyValue('height').replace("px", ""));
-const markerBounds = [markerBoundsWidth - markerSize[0], markerBoundsHeight - markerSize[1]];
+const markerBounds = { width: (markerBoundsWidth - markerSize.width), height: (markerBoundsHeight - markerSize.height) };
 xSlider.addEventListener('input', () => {
     updatePosition_x();
 });
@@ -178,27 +178,28 @@ ySlider.addEventListener('input', () => {
 });
 markerBoundsElm.addEventListener('drag', (event) => {
     if (event.offsetX > 0) {
-        let xValue = event.offsetX / markerBoundsWidth * 100;
+        let xValue = event.offsetX / markerBoundsWidth * +xSlider.max;
         xSlider.value = xValue.toString();
         updatePosition_x();
     }
     if (event.offsetY > 0) {
-        let yValue = event.offsetY / markerBoundsHeight * 100;
+        let yValue = event.offsetY / markerBoundsHeight * +ySlider.max;
         ySlider.value = yValue.toString();
         updatePosition_y();
     }
 });
 function updatePosition_x() {
-    markerElm.style.left = (+xSlider.value * (markerBounds[0] / 100)).toString();
-    let center = markerBounds[0] / 2;
-    let markerLeft = +markerElm.style.left.replace("px", "");
-    let xOffset = markerLeft - center;
-    xOffset = Math.round(xOffset / markerBoundsWidth * 640); // 640 is the width of screen in 16:9 in tf2 hud units
+    // update marker horizontal position
+    markerElm.style.left = (+xSlider.value * (markerBounds.width / +xSlider.max)).toString();
+    // calculate vdf xpos
+    let center = +xSlider.max / 2;
+    let xValue = +xSlider.value;
+    let xOffset = Math.round(xValue - center);
     let newXPos = 'cs-0.5';
-    if (markerLeft == 0) {
+    if (xValue == 0) {
         newXPos = '0';
     }
-    else if (markerLeft == markerBounds[0]) {
+    else if (xValue == +xSlider.max) {
         newXPos = 'rs1';
     }
     else if (xOffset > 0) {
@@ -208,18 +209,20 @@ function updatePosition_x() {
         newXPos = newXPos.concat(xOffset.toString());
     }
     speedosObj.vdfElm.xpos = newXPos;
+    console.log("\nxpos ", newXPos, " | target 96");
 }
 function updatePosition_y() {
-    markerElm.style.top = (+ySlider.value * (markerBounds[1] / 100)).toString();
-    let center = markerBounds[1] / 2;
-    let markerTop = +markerElm.style.top.replace("px", "");
-    let yOffset = markerTop - center;
-    yOffset = Math.round(yOffset / markerBoundsHeight * 480); // 480 is the height of screen in tf2 hud units
+    // update marker vertical position
+    markerElm.style.top = (+ySlider.value * (markerBounds.height / +ySlider.max)).toString();
+    // calculate vdf ypos
+    let center = +ySlider.max / 2;
+    let yValue = +ySlider.value;
+    let yOffset = Math.round(yValue - center);
     let newYPos = 'cs-0.5';
-    if (markerTop == 0) {
+    if (yValue == 0) {
         newYPos = '0';
     }
-    else if (markerTop == markerBounds[1]) {
+    else if (yValue == +ySlider.max) {
         newYPos = 'rs1';
     }
     else if (yOffset > 0) {
@@ -229,6 +232,7 @@ function updatePosition_y() {
         newYPos = newYPos.concat(yOffset.toString());
     }
     speedosObj.vdfElm.ypos = newYPos;
+    console.log("ypos ", newYPos, " | target 116");
 }
 // POSITION IMAGE
 let imageUpload = document.getElementById('imageupload');
@@ -255,7 +259,7 @@ speedoFontElm.addEventListener('change', () => {
 // SIZE
 const speedoSizeElm = document.getElementById('sizes');
 speedoSizeElm.addEventListener('change', () => {
-    speedosObj.size = speedoSizeElm.value;
+    speedosObj.setSize(speedoSizeElm.value);
     updateSpeedoStyles();
 });
 // SHADOWS
@@ -592,7 +596,7 @@ window.onload = () => {
     process_heighto_double();
     process_heighto_triple();
     process_heighto_maxVel();
-    speedosObj.startSpeedoPreview();
+    speedosObj.startPreview();
     setInterval(() => {
         speedoElmArray.forEach(speedoElm => {
             let slot = 'slot_';
@@ -616,7 +620,7 @@ function speedosObj_to_Elements() {
     slot3Elm.value = speedosObj.speedo[2].speedoType;
     slot4Elm.value = speedosObj.speedo[3].speedoType;
     speedoFontElm.value = speedosObj.font;
-    speedoSizeElm.value = speedosObj.size;
+    speedoSizeElm.value = speedosObj.getSize();
     shadowsElm.checked = speedosObj.drawShadows;
     roundingElm.checked = speedosObj.round;
     colorMainElm.value = speedosObj.colorMain.getInputColor();

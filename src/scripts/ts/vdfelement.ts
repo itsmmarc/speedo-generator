@@ -3,17 +3,18 @@ export class VDFElement{
     controlName?: string;
     xpos: string;
     ypos: string;
-    wide?: string;
-    tall?: string;
+    wide: string;
+    tall: string;
     visible: boolean;
     enabled: boolean;
 
-    constructor(name: string, xpos?: string, ypos?: string){
+    constructor(name: string){
         this.fieldName = name;
-        this.xpos = xpos || '0';
-        this.ypos = ypos || '0';
+        this.xpos = '0';
+        this.ypos = '0';
         this.visible = true;
         this.enabled = true;
-
+        this.wide = '';
+        this.tall = '';
     }
 }

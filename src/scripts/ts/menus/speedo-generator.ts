@@ -16,7 +16,7 @@ const speedosObj = new Speedos();
 //-----------------------------------------------------------------------------------
 
 function updateSpeedoStyles(){
-    switch (speedosObj.size) {
+    switch (speedosObj.getSize()) {
         case "SMALL":
             $('.speedo').removeClass('speedo-size-medium');
             $('.speedo').removeClass('speedo-size-large');
@@ -178,13 +178,13 @@ const ySlider = document.getElementById('ypos') as HTMLInputElement;
 
 const markerElm = document.getElementById('marker') as HTMLElement;
 const markerStyle = window.getComputedStyle(markerElm) as CSSStyleDeclaration;
-const markerSize = [+(markerStyle.getPropertyValue('width').replace("px","")),+(markerStyle.getPropertyValue('height').replace("px",""))] as number[];
+const markerSize = {width: (+(markerStyle.getPropertyValue('width').replace("px",""))), height: (+(markerStyle.getPropertyValue('height').replace("px","")))} as {width: number, height: number};
 
 const markerBoundsElm = document.getElementById('markerbounds') as HTMLElement;
 const markerBoundsStyle = window.getComputedStyle(markerBoundsElm) as CSSStyleDeclaration;
 const markerBoundsWidth = +(markerBoundsStyle.getPropertyValue('width').replace("px","")) as number;
 const markerBoundsHeight = +(markerBoundsStyle.getPropertyValue('height').replace("px","")) as number;
-const markerBounds = [markerBoundsWidth - markerSize[0], markerBoundsHeight - markerSize[1]] as number[];
+const markerBounds = {width: (markerBoundsWidth - markerSize.width), height: (markerBoundsHeight - markerSize.height)} as {width: number, height: number};
 
 xSlider.addEventListener('input', () =>{
     updatePosition_x();
@@ -196,13 +196,13 @@ ySlider.addEventListener('input', () =>{
 
 markerBoundsElm.addEventListener('drag', (event: MouseEvent) =>{
     if(event.offsetX > 0){
-        let xValue: number = event.offsetX / markerBoundsWidth * 100;
+        let xValue: number = event.offsetX / markerBoundsWidth * +xSlider.max;
         xSlider.value = xValue.toString();
         
         updatePosition_x();
     }
     if(event.offsetY > 0){
-        let yValue: number = event.offsetY / markerBoundsHeight * 100;
+        let yValue: number = event.offsetY / markerBoundsHeight * +ySlider.max;
         ySlider.value = yValue.toString();
         
         updatePosition_y();
@@ -210,49 +210,51 @@ markerBoundsElm.addEventListener('drag', (event: MouseEvent) =>{
 });
 
 function updatePosition_x(){
-    markerElm.style.left = (+xSlider.value * (markerBounds[0]/100)).toString();
+    // update marker horizontal position
+    markerElm.style.left = (+xSlider.value * (markerBounds.width/+xSlider.max)).toString();
 
-    let center: number = markerBounds[0]/2;
-    let markerLeft = +markerElm.style.left.replace("px","");
-
-    let xOffset: number = markerLeft - center;
-    xOffset = Math.round(xOffset/markerBoundsWidth * 640);  // 640 is the width of screen in 16:9 in tf2 hud units
+    // calculate vdf xpos
+    let center: number = +xSlider.max/2;
+    let xValue: number = +xSlider.value;
+    let xOffset: number = Math.round(xValue - center);
 
     let newXPos: string = 'cs-0.5';
-    if(markerLeft==0){
+    if(xValue == 0){
         newXPos = '0';
-    } else if(markerLeft==markerBounds[0]){
+    } else if(xValue == +xSlider.max){
         newXPos = 'rs1';
-    } else if(xOffset>0){
+    } else if(xOffset > 0){
         newXPos = newXPos.concat('+', xOffset.toString());
-    } else if(xOffset<0){
+    } else if(xOffset < 0){
         newXPos = newXPos.concat(xOffset.toString());
     }
 
     speedosObj.vdfElm.xpos = newXPos;
+    console.log("\nxpos ", newXPos, " | target 96")
 }
 
 function updatePosition_y(){
-    markerElm.style.top = (+ySlider.value * (markerBounds[1]/100)).toString();
+    // update marker vertical position
+    markerElm.style.top = (+ySlider.value * (markerBounds.height/+ySlider.max)).toString();
 
-    let center: number = markerBounds[1]/2;
-    let markerTop = +markerElm.style.top.replace("px","");
-
-    let yOffset: number = markerTop - center;
-    yOffset = Math.round(yOffset/markerBoundsHeight * 480);  // 480 is the height of screen in tf2 hud units
+    // calculate vdf ypos
+    let center: number = +ySlider.max/2;
+    let yValue: number = +ySlider.value;
+    let yOffset: number = Math.round(yValue - center);
 
     let newYPos: string = 'cs-0.5';
-    if(markerTop==0){
+    if(yValue == 0){
         newYPos = '0';
-    } else if(markerTop==markerBounds[1]){
+    } else if(yValue == +ySlider.max){
         newYPos = 'rs1';
-    } else if(yOffset>0){
+    } else if(yOffset > 0){
         newYPos = newYPos.concat('+', yOffset.toString());
-    } else if(yOffset<0){
+    } else if(yOffset < 0 ){
         newYPos = newYPos.concat(yOffset.toString());
     }
 
     speedosObj.vdfElm.ypos = newYPos;
+    console.log("ypos ", newYPos, " | target 116")
 }
 
 // POSITION IMAGE
@@ -288,7 +290,7 @@ speedoFontElm.addEventListener('change', () =>{
 const speedoSizeElm = document.getElementById('sizes') as HTMLSelectElement;
 
 speedoSizeElm.addEventListener('change', () => {
-    speedosObj.size = speedoSizeElm.value as SpeedoSize;
+    speedosObj.setSize(speedoSizeElm.value as SpeedoSize);
     updateSpeedoStyles();
 })
 
@@ -695,7 +697,7 @@ window.onload = () => {
     process_heighto_triple();
     process_heighto_maxVel();
 
-    speedosObj.startSpeedoPreview();
+    speedosObj.startPreview();
     setInterval(() => {
         speedoElmArray.forEach(speedoElm => {
             let slot = 'slot_';
@@ -720,7 +722,7 @@ function speedosObj_to_Elements(){
     slot3Elm.value = speedosObj.speedo[2].speedoType;
     slot4Elm.value = speedosObj.speedo[3].speedoType;
     speedoFontElm.value = speedosObj.font;
-    speedoSizeElm.value = speedosObj.size;
+    speedoSizeElm.value = speedosObj.getSize();
     shadowsElm.checked = speedosObj.drawShadows;
     roundingElm.checked = speedosObj.round;
     colorMainElm.value = speedosObj.colorMain.getInputColor();

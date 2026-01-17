@@ -7,11 +7,13 @@ export class VDFElement {
     tall;
     visible;
     enabled;
-    constructor(name, xpos, ypos) {
+    constructor(name) {
         this.fieldName = name;
-        this.xpos = xpos || '0';
-        this.ypos = ypos || '0';
+        this.xpos = '0';
+        this.ypos = '0';
         this.visible = true;
         this.enabled = true;
+        this.wide = '';
+        this.tall = '';
     }
 }

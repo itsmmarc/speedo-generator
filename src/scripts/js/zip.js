@@ -100,23 +100,8 @@ function generateSpeedoConfig_res(speedos) {
         }
     });
     s = s.concat('\nspeedo_config.res{\n\tspeedos{\n');
-    let size;
-    switch (speedos.size) {
-        case "SMALL":
-            size = '52';
-            break;
-        case "MEDIUM":
-            size = '72';
-            break;
-        case "LARGE":
-            size = '84';
-            break;
-        default:
-            size = '72 // defaulted to medium size, generator compiler error';
-            break;
-    }
-    s = s.concat('\t\twide ', size, '\n');
-    s = s.concat('\t\ttall ', size, '\n');
+    s = s.concat('\t\twide ', speedos.vdfElm.wide, '\n');
+    s = s.concat('\t\ttall ', speedos.vdfElm.tall, '\n');
     s = s.concat('\t\txpos ', speedos.vdfElm.xpos, '\n');
     s = s.concat('\t\typos ', speedos.vdfElm.ypos, '\n');
     let shadowsVisible;

@@ -6,7 +6,7 @@ export class Speedos {
     speedo;
     round;
     drawShadows;
-    size;
+    size; // must use setter so vdfElm can be updated to match
     colorMain;
     colorClose;
     colorGood;
@@ -23,9 +23,16 @@ export class Speedos {
     vdfElm;
     font;
     constructor() {
+        this.vdfElm = new VDFElement('speedos');
+        this.size = {};
+        this.setSize('MEDIUM');
+        this.vdfElm.xpos = 'cs-0.5';
+        this.vdfElm.ypos = 'cs-0.5+54';
         this.round = true;
         this.drawShadows = true;
-        this.size = "MEDIUM";
+        this.framerate = 30;
+        this.frametime = 1000 / this.framerate;
+        this.font = 'roboto';
         this.colorMain = m0reColor.WHITE;
         this.colorClose = m0reColor.BLUE;
         this.colorGood = m0reColor.GREEN;
@@ -37,17 +44,13 @@ export class Speedos {
         this.VSpeedoRange = { closeMin: -1, closeMax: -1, goodMin: -1, goodMax: -1 };
         this.ASpeedoRange = { closeMin: 850, closeMax: 1350, goodMin: 1050, goodMax: 1150 };
         this.HeightoThresholds = { double: 1260, triple: 2160, maxVel: 7700 };
-        this.framerate = 30;
-        this.frametime = 1000 / this.framerate;
         this.speedo = new Array(4);
         this.speedo[0] = new Speedo("NONE", this.colorMain);
         this.speedo[1] = new Speedo("HORIZONTAL", this.colorMain);
         this.speedo[2] = new Speedo("HEIGHTO", this.colorMain);
         this.speedo[3] = new Speedo("NONE", this.colorMain);
-        this.vdfElm = new VDFElement('speedos', 'cs-0.5', 'cs-0.5+54');
-        this.font = 'roboto';
     }
-    startSpeedoPreview() {
+    startPreview() {
         const sine_max = 3500;
         const sine_min = 0;
         const sine_period = 6;
@@ -83,5 +86,29 @@ export class Speedos {
                 speedo.updateColor(this);
             });
         }, this.frametime);
+    }
+    getSize() {
+        return this.size;
+    }
+    setSize(size) {
+        this.size = size;
+        switch (this.size) {
+            case "SMALL":
+                this.vdfElm.wide = '52';
+                this.vdfElm.tall = '52';
+                break;
+            case "MEDIUM":
+                this.vdfElm.wide = '72';
+                this.vdfElm.tall = '72';
+                break;
+            case "LARGE":
+                this.vdfElm.wide = '84';
+                this.vdfElm.tall = '84';
+                break;
+            default:
+                this.vdfElm.wide = '72 // error: defaulted to medium size';
+                this.vdfElm.tall = '72 // error: defaulted to medium size';
+                break;
+        }
     }
 }
