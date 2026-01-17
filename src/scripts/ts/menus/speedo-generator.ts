@@ -178,13 +178,13 @@ const ySlider = document.getElementById('ypos') as HTMLInputElement;
 
 const markerElm = document.getElementById('marker') as HTMLElement;
 const markerStyle = window.getComputedStyle(markerElm) as CSSStyleDeclaration;
-const markerSize = {width: (+(markerStyle.getPropertyValue('width').replace("px",""))), height: (+(markerStyle.getPropertyValue('height').replace("px","")))} as {width: number, height: number};
+let markerSize: {width: number, height: number};
 
 const markerBoundsElm = document.getElementById('markerbounds') as HTMLElement;
 const markerBoundsStyle = window.getComputedStyle(markerBoundsElm) as CSSStyleDeclaration;
 const markerBoundsWidth = +(markerBoundsStyle.getPropertyValue('width').replace("px","")) as number;
 const markerBoundsHeight = +(markerBoundsStyle.getPropertyValue('height').replace("px","")) as number;
-const markerBounds = {width: (markerBoundsWidth - markerSize.width), height: (markerBoundsHeight - markerSize.height)} as {width: number, height: number};
+let markerBounds: {width: number, height: number};
 
 xSlider.addEventListener('input', () =>{
     updatePosition_x();
@@ -209,6 +209,15 @@ markerBoundsElm.addEventListener('drag', (event: MouseEvent) =>{
     }
 });
 
+function updateMarkerSize(){
+    markerElm.style.width = ''.concat((+speedosObj.vdfElm.wide * 0.75).toString(),'px');
+    markerElm.style.height = ''.concat((+speedosObj.vdfElm.tall * 0.75).toString(),'px');
+    markerSize = {width: (+(markerStyle.getPropertyValue('width').replace("px",""))), height: (+(markerStyle.getPropertyValue('height').replace("px","")))};
+    markerBounds = {width: (markerBoundsWidth - markerSize.width), height: (markerBoundsHeight - markerSize.height)};
+    xSlider.max = (852 - +speedosObj.vdfElm.wide).toString();
+    ySlider.max = (480 - +speedosObj.vdfElm.tall).toString();
+}
+
 function updatePosition_x(){
     // update marker horizontal position
     markerElm.style.left = (+xSlider.value * (markerBounds.width/+xSlider.max)).toString();
@@ -230,7 +239,6 @@ function updatePosition_x(){
     }
 
     speedosObj.vdfElm.xpos = newXPos;
-    console.log("\nxpos ", newXPos, " | target 96")
 }
 
 function updatePosition_y(){
@@ -254,7 +262,6 @@ function updatePosition_y(){
     }
 
     speedosObj.vdfElm.ypos = newYPos;
-    console.log("ypos ", newYPos, " | target 116")
 }
 
 // POSITION IMAGE
@@ -291,6 +298,7 @@ const speedoSizeElm = document.getElementById('sizes') as HTMLSelectElement;
 
 speedoSizeElm.addEventListener('change', () => {
     speedosObj.setSize(speedoSizeElm.value as SpeedoSize);
+    updateMarkerSize();
     updateSpeedoStyles();
 })
 
@@ -681,6 +689,7 @@ downloadElm.addEventListener('click', () =>{
 window.onload = () => {
     updateSpeedoStyles();
     speedosObj_to_Elements();
+    updateMarkerSize();
     process_hspeedo_close_min();
     process_hspeedo_close_max();
     process_hspeedo_good_min();
@@ -707,7 +716,6 @@ window.onload = () => {
                 if(speedoElm.classList.contains(slot)){
                     speedoElm.textContent = speedoObj.playerSpeed.toString();
                     speedoElm.style.setProperty('color', speedoObj.color.getCSSColor());
-                    //console.log('set color of ',slot,' to ',speedoObj.color.getCSSColor());
                 }
                 slot = slot.slice(0, -1);
             }

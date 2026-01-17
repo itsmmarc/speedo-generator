@@ -233,8 +233,8 @@ main{
     #marker{
         top: calc(60% - 26px);
         left: calc(50% - 26px);
-        width: 52px;
-        height: 52px;
+        // width: 54px;
+        // height: 54px;
         position: absolute;
         
         background-color: rgba(35, 125, 235, 0.623);
@@ -322,24 +322,24 @@ aside{
         height: 45px;
     }
     .speedo-size-small{
-        font-size: 2rem;
-        height: 30px;
+        font-size: 2rem !important;
+        height: 30px  !important;
 
         &.shadow{
             margin-top: -30px;
         }
     }
     .speedo-size-medium{
-        font-size: 3rem;
-        height: 45px;
+        font-size: 3rem  !important;
+        height: 45px  !important;
 
         &.shadow{
             margin-top: -45px;
         }
     }
     .speedo-size-large{
-        font-size: 4rem;
-        height: 60px;
+        font-size: 4rem  !important;
+        height: 60px  !important;
 
         &.shadow{
             margin-top: -60px;

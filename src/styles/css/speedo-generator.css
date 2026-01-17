@@ -215,8 +215,6 @@ main #imageupload_container {
 main #marker {
   top: calc(60% - 26px);
   left: calc(50% - 26px);
-  width: 52px;
-  height: 52px;
   position: absolute;
   background-color: rgba(35, 125, 235, 0.623);
 }
@@ -296,22 +294,22 @@ aside .speedo {
   height: 45px;
 }
 aside .speedo-size-small {
-  font-size: 2rem;
-  height: 30px;
+  font-size: 2rem !important;
+  height: 30px !important;
 }
 aside .speedo-size-small.shadow {
   margin-top: -30px;
 }
 aside .speedo-size-medium {
-  font-size: 3rem;
-  height: 45px;
+  font-size: 3rem !important;
+  height: 45px !important;
 }
 aside .speedo-size-medium.shadow {
   margin-top: -45px;
 }
 aside .speedo-size-large {
-  font-size: 4rem;
-  height: 60px;
+  font-size: 4rem !important;
+  height: 60px !important;
 }
 aside .speedo-size-large.shadow {
   margin-top: -60px;

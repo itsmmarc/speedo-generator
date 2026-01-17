@@ -164,12 +164,12 @@ const xSlider = document.getElementById('xpos');
 const ySlider = document.getElementById('ypos');
 const markerElm = document.getElementById('marker');
 const markerStyle = window.getComputedStyle(markerElm);
-const markerSize = { width: (+(markerStyle.getPropertyValue('width').replace("px", ""))), height: (+(markerStyle.getPropertyValue('height').replace("px", ""))) };
+let markerSize;
 const markerBoundsElm = document.getElementById('markerbounds');
 const markerBoundsStyle = window.getComputedStyle(markerBoundsElm);
 const markerBoundsWidth = +(markerBoundsStyle.getPropertyValue('width').replace("px", ""));
 const markerBoundsHeight = +(markerBoundsStyle.getPropertyValue('height').replace("px", ""));
-const markerBounds = { width: (markerBoundsWidth - markerSize.width), height: (markerBoundsHeight - markerSize.height) };
+let markerBounds;
 xSlider.addEventListener('input', () => {
     updatePosition_x();
 });
@@ -188,6 +188,14 @@ markerBoundsElm.addEventListener('drag', (event) => {
         updatePosition_y();
     }
 });
+function updateMarkerSize() {
+    markerElm.style.width = ''.concat((+speedosObj.vdfElm.wide * 0.75).toString(), 'px');
+    markerElm.style.height = ''.concat((+speedosObj.vdfElm.tall * 0.75).toString(), 'px');
+    markerSize = { width: (+(markerStyle.getPropertyValue('width').replace("px", ""))), height: (+(markerStyle.getPropertyValue('height').replace("px", ""))) };
+    markerBounds = { width: (markerBoundsWidth - markerSize.width), height: (markerBoundsHeight - markerSize.height) };
+    xSlider.max = (852 - +speedosObj.vdfElm.wide).toString();
+    ySlider.max = (480 - +speedosObj.vdfElm.tall).toString();
+}
 function updatePosition_x() {
     // update marker horizontal position
     markerElm.style.left = (+xSlider.value * (markerBounds.width / +xSlider.max)).toString();
@@ -209,7 +217,6 @@ function updatePosition_x() {
         newXPos = newXPos.concat(xOffset.toString());
     }
     speedosObj.vdfElm.xpos = newXPos;
-    console.log("\nxpos ", newXPos, " | target 96");
 }
 function updatePosition_y() {
     // update marker vertical position
@@ -232,7 +239,6 @@ function updatePosition_y() {
         newYPos = newYPos.concat(yOffset.toString());
     }
     speedosObj.vdfElm.ypos = newYPos;
-    console.log("ypos ", newYPos, " | target 116");
 }
 // POSITION IMAGE
 let imageUpload = document.getElementById('imageupload');
@@ -260,6 +266,7 @@ speedoFontElm.addEventListener('change', () => {
 const speedoSizeElm = document.getElementById('sizes');
 speedoSizeElm.addEventListener('change', () => {
     speedosObj.setSize(speedoSizeElm.value);
+    updateMarkerSize();
     updateSpeedoStyles();
 });
 // SHADOWS
@@ -581,6 +588,7 @@ downloadElm.addEventListener('click', () => {
 window.onload = () => {
     updateSpeedoStyles();
     speedosObj_to_Elements();
+    updateMarkerSize();
     process_hspeedo_close_min();
     process_hspeedo_close_max();
     process_hspeedo_good_min();
@@ -606,7 +614,6 @@ window.onload = () => {
                 if (speedoElm.classList.contains(slot)) {
                     speedoElm.textContent = speedoObj.playerSpeed.toString();
                     speedoElm.style.setProperty('color', speedoObj.color.getCSSColor());
-                    //console.log('set color of ',slot,' to ',speedoObj.color.getCSSColor());
                 }
                 slot = slot.slice(0, -1);
             }
