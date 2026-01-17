@@ -1,0 +1,23 @@
+{
+    "printWidth": 120,
+    "tabWidth": 8,
+    "semi": true,
+    "singleQuote": false,
+
+    "overrides": [
+        {
+            "files": "*.html",
+            "options": {
+                "printWidth": 140,
+                "tabWidth": 4,
+                "bracketSameLine": false
+            }
+        },
+        {
+            "files": "*.json",
+            "options": {
+                "tabWidth": 4
+            }
+        }
+    ]
+}
