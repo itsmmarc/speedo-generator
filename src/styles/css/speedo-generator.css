@@ -240,6 +240,7 @@ main .range-sliders {
 main .range-text {
   position: absolute;
   width: 9%;
+  min-width: 40px;
 }
 main input[type=range].dual {
   pointer-events: none;

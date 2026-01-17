@@ -69,9 +69,18 @@ export class Speedos {
             }
             // update speed & color of all speedo slots
             this.speedo.forEach(speedo => {
-                speedo.playerSpeed = this.previewSpeed;
+                if (speedo.speedoType == 'HEIGHTO') {
+                    speedo.playerSpeed = Math.round(this.previewSpeed * (9999 / 3500));
+                    if (this.round) {
+                        speedo.playerSpeed /= 10;
+                        speedo.playerSpeed = Math.round(speedo.playerSpeed);
+                        speedo.playerSpeed *= 10;
+                    }
+                }
+                else {
+                    speedo.playerSpeed = this.previewSpeed;
+                }
                 speedo.updateColor(this);
-                //console.log(speedo.color.getCSSColor());
             });
         }, this.frametime);
     }

@@ -39,7 +39,7 @@ function generateSpeedoConfig_vmt(speedos) {
     s = s.concat('#base fonts/', speedos.font, '/digits.vmt');
     s = s.concat('\nUnlitGeneric{\n');
     // rounding
-    s = s.concat('\t$round ');
+    s = s.concat('\t$round\t');
     if (speedos.round) {
         s = s.concat('1\n');
     }
@@ -57,18 +57,18 @@ function generateSpeedoConfig_vmt(speedos) {
     s = s.concat('\t$hCloseMin\t', speedos.HSpeedoRange.closeMin.toString(), '\n');
     s = s.concat('\t$hCloseMax\t', speedos.HSpeedoRange.closeMax.toString(), '\n');
     s = s.concat('\t$hGoodMin\t', speedos.HSpeedoRange.goodMin.toString(), '\n');
-    s = s.concat('\t$hGoodMin\t', speedos.HSpeedoRange.goodMax.toString(), '\n');
+    s = s.concat('\t$hGoodMax\t', speedos.HSpeedoRange.goodMax.toString(), '\n');
     s = s.concat('\t$vCloseMin\t', speedos.HSpeedoRange.closeMin.toString(), '\n');
     s = s.concat('\t$vCloseMax\t', speedos.HSpeedoRange.closeMax.toString(), '\n');
     s = s.concat('\t$vGoodMin\t', speedos.HSpeedoRange.goodMin.toString(), '\n');
-    s = s.concat('\t$vGoodMin\t', speedos.HSpeedoRange.goodMax.toString(), '\n');
+    s = s.concat('\t$vGoodMax\t', speedos.HSpeedoRange.goodMax.toString(), '\n');
     s = s.concat('\t$aCloseMin\t', speedos.HSpeedoRange.closeMin.toString(), '\n');
     s = s.concat('\t$aCloseMax\t', speedos.HSpeedoRange.closeMax.toString(), '\n');
     s = s.concat('\t$aGoodMin\t', speedos.HSpeedoRange.goodMin.toString(), '\n');
-    s = s.concat('\t$aGoodMin\t', speedos.HSpeedoRange.goodMax.toString(), '\n');
-    s = s.concat('\t$doubleMin\t', speedos.HeightoThresholds.double.toString(), '\n');
-    s = s.concat('\t$tripleMin\t', speedos.HeightoThresholds.triple.toString(), '\n');
-    s = s.concat('\t$maxVelMin\t', speedos.HeightoThresholds.maxVel.toString(), '\n');
+    s = s.concat('\t$aGoodMax\t', speedos.HSpeedoRange.goodMax.toString(), '\n');
+    s = s.concat('\t$doubleThreshold\t', speedos.HeightoThresholds.double.toString(), '\n');
+    s = s.concat('\t$tripleThreshold\t', speedos.HeightoThresholds.triple.toString(), '\n');
+    s = s.concat('\t$maxVelThreshold\t', speedos.HeightoThresholds.maxVel.toString(), '\n');
     s = s.concat('}');
     return s;
 }
@@ -135,8 +135,12 @@ function generateSpeedoConfig_res(speedos) {
 }
 function createReadme() {
     return '# mmarc Speedo Generator\n\n' + '## Installation:\n'
+        + '0. **Linux users** must edit `cfg/speedo_config.cfg` and replace `%YOURHUD%` with the exact name of your HUD\'s folder\n'
         + '1. Drag and drop the contents of `YOURHUD` into your HUD\'s folder. eg: `tf/custom/m0rehud/`\.\n'
         + '2. Add the following line to the top of your HUD\'s `resource/ui/hudplayerclass.res`\n'
         + '#base ../../speedo/speedo.res\n'
-        + '3. Enjoy :)';
+        + "3. Add the following line to `tf/cfg/autoexec.cfg' in \n"
+        + 'exec speedo_config\n'
+        + '\n## Usage:\n'
+        + 'Use the command `speedo_toggle` (or `speedo_enable` and `speedo_disable`) ingame to toggle the speedos on and off';
 }
