@@ -207,7 +207,7 @@ const markerElm = document.getElementById("marker") as HTMLElement;
 const markerStyle = window.getComputedStyle(markerElm) as CSSStyleDeclaration;
 let markerSize: { width: number; height: number };
 
-const markerBoundsElm = document.getElementById("markerbounds") as HTMLElement;
+const markerBoundsElm = document.getElementById("position_preview_img") as HTMLElement; // using image within to prevent dragging on upload image button
 const markerBoundsStyle = window.getComputedStyle(markerBoundsElm) as CSSStyleDeclaration;
 const markerBoundsWidth = +markerBoundsStyle.getPropertyValue("width").replace("px", "") as number;
 const markerBoundsHeight = +markerBoundsStyle.getPropertyValue("height").replace("px", "") as number;
@@ -222,13 +222,15 @@ ySlider.addEventListener("input", () => {
 });
 
 markerBoundsElm.addEventListener("drag", (event: MouseEvent) => {
-        if (event.offsetX > 0) {
+        event.preventDefault();
+
+        if (event.clientX != 0) {
                 let xValue: number = (event.offsetX / markerBoundsWidth) * +xSlider.max;
                 xSlider.value = xValue.toString();
 
                 updatePosition_x();
         }
-        if (event.offsetY > 0) {
+        if (event.clientY != 0) {
                 let yValue: number = (event.offsetY / markerBoundsHeight) * +ySlider.max;
                 ySlider.value = yValue.toString();
 
