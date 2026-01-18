@@ -3,21 +3,42 @@
   background-color: rgb(255, 0, 255);
 }
 
+.font-roboto {
+  font-weight: 900;
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
+
+.font-montserrat {
+  font-weight: 400;
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
+
+.font-poppins {
+  font-weight: 900;
+  font-family: "Poppins", sans-serif;
+  font-optical-sizing: auto;
+  font-style: italic;
+  font-variation-settings: "wdth" 100;
+}
+
 body {
+  margin: 0;
   background-image: url("../images/items_bg.webp");
   background-size: cover;
   background-attachment: fixed;
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 200px 3fr 1fr;
 }
-
-/* Nav */
-nav {
-  width: 205px;
-  min-width: 180px;
+body nav {
   background-color: rgba(17, 20, 20, 0.8);
 }
-nav button {
+body nav button {
   margin-left: 0px;
   width: 100%;
   padding: 10px;
@@ -29,104 +50,123 @@ nav button {
   background-color: rgb(16, 17, 17);
   color: white;
 }
-nav #about button {
+body nav #about button {
   color: rgb(174, 178, 178);
 }
-nav button:hover {
+body nav button:hover {
   background-color: rgb(81, 181, 182) !important;
   color: black !important;
 }
-nav #menuitems {
+body nav #menuitems {
   list-style-type: none;
   padding: 0px;
 }
-
-/* Customization Options */
-main {
-  max-width: 1200px;
-  min-width: 700px;
+body main {
   background-color: rgba(0, 0, 0, 0.8);
-  display: flex;
-  align-items: start;
-  justify-content: start;
-  /* Hide the browser's default checkbox */
-  /* Create a custom checkbox */
-  /* On mouse-over, add a grey background color */
-  /* When the checkbox is checked, add a blue background */
-  /* Create the checkmark/indicator (hidden when not checked) */
-  /* Show the checkmark when checked */
-  /* Style the checkmark/indicator */
-  /* Position Customization */
-  /* Range Sliders */
 }
-main h1 {
+body main h1 {
   margin: 1%;
   color: rgb(174, 178, 178);
+  font-weight: 900;
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
   font-size: 4rem;
-  font-weight: 900;
-  font-family: "Roboto", sans-serif;
-  font-optical-sizing: auto;
-  font-style: normal;
-  font-variation-settings: "wdth" 100;
-  position: relative;
-  z-index: 0;
+  border-width: 0.2rem;
+  border-bottom-style: solid;
+  border-color: rgb(104, 101, 100);
 }
-main h2 {
-  color: rgb(174, 178, 178);
-  font-size: 2rem;
-  font-weight: 900;
-  font-family: "Roboto", sans-serif;
-  font-optical-sizing: auto;
-  font-style: normal;
-  font-variation-settings: "wdth" 100;
-  position: relative;
-  z-index: 0;
+body main h2 {
+  padding-left: 1rem;
   margin-bottom: 9px;
-}
-main h3 {
   color: rgb(174, 178, 178);
-  font-size: 1.5rem;
   font-weight: 900;
   font-family: "Roboto", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
   font-variation-settings: "wdth" 100;
-  position: relative;
-  z-index: 0;
+  font-size: 2rem;
+}
+body main h3 {
   margin-bottom: 9px;
   margin-top: 9px;
-}
-main label {
   color: rgb(174, 178, 178);
-  font-size: 1.5rem;
   font-weight: 900;
   font-family: "Roboto", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
   font-variation-settings: "wdth" 100;
-  position: relative;
-  z-index: 0;
+  font-size: 1.7rem;
 }
-main .option_container {
-  position: relative;
-  margin-bottom: 10px;
-  height: -moz-fit-content;
-  height: fit-content;
+body main label {
+  color: rgb(174, 178, 178);
+  font-weight: 900;
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+  font-size: 1.5rem;
+}
+body main form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+body main form .options-container {
+  padding: 1rem;
+}
+body main form .colors-container {
+  display: grid;
+  grid-template-columns: max-content;
+  grid-auto-rows: max-content;
+  gap: 0.3rem;
+  align-content: start;
+}
+body main form .colors-container * {
+  margin: 0;
+}
+body main form .range-container {
+  display: grid;
+  grid-template-columns: 3rem 1fr 3rem;
+  grid-template-rows: 2rem;
+  align-items: center;
+}
+body main form .range-container .range-text {
+  text-align: center;
+  height: 1.7rem;
+}
+body main form .range-container .range-sliders {
+  margin-left: 0.3rem;
+  margin-right: 0.3rem;
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-template-rows: subgrid;
+  justify-items: center;
+  align-items: center;
+}
+body main form .range-container .range-sliders * {
   width: 100%;
+  grid-row: 2/span 1;
+  grid-column: 1/span 1;
 }
-main .option_container button {
+body main form #option_position {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  grid-template-rows: max-content max-content max-content;
+}
+body main button {
   color: white;
   background-color: rgb(104, 101, 100);
   width: 180px;
   height: 80px;
 }
-main select {
+body main select {
   color: white;
   background-color: rgb(104, 101, 100);
   width: 180px;
   height: 40px;
 }
-main .checkbox {
+body main .checkbox {
   display: block;
   position: relative;
   padding-left: 35px;
@@ -136,7 +176,7 @@ main .checkbox {
      -moz-user-select: none;
           user-select: none;
 }
-main .checkbox input {
+body main .checkbox input {
   position: absolute;
   opacity: 0;
   cursor: pointer;
@@ -144,7 +184,7 @@ main .checkbox input {
   width: 0;
   z-index: 1;
 }
-main .checkmark {
+body main .checkmark {
   position: absolute;
   top: 0;
   left: 0;
@@ -153,21 +193,21 @@ main .checkmark {
   z-index: 0;
   background-color: #eee;
 }
-main .checkbox:hover input ~ .checkmark {
+body main .checkbox:hover input ~ .checkmark {
   background-color: #ccc;
 }
-main .checkbox input:checked ~ .checkmark {
-  background-color: #2196F3;
+body main .checkbox input:checked ~ .checkmark {
+  background-color: #2196f3;
 }
-main .checkmark:after {
+body main .checkmark:after {
   content: "";
   position: absolute;
   display: none;
 }
-main .checkbox input:checked ~ .checkmark:after {
+body main .checkbox input:checked ~ .checkmark:after {
   display: block;
 }
-main .checkbox .checkmark:after {
+body main .checkbox .checkmark:after {
   left: 9px;
   top: 5px;
   width: 5px;
@@ -176,35 +216,35 @@ main .checkbox .checkmark:after {
   border-width: 0 3px 3px 0;
   transform: rotate(45deg);
 }
-main input#ypos {
+body main input#ypos {
   height: 360px;
-  margin-right: 5px;
+  margin: 0;
   writing-mode: vertical-lr;
   width: 16px;
 }
-main input#xpos {
-  width: 640px;
-  margin-left: 23px;
+body main input#xpos {
+  width: 100%;
+  margin: 0;
   vertical-align: bottom;
 }
-main #markerbounds {
+body main #markerbounds {
   cursor: move;
   width: 640px;
   height: 360px;
   background-color: rgb(150, 230, 255);
   position: relative;
 }
-main img {
+body main img {
   height: 100%;
   width: 100%;
   -o-object-fit: contain;
      object-fit: contain;
   position: absolute;
 }
-main input[type=file] {
+body main input[type=file] {
   visibility: hidden;
 }
-main #imageupload_container {
+body main #imageupload_container {
   right: 0;
   margin: 5px;
   position: absolute;
@@ -212,210 +252,98 @@ main #imageupload_container {
   height: 40px;
   width: 40px;
 }
-main #marker {
+body main #marker {
   top: calc(60% - 26px);
   left: calc(50% - 26px);
   position: absolute;
   background-color: rgba(35, 125, 235, 0.623);
 }
-main #xhair {
+body main #xhair {
   top: calc(50% - 2px);
   left: calc(50% - 2px);
   width: 4px;
   height: 4px;
   position: absolute;
-  /* Turn into crosshair shape
-  border-radius: 1.5px;
-  corner-shape: notch;
-  */
   background-color: rgb(0, 255, 221);
 }
-main .range-sliders {
-  position: absolute;
-  margin-left: 9.5%;
-  width: 80%;
-}
-main .range-text {
-  position: absolute;
-  width: 9%;
-  min-width: 40px;
-}
-main input[type=range].dual {
+body main input[type=range].dual {
   pointer-events: none;
-  position: absolute;
-  width: 100%;
-  margin: 2px;
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
   background-color: transparent;
 }
-main input[type=range].dual::-webkit-slider-thumb {
+body main input[type=range].dual::-webkit-slider-thumb {
   pointer-events: auto;
   -webkit-appearance: none;
   cursor: pointer;
   background-color: #3264fe;
   width: 7px;
   height: 25px;
-  margin-left: 0px;
-  margin-top: -9px;
   position: relative;
 }
-main input[type=range].dual::-webkit-slider-thumb:active {
+body main input[type=range].dual::-webkit-slider-thumb:active {
   background-color: white;
   border: 1px solid #3264fe;
 }
-main .slider-track {
-  width: 100%;
-  height: 5px;
+body main .slider-track {
+  height: 0.3rem;
   pointer-events: none;
-  position: absolute;
-  margin: 2px;
-  top: 0;
-  bottom: 0;
   border-radius: 5px;
 }
-
-/* Speedo Preview */
-aside {
-  width: 30%;
-  max-width: 800px;
-  min-width: 180px;
-  display: flex;
-  align-items: center;
+body aside {
+  height: 100vh;
+  height: 100dvh;
+  position: sticky;
+  align-self: start;
+  top: 0;
+  display: grid;
+  grid-template-columns: 300px;
+  grid-template-rows: max-content max-content max-content max-content;
   justify-content: center;
-  /*
-  background-color: rgba(0, 0, 0, 0.2);
-  */
+  align-content: center;
 }
-aside .speedo {
+body aside .slot_1 {
+  grid-row: 1/2;
+}
+body aside .slot_2 {
+  grid-row: 2/3;
+}
+body aside .slot_3 {
+  grid-row: 3/4;
+}
+body aside .slot_4 {
+  grid-row: 4/5;
+}
+body aside .speedo {
+  grid-column: 1/2;
   color: white;
   text-align: center;
-  height: 45px;
 }
-aside .speedo-size-small {
-  font-size: 2rem !important;
-  height: 30px !important;
-}
-aside .speedo-size-small.shadow {
-  margin-top: -30px;
-}
-aside .speedo-size-medium {
-  font-size: 3rem !important;
-  height: 45px !important;
-}
-aside .speedo-size-medium.shadow {
-  margin-top: -45px;
-}
-aside .speedo-size-large {
-  font-size: 4rem !important;
-  height: 60px !important;
-}
-aside .speedo-size-large.shadow {
-  margin-top: -60px;
-}
-aside .font-roboto {
-  font-size: 3rem;
-  font-weight: 900;
-  font-family: "Roboto", sans-serif;
-  font-optical-sizing: auto;
-  font-style: normal;
-  font-variation-settings: "wdth" 100;
-  position: relative;
-  z-index: 0;
-}
-aside .font-montserrat {
-  font-size: 3rem;
-  font-weight: 400;
-  font-family: "Montserrat", sans-serif;
-  font-optical-sizing: auto;
-  font-style: normal;
-  font-variation-settings: "wdth" 100;
-  position: relative;
-  z-index: 0;
-}
-aside .font-poppins {
-  font-size: 3rem;
-  font-weight: 900;
-  font-family: "Poppins", sans-serif;
-  font-optical-sizing: auto;
-  font-style: italic;
-  font-variation-settings: "wdth" 100;
-  position: relative;
-  z-index: 0;
-}
-aside .shadow {
+body aside .shadow {
+  margin-top: 0.3rem;
+  margin-left: 0.3rem;
   color: rgba(0, 0, 0, 0.8) !important;
-  margin-top: -45px;
-  padding-top: 4px;
-  padding-left: 4px;
-  position: relative;
   z-index: -1;
 }
-
-/* Util */
-.left {
-  left: 0;
+body aside .speedo-size-small {
+  font-size: 2rem !important;
+}
+body aside .speedo-size-medium {
+  font-size: 3rem !important;
+}
+body aside .speedo-size-large {
+  font-size: 4rem !important;
 }
 
-.right {
-  right: 0;
+.col-span-2 {
+  grid-column-end: span 2;
 }
 
-.row {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 100%;
+.col-span-3 {
+  grid-column-end: span 3;
 }
 
-.column {
-  display: flex;
-  flex-direction: column;
-  flex-basis: 100%;
-  flex: 1;
-}
-
-.flex-container {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-start;
-  align-items: flex-start;
-}
-
-.flex-33 {
-  flex-basis: 31%;
-  margin-left: 1%;
-  margin-right: 1%;
-}
-
-.flex-50 {
-  flex-basis: 48%;
-  margin-left: 1%;
-  margin-right: 1%;
-}
-
-.flex-66 {
-  flex-basis: 64%;
-  margin-left: 1%;
-  margin-right: 1%;
-}
-
-.flex-100 {
-  flex-basis: 98%;
-  margin-left: 1%;
-  margin-right: 1%;
-}
-
-.flex-break {
-  flex-basis: 100%;
-  height: 0;
-}
-
-/* Need this to always be at the bottom to overwrite all other properties */
 .hidden {
-  /*
-  display: none;
-  */
   visibility: hidden;
 }/*# sourceMappingURL=speedo-generator.css.map */

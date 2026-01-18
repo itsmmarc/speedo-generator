@@ -300,11 +300,11 @@ function updatePosition_y() {
 }
 
 // POSITION IMAGE
-let imageUpload = document.getElementById("imageupload") as HTMLInputElement;
-let posPreviewImg = document.getElementById("position_preview_img") as HTMLImageElement;
+let imageUploadElm = document.getElementById("imageupload") as HTMLInputElement;
+let positionPreviewImgElm = document.getElementById("position_preview_img") as HTMLImageElement;
 
-imageUpload.addEventListener("change", () => {
-        changeImage(imageUpload);
+imageUploadElm.addEventListener("change", () => {
+        changeImage(imageUploadElm);
 });
 
 function changeImage(input: HTMLInputElement) {
@@ -312,12 +312,10 @@ function changeImage(input: HTMLInputElement) {
 
         if (input.files && input.files[0]) {
                 reader = new FileReader();
-
-                reader.onload = () => {
-                        posPreviewImg.setAttribute("src", reader.result as string);
-                };
-
                 reader.readAsDataURL(input.files[0]);
+                reader.onload = () => {
+                        positionPreviewImgElm.setAttribute("src", reader.result as string);
+                };
         }
 }
 

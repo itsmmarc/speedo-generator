@@ -273,19 +273,19 @@ function updatePosition_y() {
     speedosObj.vdfElm.ypos = newYPos;
 }
 // POSITION IMAGE
-let imageUpload = document.getElementById("imageupload");
-let posPreviewImg = document.getElementById("position_preview_img");
-imageUpload.addEventListener("change", () => {
-    changeImage(imageUpload);
+let imageUploadElm = document.getElementById("imageupload");
+let positionPreviewImgElm = document.getElementById("position_preview_img");
+imageUploadElm.addEventListener("change", () => {
+    changeImage(imageUploadElm);
 });
 function changeImage(input) {
     let reader;
     if (input.files && input.files[0]) {
         reader = new FileReader();
-        reader.onload = () => {
-            posPreviewImg.setAttribute("src", reader.result);
-        };
         reader.readAsDataURL(input.files[0]);
+        reader.onload = () => {
+            positionPreviewImgElm.setAttribute("src", reader.result);
+        };
     }
 }
 // FONT
