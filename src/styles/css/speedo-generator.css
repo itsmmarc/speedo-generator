@@ -63,9 +63,18 @@ body nav #menuitems {
 }
 body main {
   background-color: rgba(0, 0, 0, 0.8);
+  min-width: 700px;
 }
-body main h1 {
-  margin: 1%;
+body main .top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding-left: 0.5rem;
+  padding-bottom: 0.3rem;
+  margin: 0;
+}
+body main .top-bar h1 {
+  margin: 0;
   color: rgb(174, 178, 178);
   font-weight: 900;
   font-family: "Roboto", sans-serif;
@@ -73,9 +82,16 @@ body main h1 {
   font-style: normal;
   font-variation-settings: "wdth" 100;
   font-size: 4rem;
+  -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.384);
   border-width: 0.2rem;
   border-bottom-style: solid;
   border-color: rgb(104, 101, 100);
+}
+body main .top-bar button {
+  float: right;
+  height: 2.2rem;
 }
 body main h2 {
   padding-left: 1rem;
@@ -110,7 +126,21 @@ body main label {
 }
 body main form {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  grid-template-columns: minmax(340px, 33%) clamp(40rem, 67%, 55rem);
+}
+@media only screen and (max-width: 1550px) {
+  body main form {
+    grid-template-columns: max(700px, 100%);
+    justify-items: center;
+  }
+  body main form > * {
+    justify-content: center;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 0;
+    width: calc(100% - 3.5rem);
+  }
 }
 body main form .options-container {
   padding: 1rem;
@@ -336,12 +366,8 @@ body aside .speedo-size-large {
   font-size: 4rem !important;
 }
 
-.col-span-2 {
-  grid-column-end: span 2;
-}
-
-.col-span-3 {
-  grid-column-end: span 3;
+.col-span-all {
+  grid-column: 1/-1;
 }
 
 .hidden {

@@ -70,16 +70,33 @@ body {
         // Customization Options
         main {
                 background-color: rgba(0, 0, 0, 0.8);
-                h1 {
-                        margin: 1%;
-                        color: rgb(174, 178, 178);
+                min-width: 700px;
+                .top-bar {
+                        position: sticky;
+                        top: 0;
+                        z-index: 1;
+                        padding-left: 0.5rem;
+                        padding-bottom: 0.3rem;
+                        margin: 0;
 
-                        @include font-roboto();
-                        font-size: 4rem;
+                        h1 {
+                                margin: 0;
+                                color: rgb(174, 178, 178);
 
-                        border-width: 0.2rem;
-                        border-bottom-style: solid;
-                        border-color: rgb(104, 101, 100);
+                                @include font-roboto();
+                                font-size: 4rem;
+
+                                backdrop-filter: blur(5px);
+                                background-color: rgba(0, 0, 0, 0.384);
+
+                                border-width: 0.2rem;
+                                border-bottom-style: solid;
+                                border-color: rgb(104, 101, 100);
+                        }
+                        button {
+                                float: right;
+                                height: 2.2rem;
+                        }
                 }
                 h2 {
                         padding-left: 1rem;
@@ -106,7 +123,19 @@ body {
 
                 form {
                         display: grid;
-                        grid-template-columns: 1fr 1fr;
+                        width: 100%;
+                        grid-template-columns: minmax(340px, 33%) clamp(40rem, 67%, 55rem);
+                        @media only screen and (max-width: 1550px) {
+                                grid-template-columns: max(700px, 100%);
+                                justify-items: center;
+                                > * {
+                                        justify-content: center;
+                                        margin-left: auto !important;
+                                        margin-right: auto !important;
+                                        padding-left: 0;
+                                        width: calc(100% - 3.5rem);
+                                }
+                        }
 
                         .options-container {
                                 // background-color: olive;
@@ -370,11 +399,8 @@ body {
         }
 }
 
-.col-span-2 {
-        grid-column-end: span 2;
-}
-.col-span-3 {
-        grid-column-end: span 3;
+.col-span-all {
+        grid-column: 1 / -1;
 }
 // Need this to always be at the bottom to overwrite all other properties
 .hidden {

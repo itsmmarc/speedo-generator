@@ -18,13 +18,14 @@
         </nav>
         <!-- CUSTOMIZATION OPTIONS -->
         <main class="">
-            <h1 class="">Speedo Generator</h1>
-            <div class="option-container">
+            <div class="top-bar">
+                <h1 class="">Speedo Generator</h1>
                 <button id="download-btn">Download</button>
+                <button id="upload-btn">Upload</button>
             </div>
 
             <form>
-                <h2 class="col-span-2">Settings</h2>
+                <h2 class="col-span-all">Settings</h2>
 
                 <div class="options-container">
                     <div class="option-container" id="option_slots">
@@ -110,8 +111,8 @@
                         </label>
                     </div>
                 </div>
-                <div class="options-container" id="option_position">
-                    <label class="col-span-2">Position</label>
+                <div class="option-container" id="option_position">
+                    <label class="col-span-all">Position</label>
 
                     <input type="range" id="ypos" min="0" max="408" value="292" />
                     <div id="position_preview">
@@ -129,7 +130,7 @@
                     <input type="range" id="xpos" min="0" max="784" />
                 </div>
 
-                <h2 class="col-span-2">Colors</h2>
+                <h2 class="col-span-all">Colors</h2>
 
                 <div class="options-container">
                     <h3>Speedo Dynamic Colors</h3>
