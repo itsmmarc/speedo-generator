@@ -3,205 +3,209 @@
   background-color: rgb(255, 0, 255);
 }
 
+* {
+  margin: 0;
+}
+
 .font-roboto {
+  font-style: normal;
   font-weight: 900;
   font-family: "Roboto", sans-serif;
   font-optical-sizing: auto;
-  font-style: normal;
   font-variation-settings: "wdth" 100;
 }
 
 .font-montserrat {
+  font-style: normal;
   font-weight: 400;
   font-family: "Montserrat", sans-serif;
   font-optical-sizing: auto;
-  font-style: normal;
   font-variation-settings: "wdth" 100;
 }
 
 .font-poppins {
+  font-style: italic;
   font-weight: 900;
   font-family: "Poppins", sans-serif;
   font-optical-sizing: auto;
-  font-style: italic;
   font-variation-settings: "wdth" 100;
 }
 
 body {
+  display: grid;
+  grid-template-columns: clamp(120px, 15%, 200px) 3fr 1fr;
   margin: 0;
   background-image: url("../images/items_bg.webp");
   background-size: cover;
   background-attachment: fixed;
-  display: grid;
-  grid-template-columns: 200px 3fr 1fr;
 }
 body nav {
   background-color: rgba(17, 20, 20, 0.8);
 }
 body nav button {
-  margin-left: 0px;
-  width: 100%;
-  padding: 10px;
   margin: 1px 0px 1px 0px;
-  font-size: 1.1rem;
-  font-weight: 700;
+  margin-left: 0px;
   border: none;
   border-radius: 4px;
   background-color: rgb(16, 17, 17);
-  color: white;
+  padding: 10px;
+  width: 100%;
+  color: rgb(255, 255, 255);
+  font-weight: 700;
+  font-size: 1.1rem;
 }
 body nav #about button {
-  color: rgb(174, 178, 178);
+  color: rgb(133, 133, 133);
 }
 body nav button:hover {
   background-color: rgb(81, 181, 182) !important;
   color: black !important;
 }
 body nav #menuitems {
-  list-style-type: none;
   padding: 0px;
+  list-style-type: none;
 }
 body main {
   background-color: rgba(0, 0, 0, 0.8);
-  min-width: 700px;
+  padding-right: 2vw;
+  padding-left: 2vw;
+}
+@media only screen and (max-width: 1550px) {
+  body main {
+    min-width: 600px;
+  }
 }
 body main .top-bar {
   position: sticky;
   top: 0;
   z-index: 1;
-  padding-left: 0.5rem;
-  padding-bottom: 0.3rem;
   margin: 0;
+  margin-right: -2vw;
+  margin-left: -2vw;
 }
 body main .top-bar h1 {
   margin: 0;
   color: rgb(174, 178, 178);
+  font-style: normal;
   font-weight: 900;
   font-family: "Roboto", sans-serif;
   font-optical-sizing: auto;
-  font-style: normal;
   font-variation-settings: "wdth" 100;
-  font-size: 4rem;
   -webkit-backdrop-filter: blur(5px);
           backdrop-filter: blur(5px);
-  background-color: rgba(0, 0, 0, 0.384);
   border-width: 0.2rem;
   border-bottom-style: solid;
-  border-color: rgb(104, 101, 100);
+  border-color: rgb(104, 104, 104);
+  background-color: rgba(0, 0, 0, 0.384);
+  font-size: 4rem;
 }
 body main .top-bar button {
   float: right;
   height: 2.2rem;
 }
 body main h2 {
-  padding-left: 1rem;
   margin-bottom: 9px;
-  color: rgb(174, 178, 178);
+  color: rgb(133, 133, 133);
+  font-style: normal;
   font-weight: 900;
   font-family: "Roboto", sans-serif;
   font-optical-sizing: auto;
-  font-style: normal;
   font-variation-settings: "wdth" 100;
   font-size: 2rem;
 }
 body main h3 {
-  margin-bottom: 9px;
   margin-top: 9px;
-  color: rgb(174, 178, 178);
+  margin-bottom: 9px;
+  color: rgb(133, 133, 133);
+  font-style: normal;
   font-weight: 900;
   font-family: "Roboto", sans-serif;
   font-optical-sizing: auto;
-  font-style: normal;
   font-variation-settings: "wdth" 100;
   font-size: 1.7rem;
 }
 body main label {
-  color: rgb(174, 178, 178);
+  color: rgb(133, 133, 133);
+  font-style: normal;
   font-weight: 900;
   font-family: "Roboto", sans-serif;
   font-optical-sizing: auto;
-  font-style: normal;
   font-variation-settings: "wdth" 100;
   font-size: 1.5rem;
 }
 body main form {
   display: grid;
-  width: 100%;
   grid-template-columns: minmax(340px, 33%) clamp(40rem, 67%, 55rem);
+  width: 100%;
 }
 @media only screen and (max-width: 1550px) {
   body main form {
-    grid-template-columns: max(700px, 100%);
-    justify-items: center;
+    grid-template-columns: max(600px, 100%);
   }
-  body main form > * {
-    justify-content: center;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    padding-left: 0;
-    width: calc(100% - 3.5rem);
-  }
-}
-body main form .options-container {
-  padding: 1rem;
 }
 body main form .colors-container {
   display: grid;
   grid-template-columns: max-content;
   grid-auto-rows: max-content;
-  gap: 0.3rem;
   align-content: start;
+  gap: 0.3rem;
 }
 body main form .colors-container * {
   margin: 0;
 }
 body main form .range-container {
   display: grid;
-  grid-template-columns: 3rem 1fr 3rem;
   grid-template-rows: 2rem;
+  grid-template-columns: 3rem 1fr 3rem;
   align-items: center;
 }
 body main form .range-container .range-text {
-  text-align: center;
+  background-color: rgb(104, 104, 104);
   height: 1.7rem;
+  color: rgb(255, 255, 255);
+  text-align: center;
 }
 body main form .range-container .range-sliders {
-  margin-left: 0.3rem;
-  margin-right: 0.3rem;
   display: grid;
-  grid-template-columns: subgrid;
   grid-template-rows: subgrid;
-  justify-items: center;
+  grid-template-columns: subgrid;
   align-items: center;
+  justify-items: center;
+  margin-right: 0.3rem;
+  margin-left: 0.3rem;
 }
 body main form .range-container .range-sliders * {
-  width: 100%;
   grid-row: 2/span 1;
   grid-column: 1/span 1;
+  width: 100%;
 }
 body main form #option_position {
   display: grid;
-  grid-template-columns: max-content max-content;
-  grid-template-rows: max-content max-content max-content;
+  grid-template-rows: max-content 1fr max-content;
+  grid-template-columns: max-content 1fr;
+}
+body main form #position_preview {
+  aspect-ratio: 16/9;
+  width: 100%;
 }
 body main button {
-  color: white;
-  background-color: rgb(104, 101, 100);
+  background-color: rgb(104, 104, 104);
   width: 180px;
   height: 80px;
+  color: rgb(255, 255, 255);
 }
 body main select {
-  color: white;
-  background-color: rgb(104, 101, 100);
+  background-color: rgb(104, 104, 104);
   width: 180px;
   height: 40px;
+  color: white;
 }
 body main .checkbox {
   display: block;
   position: relative;
-  padding-left: 35px;
-  margin-bottom: 0px;
   cursor: pointer;
+  margin-bottom: 0px;
+  padding-left: 35px;
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
@@ -209,19 +213,19 @@ body main .checkbox {
 body main .checkbox input {
   position: absolute;
   opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
   z-index: 1;
+  cursor: pointer;
+  width: 0;
+  height: 0;
 }
 body main .checkmark {
   position: absolute;
   top: 0;
   left: 0;
-  height: 25px;
-  width: 25px;
   z-index: 0;
   background-color: #eee;
+  width: 25px;
+  height: 25px;
 }
 body main .checkbox:hover input ~ .checkmark {
   background-color: #ccc;
@@ -230,108 +234,106 @@ body main .checkbox input:checked ~ .checkmark {
   background-color: #2196f3;
 }
 body main .checkmark:after {
-  content: "";
-  position: absolute;
   display: none;
+  position: absolute;
+  content: "";
 }
 body main .checkbox input:checked ~ .checkmark:after {
   display: block;
 }
 body main .checkbox .checkmark:after {
-  left: 9px;
   top: 5px;
-  width: 5px;
-  height: 10px;
+  left: 9px;
   border: solid white;
   border-width: 0 3px 3px 0;
+  width: 5px;
+  height: 10px;
   transform: rotate(45deg);
 }
-body main input#ypos {
-  height: 360px;
-  margin: 0;
-  writing-mode: vertical-lr;
-  width: 16px;
-}
-body main input#xpos {
-  width: 100%;
-  margin: 0;
-  vertical-align: bottom;
-}
 body main #markerbounds {
-  cursor: move;
-  width: 640px;
-  height: 360px;
-  background-color: rgb(150, 230, 255);
   position: relative;
+  cursor: move;
+  background-color: rgb(150, 230, 255);
+  width: 100%;
+  height: 100%;
 }
 body main img {
-  height: 100%;
+  position: absolute;
   width: 100%;
+  height: 100%;
   -o-object-fit: contain;
      object-fit: contain;
-  position: absolute;
+}
+body main input#ypos {
+  margin: 0;
+  width: 16px;
+  height: 100%;
+  writing-mode: vertical-lr;
+}
+body main input#xpos {
+  vertical-align: bottom;
+  margin: 0;
+  width: 100%;
 }
 body main input[type=file] {
   visibility: hidden;
 }
 body main #imageupload_container {
-  right: 0;
-  margin: 5px;
   position: absolute;
+  right: 0;
   cursor: pointer;
-  height: 40px;
+  margin: 5px;
   width: 40px;
+  height: 40px;
 }
 body main #marker {
-  top: calc(60% - 26px);
-  left: calc(50% - 26px);
   position: absolute;
   background-color: rgba(35, 125, 235, 0.623);
 }
 body main #xhair {
+  position: absolute;
   top: calc(50% - 2px);
   left: calc(50% - 2px);
+  background-color: rgb(0, 255, 221);
   width: 4px;
   height: 4px;
-  position: absolute;
-  background-color: rgb(0, 255, 221);
 }
 body main input[type=range].dual {
-  pointer-events: none;
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
   background-color: transparent;
+  pointer-events: none;
 }
 body main input[type=range].dual::-webkit-slider-thumb {
   pointer-events: auto;
   -webkit-appearance: none;
+  position: relative;
   cursor: pointer;
   background-color: #3264fe;
   width: 7px;
   height: 25px;
-  position: relative;
 }
 body main input[type=range].dual::-webkit-slider-thumb:active {
-  background-color: white;
   border: 1px solid #3264fe;
+  background-color: white;
 }
 body main .slider-track {
+  border-radius: 5px;
   height: 0.3rem;
   pointer-events: none;
-  border-radius: 5px;
 }
 body aside {
+  display: grid;
+  position: sticky;
+  top: 0;
+  grid-template-rows: max-content max-content max-content max-content;
+  grid-template-columns: max-content;
+  align-content: center;
+  justify-content: center;
+  align-self: start;
   height: 100vh;
   height: 100dvh;
-  position: sticky;
-  align-self: start;
-  top: 0;
-  display: grid;
-  grid-template-columns: 300px;
-  grid-template-rows: max-content max-content max-content max-content;
-  justify-content: center;
-  align-content: center;
 }
 body aside .slot_1 {
   grid-row: 1/2;
@@ -351,10 +353,10 @@ body aside .speedo {
   text-align: center;
 }
 body aside .shadow {
+  z-index: -1;
   margin-top: 0.3rem;
   margin-left: 0.3rem;
   color: rgba(0, 0, 0, 0.8) !important;
-  z-index: -1;
 }
 body aside .speedo-size-small {
   font-size: 2rem !important;

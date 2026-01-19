@@ -1,6 +1,6 @@
-import { Speedo } from './speedo.js';
-import { m0reColor } from './m0recolors.js';
-import { VDFElement } from './vdfelement.js';
+import { Speedo } from "./speedo.js";
+import { m0reColor } from "./m0recolors.js";
+import { VDFElement } from "./vdfelement.js";
 export class Speedos {
     previewSpeed;
     speedo;
@@ -23,16 +23,16 @@ export class Speedos {
     vdfElm;
     font;
     constructor() {
-        this.vdfElm = new VDFElement('speedos');
+        this.vdfElm = new VDFElement("speedos");
         this.size = {};
-        this.setSize('MEDIUM');
-        this.vdfElm.xpos = 'cs-0.5';
-        this.vdfElm.ypos = 'cs-0.5+54';
+        this.setSize("MEDIUM");
+        this.vdfElm.xpos = "cs-0.5";
+        this.vdfElm.ypos = "cs-0.5+54";
         this.round = true;
         this.drawShadows = true;
         this.framerate = 30;
         this.frametime = 1000 / this.framerate;
-        this.font = 'roboto';
+        this.font = "roboto";
         this.colorMain = m0reColor.WHITE;
         this.colorClose = m0reColor.BLUE;
         this.colorGood = m0reColor.GREEN;
@@ -40,10 +40,29 @@ export class Speedos {
         this.colorDouble = m0reColor.BLUE;
         this.colorTriple = m0reColor.GREEN;
         this.colorMaxVel = m0reColor.YELLOW;
-        this.HSpeedoRange = { closeMin: 850, closeMax: 1350, goodMin: 1050, goodMax: 1150 };
-        this.VSpeedoRange = { closeMin: -1, closeMax: -1, goodMin: -1, goodMax: -1 };
-        this.ASpeedoRange = { closeMin: 850, closeMax: 1350, goodMin: 1050, goodMax: 1150 };
-        this.HeightoThresholds = { double: 1260, triple: 2160, maxVel: 7700 };
+        this.HSpeedoRange = {
+            closeMin: 850,
+            closeMax: 1350,
+            goodMin: 1050,
+            goodMax: 1150,
+        };
+        this.VSpeedoRange = {
+            closeMin: -1,
+            closeMax: -1,
+            goodMin: -1,
+            goodMax: -1,
+        };
+        this.ASpeedoRange = {
+            closeMin: 850,
+            closeMax: 1350,
+            goodMin: 1050,
+            goodMax: 1150,
+        };
+        this.HeightoThresholds = {
+            double: 1260,
+            triple: 2160,
+            maxVel: 7700,
+        };
         this.speedo = new Array(4);
         this.speedo[0] = new Speedo("NONE", this.colorMain);
         this.speedo[1] = new Speedo("HORIZONTAL", this.colorMain);
@@ -71,8 +90,8 @@ export class Speedos {
                 this.previewSpeed = sine_min;
             }
             // update speed & color of all speedo slots
-            this.speedo.forEach(speedo => {
-                if (speedo.speedoType == 'HEIGHTO') {
+            this.speedo.forEach((speedo) => {
+                if (speedo.speedoType == "HEIGHTO") {
                     speedo.playerSpeed = Math.round(this.previewSpeed * (9999 / 3500));
                     if (this.round) {
                         speedo.playerSpeed /= 10;
@@ -94,20 +113,20 @@ export class Speedos {
         this.size = size;
         switch (this.size) {
             case "SMALL":
-                this.vdfElm.wide = '52';
-                this.vdfElm.tall = '52';
+                this.vdfElm.wide = "52";
+                this.vdfElm.tall = "52";
                 break;
             case "MEDIUM":
-                this.vdfElm.wide = '72';
-                this.vdfElm.tall = '72';
+                this.vdfElm.wide = "72";
+                this.vdfElm.tall = "72";
                 break;
             case "LARGE":
-                this.vdfElm.wide = '84';
-                this.vdfElm.tall = '84';
+                this.vdfElm.wide = "84";
+                this.vdfElm.tall = "84";
                 break;
             default:
-                this.vdfElm.wide = '72 // error: defaulted to medium size';
-                this.vdfElm.tall = '72 // error: defaulted to medium size';
+                this.vdfElm.wide = "72 // error: defaulted to medium size";
+                this.vdfElm.tall = "72 // error: defaulted to medium size";
                 break;
         }
     }

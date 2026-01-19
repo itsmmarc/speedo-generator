@@ -9,11 +9,11 @@ export class VDFElement {
     enabled;
     constructor(name) {
         this.fieldName = name;
-        this.xpos = '0';
-        this.ypos = '0';
+        this.xpos = "0";
+        this.ypos = "0";
         this.visible = true;
         this.enabled = true;
-        this.wide = '';
-        this.tall = '';
+        this.wide = "";
+        this.tall = "";
     }
 }

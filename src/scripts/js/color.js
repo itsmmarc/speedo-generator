@@ -9,21 +9,21 @@ export class Color {
     }
     // function to return rgb value in css syntax
     getCSSColor() {
-        let color = '';
-        color = color.concat('rgb(', this.r.toString(), ',', this.g.toString(), ',', this.b.toString(), ')');
+        let color = "";
+        color = color.concat("rgb(", this.r.toString(), ",", this.g.toString(), ",", this.b.toString(), ")");
         return color;
     }
     getInputColor() {
-        let color = '';
-        let r_hex = this.r.toString(16).padStart(2, '0');
-        let g_hex = this.g.toString(16).padStart(2, '0');
-        let b_hex = this.b.toString(16).padStart(2, '0');
-        color = color.concat('#', r_hex, g_hex, b_hex);
+        let color = "";
+        let r_hex = this.r.toString(16).padStart(2, "0");
+        let g_hex = this.g.toString(16).padStart(2, "0");
+        let b_hex = this.b.toString(16).padStart(2, "0");
+        color = color.concat("#", r_hex, g_hex, b_hex);
         return color;
     }
     getVMTColor() {
-        let color = '';
-        color = color.concat('\"{ ', this.r.toString(), ' ', this.g.toString(), ' ', this.b.toString(), ' }\"');
+        let color = "";
+        color = color.concat('\"{ ', this.r.toString(), " ", this.g.toString(), " ", this.b.toString(), ' }\"');
         return color;
     }
     static input_to_color(s) {

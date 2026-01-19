@@ -19,5 +19,5 @@ export const m0reColor = {
     PURPLE: new Color(150, 50, 235),
     VIOLET: new Color(190, 150, 210),
     PINK: new Color(250, 185, 240),
-    MAGENTA: new Color(255, 0, 127)
+    MAGENTA: new Color(255, 0, 127),
 };

@@ -3,6 +3,9 @@ import { Color } from "../color.js";
 import { zipSpeedos } from "../zip.js";
 import { matchClassStartingWith } from "../util.js";
 const NUM_SPEEDOS = 4;
+const TF_SCREEN_WIDTH_16_9 = 852;
+const TF_SCREEN_WIDTH_4_3 = 640;
+const TF_SCREEN_HEIGHT = 480;
 const speedoColl = document.getElementsByClassName("speedo"); // collection of all speedo class elements
 const speedoElmArray = Array.prototype.slice.call(speedoColl);
 const speedosObj = new Speedos();
@@ -192,8 +195,8 @@ const markerStyle = window.getComputedStyle(markerElm);
 let markerSize;
 const markerBoundsElm = document.getElementById("position_preview_img"); // using image within to prevent dragging on upload image button
 const markerBoundsStyle = window.getComputedStyle(markerBoundsElm);
-const markerBoundsWidth = +markerBoundsStyle.getPropertyValue("width").replace("px", "");
-const markerBoundsHeight = +markerBoundsStyle.getPropertyValue("height").replace("px", "");
+let markerBoundsWidth;
+let markerBoundsHeight;
 let markerBounds;
 xSlider.addEventListener("input", () => {
     updatePosition_x();
@@ -214,9 +217,18 @@ markerBoundsElm.addEventListener("drag", (event) => {
         updatePosition_y();
     }
 });
+function updatePositionSize() {
+    markerBoundsWidth = +markerBoundsStyle.getPropertyValue("width").replace("px", "");
+    markerBoundsHeight = +markerBoundsStyle.getPropertyValue("height").replace("px", "");
+    updateMarkerSize();
+    xSlider.value = readXPos();
+    ySlider.value = readYPos();
+    updatePosition_x();
+    updatePosition_y();
+}
 function updateMarkerSize() {
-    markerElm.style.width = "".concat((+speedosObj.vdfElm.wide * 0.75).toString(), "px");
-    markerElm.style.height = "".concat((+speedosObj.vdfElm.tall * 0.75).toString(), "px");
+    markerElm.style.width = "".concat((+speedosObj.vdfElm.wide * (markerBoundsWidth / TF_SCREEN_WIDTH_16_9)).toString(), "px");
+    markerElm.style.height = "".concat((+speedosObj.vdfElm.tall * (markerBoundsHeight / TF_SCREEN_HEIGHT)).toString(), "px");
     markerSize = {
         width: +markerStyle.getPropertyValue("width").replace("px", ""),
         height: +markerStyle.getPropertyValue("height").replace("px", ""),
@@ -225,8 +237,8 @@ function updateMarkerSize() {
         width: markerBoundsWidth - markerSize.width,
         height: markerBoundsHeight - markerSize.height,
     };
-    xSlider.max = (852 - +speedosObj.vdfElm.wide).toString();
-    ySlider.max = (480 - +speedosObj.vdfElm.tall).toString();
+    xSlider.max = (TF_SCREEN_WIDTH_16_9 - +speedosObj.vdfElm.wide).toString();
+    ySlider.max = (TF_SCREEN_HEIGHT - +speedosObj.vdfElm.tall).toString();
 }
 function updatePosition_x() {
     // update marker horizontal position
@@ -271,6 +283,38 @@ function updatePosition_y() {
         newYPos = newYPos.concat(yOffset.toString());
     }
     speedosObj.vdfElm.ypos = newYPos;
+}
+function readXPos() {
+    let s = speedosObj.vdfElm.xpos;
+    let center = +xSlider.max / 2;
+    switch (true) {
+        case s.includes("cs-0.5"):
+            s = s.replace("cs-0.5", "");
+            s = (+s + center).toString();
+            return s;
+        case s.includes("rs1"):
+            s = xSlider.max;
+            break;
+        default:
+            break;
+    }
+    return center.toString();
+}
+function readYPos() {
+    let s = speedosObj.vdfElm.ypos;
+    let center = +ySlider.max / 2;
+    switch (true) {
+        case s.includes("cs-0.5"):
+            s = s.replace("cs-0.5", "");
+            s = (+s + center).toString();
+            return s;
+        case s.includes("rs1"):
+            s = ySlider.max;
+            break;
+        default:
+            break;
+    }
+    return center.toString();
 }
 // POSITION IMAGE
 let imageUploadElm = document.getElementById("imageupload");
@@ -625,7 +669,7 @@ downloadElm.addEventListener("click", () => {
 window.onload = () => {
     updateSpeedoStyles();
     speedosObj_to_Elements();
-    updateMarkerSize();
+    updatePositionSize();
     process_hspeedo_close_min();
     process_hspeedo_close_max();
     process_hspeedo_good_min();
@@ -657,6 +701,9 @@ window.onload = () => {
         });
     }, speedosObj.frametime);
 };
+window.addEventListener("resize", () => {
+    updatePositionSize();
+});
 // load default settings based on defaults of speedosObj
 function speedosObj_to_Elements() {
     slot1Elm.value = speedosObj.speedo[0].speedoType;

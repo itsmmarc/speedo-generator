@@ -7,6 +7,10 @@ import { Font } from "../speedos.js";
 import { matchClassStartingWith } from "../util.js";
 
 const NUM_SPEEDOS = 4;
+const TF_SCREEN_WIDTH_16_9 = 852;
+const TF_SCREEN_WIDTH_4_3 = 640;
+const TF_SCREEN_HEIGHT = 480;
+
 const speedoColl = document.getElementsByClassName("speedo") as HTMLCollection; // collection of all speedo class elements
 const speedoElmArray = Array.prototype.slice.call(speedoColl) as HTMLElement[];
 const speedosObj = new Speedos();
@@ -209,8 +213,8 @@ let markerSize: { width: number; height: number };
 
 const markerBoundsElm = document.getElementById("position_preview_img") as HTMLElement; // using image within to prevent dragging on upload image button
 const markerBoundsStyle = window.getComputedStyle(markerBoundsElm) as CSSStyleDeclaration;
-const markerBoundsWidth = +markerBoundsStyle.getPropertyValue("width").replace("px", "") as number;
-const markerBoundsHeight = +markerBoundsStyle.getPropertyValue("height").replace("px", "") as number;
+let markerBoundsWidth: number;
+let markerBoundsHeight: number;
 let markerBounds: { width: number; height: number };
 
 xSlider.addEventListener("input", () => {
@@ -238,9 +242,25 @@ markerBoundsElm.addEventListener("drag", (event: MouseEvent) => {
         }
 });
 
-function updateMarkerSize() {
-        markerElm.style.width = "".concat((+speedosObj.vdfElm.wide * 0.75).toString(), "px");
-        markerElm.style.height = "".concat((+speedosObj.vdfElm.tall * 0.75).toString(), "px");
+function updatePositionSize(): void {
+        markerBoundsWidth = +markerBoundsStyle.getPropertyValue("width").replace("px", "") as number;
+        markerBoundsHeight = +markerBoundsStyle.getPropertyValue("height").replace("px", "") as number;
+        updateMarkerSize();
+        xSlider.value = readXPos();
+        ySlider.value = readYPos();
+        updatePosition_x();
+        updatePosition_y();
+}
+
+function updateMarkerSize(): void {
+        markerElm.style.width = "".concat(
+                (+speedosObj.vdfElm.wide * (markerBoundsWidth / TF_SCREEN_WIDTH_16_9)).toString(),
+                "px"
+        );
+        markerElm.style.height = "".concat(
+                (+speedosObj.vdfElm.tall * (markerBoundsHeight / TF_SCREEN_HEIGHT)).toString(),
+                "px"
+        );
         markerSize = {
                 width: +markerStyle.getPropertyValue("width").replace("px", ""),
                 height: +markerStyle.getPropertyValue("height").replace("px", ""),
@@ -249,11 +269,11 @@ function updateMarkerSize() {
                 width: markerBoundsWidth - markerSize.width,
                 height: markerBoundsHeight - markerSize.height,
         };
-        xSlider.max = (852 - +speedosObj.vdfElm.wide).toString();
-        ySlider.max = (480 - +speedosObj.vdfElm.tall).toString();
+        xSlider.max = (TF_SCREEN_WIDTH_16_9 - +speedosObj.vdfElm.wide).toString();
+        ySlider.max = (TF_SCREEN_HEIGHT - +speedosObj.vdfElm.tall).toString();
 }
 
-function updatePosition_x() {
+function updatePosition_x(): void {
         // update marker horizontal position
         markerElm.style.left = (+xSlider.value * (markerBounds.width / +xSlider.max)).toString();
 
@@ -276,7 +296,7 @@ function updatePosition_x() {
         speedosObj.vdfElm.xpos = newXPos;
 }
 
-function updatePosition_y() {
+function updatePosition_y(): void {
         // update marker vertical position
         markerElm.style.top = (+ySlider.value * (markerBounds.height / +ySlider.max)).toString();
 
@@ -297,6 +317,42 @@ function updatePosition_y() {
         }
 
         speedosObj.vdfElm.ypos = newYPos;
+}
+
+function readXPos(): string {
+        let s: string = speedosObj.vdfElm.xpos;
+        let center: number = +xSlider.max / 2;
+
+        switch (true) {
+                case s.includes("cs-0.5"):
+                        s = s.replace("cs-0.5", "");
+                        s = (+s + center).toString();
+                        return s;
+                case s.includes("rs1"):
+                        s = xSlider.max;
+                        break;
+                default:
+                        break;
+        }
+        return center.toString();
+}
+
+function readYPos(): string {
+        let s: string = speedosObj.vdfElm.ypos;
+        let center: number = +ySlider.max / 2;
+
+        switch (true) {
+                case s.includes("cs-0.5"):
+                        s = s.replace("cs-0.5", "");
+                        s = (+s + center).toString();
+                        return s;
+                case s.includes("rs1"):
+                        s = ySlider.max;
+                        break;
+                default:
+                        break;
+        }
+        return center.toString();
 }
 
 // POSITION IMAGE
@@ -884,7 +940,7 @@ downloadElm.addEventListener("click", () => {
 window.onload = () => {
         updateSpeedoStyles();
         speedosObj_to_Elements();
-        updateMarkerSize();
+        updatePositionSize();
         process_hspeedo_close_min();
         process_hspeedo_close_max();
         process_hspeedo_good_min();
@@ -917,6 +973,10 @@ window.onload = () => {
                 });
         }, speedosObj.frametime);
 };
+
+window.addEventListener("resize", () => {
+        updatePositionSize();
+});
 
 // load default settings based on defaults of speedosObj
 function speedosObj_to_Elements() {
