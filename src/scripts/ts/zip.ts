@@ -4,7 +4,8 @@ import { Speedos } from "./speedos";
 import { unzip, ZipInfo } from "unzipit";
 
 export async function zipSpeedos(speedos: Speedos) {
-        const hud_resources_url = "http://localhost:5173/files/hudresources.zip";
+        const zip_name = "speedo-generator-hud-0.1.5.zip";
+        const hud_resources_url = "http://localhost:5173/files/" + zip_name;
         const speedo_materials_path: string = "YOURHUD/materials/vgui/replay/thumbnails/speedo/";
         const speedo_resource_path: string = "YOURHUD/speedo/";
 
@@ -144,7 +145,7 @@ function createReadme(): string {
                 "# mmarc Speedo Generator\n\n" +
                 "## Installation:\n" +
                 "0. **Linux users** must edit `cfg/speedo_config.cfg` and replace `%YOURHUD%` with the exact name of your HUD's folder\n" +
-                "1. Drag and drop the contents of `YOURHUD` into your HUD's folder. eg: `tf/custom/m0rehud/`\.\n" +
+                "1. Drag and drop the contents of `YOURHUD` into your HUD's folder. eg: `tf/custom/m0rehud/`.\n" +
                 "2. Add the following line to the top of your HUD's `resource/ui/hudplayerclass.res`\n" +
                 "#base ../../speedo/speedo.res\n" +
                 "3. Add the following line to `tf/cfg/autoexec.cfg' in \n" +
