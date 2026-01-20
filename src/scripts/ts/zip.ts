@@ -13,6 +13,7 @@ export async function zipSpeedos(speedos: Speedos) {
                 zip.file("README.md", createReadme());
                 zip.file("".concat(speedo_materials_path, "speedo_config.vmt"), generateSpeedoConfig_vmt(speedos));
                 zip.file("".concat(speedo_resource_path, "speedo_config.res"), generateSpeedoConfig_res(speedos));
+                zip.file("".concat("YOURHUD/speedo_config.json"), generateSpeedoJSON(speedos));
 
                 zip.generateAsync({ type: "blob" }).then(function (content) {
                         saveAs(content, "test.zip");
@@ -152,5 +153,17 @@ function createReadme(): string {
                 "exec speedo_config\n" +
                 "\n## Usage:\n" +
                 "Use the command `speedo_toggle` (or `speedo_enable` and `speedo_disable`) ingame to toggle the speedos on and off"
+        );
+}
+
+function generateSpeedoJSON(speedos: Speedos): string {
+        return JSON.stringify(
+                speedos,
+                function (key, val) {
+                        if (key !== "previewSpeed" && key !== "playerSpeed") {
+                                return val;
+                        }
+                },
+                4
         );
 }
