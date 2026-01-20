@@ -10,6 +10,7 @@ import * as _ from "lodash";
 const NUM_SPEEDOS = 4;
 const TF_SCREEN_WIDTH_16_9 = 852;
 const TF_SCREEN_WIDTH_4_3 = 640;
+let TF_SCREEN_WIDTH_CURRENT = TF_SCREEN_WIDTH_16_9;
 const TF_SCREEN_HEIGHT = 480;
 
 let hasReadVDF: boolean = false;
@@ -226,6 +227,21 @@ slot4Elm.addEventListener("change", () => {
 });
 
 // POSITION
+const aspectRatio4x3Elm = document.getElementById("4x3") as HTMLButtonElement;
+const aspectRatio16x9Elm = document.getElementById("16x9") as HTMLButtonElement;
+const positionPreviewElm = document.getElementById("position_preview") as HTMLElement;
+
+aspectRatio16x9Elm.addEventListener("click", () => {
+        TF_SCREEN_WIDTH_CURRENT = TF_SCREEN_WIDTH_16_9;
+        positionPreviewElm.style.aspectRatio = "16 / 9";
+        updatePositionSize();
+});
+aspectRatio4x3Elm.addEventListener("click", () => {
+        TF_SCREEN_WIDTH_CURRENT = TF_SCREEN_WIDTH_4_3;
+        positionPreviewElm.style.aspectRatio = "4 / 3";
+        updatePositionSize();
+});
+
 const xSliderElm = document.getElementById("xpos") as HTMLInputElement;
 const ySliderElm = document.getElementById("ypos") as HTMLInputElement;
 
@@ -279,7 +295,7 @@ function updatePositionSize(): void {
 function updateMarkerSize(): void {
         // scale marker element to match size of markerbounds
         markerElm.style.width = "".concat(
-                (+speedosObj.vdfElm.wide * (markerBoundsWidth / TF_SCREEN_WIDTH_16_9)).toString(),
+                (+speedosObj.vdfElm.wide * (markerBoundsWidth / TF_SCREEN_WIDTH_CURRENT)).toString(),
                 "px"
         );
         markerElm.style.height = "".concat(
@@ -298,7 +314,7 @@ function updateMarkerSize(): void {
         // clamp slider values
         let xValue = xSliderElm.value;
         let yValue = ySliderElm.value;
-        let xMax = TF_SCREEN_WIDTH_16_9 - +speedosObj.vdfElm.wide;
+        let xMax = TF_SCREEN_WIDTH_CURRENT - +speedosObj.vdfElm.wide;
         let yMax = TF_SCREEN_HEIGHT - +speedosObj.vdfElm.tall;
         xValue = Math.max(0, Math.min(+xValue, xMax)).toString();
         yValue = Math.max(0, Math.min(+yValue, yMax)).toString();
@@ -312,6 +328,9 @@ function updateMarkerSize(): void {
                 readXPos();
                 readYPos();
                 hasReadVDF = true;
+        }
+        if (speedosObj.vdfElm.xpos == "rs1") {
+                xSliderElm.value = xSliderElm.max;
         }
 
         updatePosition_x();

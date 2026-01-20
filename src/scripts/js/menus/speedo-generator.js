@@ -6,6 +6,7 @@ import * as _ from "lodash";
 const NUM_SPEEDOS = 4;
 const TF_SCREEN_WIDTH_16_9 = 852;
 const TF_SCREEN_WIDTH_4_3 = 640;
+let TF_SCREEN_WIDTH_CURRENT = TF_SCREEN_WIDTH_16_9;
 const TF_SCREEN_HEIGHT = 480;
 let hasReadVDF = false;
 const speedoColl = document.getElementsByClassName("speedo"); // collection of all speedo class elements
@@ -207,6 +208,19 @@ slot4Elm.addEventListener("change", () => {
     updateSpeedoStyles();
 });
 // POSITION
+const aspectRatio4x3Elm = document.getElementById("4x3");
+const aspectRatio16x9Elm = document.getElementById("16x9");
+const positionPreviewElm = document.getElementById("position_preview");
+aspectRatio16x9Elm.addEventListener("click", () => {
+    TF_SCREEN_WIDTH_CURRENT = TF_SCREEN_WIDTH_16_9;
+    positionPreviewElm.style.aspectRatio = "16 / 9";
+    updatePositionSize();
+});
+aspectRatio4x3Elm.addEventListener("click", () => {
+    TF_SCREEN_WIDTH_CURRENT = TF_SCREEN_WIDTH_4_3;
+    positionPreviewElm.style.aspectRatio = "4 / 3";
+    updatePositionSize();
+});
 const xSliderElm = document.getElementById("xpos");
 const ySliderElm = document.getElementById("ypos");
 const markerElm = document.getElementById("marker");
@@ -249,7 +263,7 @@ function updatePositionSize() {
  */
 function updateMarkerSize() {
     // scale marker element to match size of markerbounds
-    markerElm.style.width = "".concat((+speedosObj.vdfElm.wide * (markerBoundsWidth / TF_SCREEN_WIDTH_16_9)).toString(), "px");
+    markerElm.style.width = "".concat((+speedosObj.vdfElm.wide * (markerBoundsWidth / TF_SCREEN_WIDTH_CURRENT)).toString(), "px");
     markerElm.style.height = "".concat((+speedosObj.vdfElm.tall * (markerBoundsHeight / TF_SCREEN_HEIGHT)).toString(), "px");
     markerSize = {
         width: +markerStyle.getPropertyValue("width").replace("px", ""),
@@ -262,7 +276,7 @@ function updateMarkerSize() {
     // clamp slider values
     let xValue = xSliderElm.value;
     let yValue = ySliderElm.value;
-    let xMax = TF_SCREEN_WIDTH_16_9 - +speedosObj.vdfElm.wide;
+    let xMax = TF_SCREEN_WIDTH_CURRENT - +speedosObj.vdfElm.wide;
     let yMax = TF_SCREEN_HEIGHT - +speedosObj.vdfElm.tall;
     xValue = Math.max(0, Math.min(+xValue, xMax)).toString();
     yValue = Math.max(0, Math.min(+yValue, yMax)).toString();
@@ -275,6 +289,9 @@ function updateMarkerSize() {
         readXPos();
         readYPos();
         hasReadVDF = true;
+    }
+    if (speedosObj.vdfElm.xpos == "rs1") {
+        xSliderElm.value = xSliderElm.max;
     }
     updatePosition_x();
     updatePosition_y();
