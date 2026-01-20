@@ -27,7 +27,7 @@ export class Speedos {
         this.size = {};
         this.setSize("MEDIUM");
         this.vdfElm.xpos = "cs-0.5";
-        this.vdfElm.ypos = "cs-0.5+54";
+        this.vdfElm.ypos = "cs-0.5";
         this.round = true;
         this.drawShadows = true;
         this.framerate = 30;
@@ -41,32 +41,32 @@ export class Speedos {
         this.colorTriple = m0reColor.GREEN;
         this.colorMaxVel = m0reColor.YELLOW;
         this.HSpeedoRange = {
-            closeMin: 850,
-            closeMax: 1350,
-            goodMin: 1050,
-            goodMax: 1150,
+            closeMin: 0,
+            closeMax: 0,
+            goodMin: 0,
+            goodMax: 0,
         };
         this.VSpeedoRange = {
-            closeMin: -1,
-            closeMax: -1,
-            goodMin: -1,
-            goodMax: -1,
+            closeMin: 0,
+            closeMax: 0,
+            goodMin: 0,
+            goodMax: 0,
         };
         this.ASpeedoRange = {
-            closeMin: 850,
-            closeMax: 1350,
-            goodMin: 1050,
-            goodMax: 1150,
+            closeMin: 0,
+            closeMax: 0,
+            goodMin: 0,
+            goodMax: 0,
         };
         this.HeightoThresholds = {
-            double: 1260,
-            triple: 2160,
-            maxVel: 7700,
+            double: 10000,
+            triple: 10000,
+            maxVel: 10000,
         };
         this.speedo = new Array(4);
         this.speedo[0] = new Speedo("NONE", this.colorMain);
-        this.speedo[1] = new Speedo("HORIZONTAL", this.colorMain);
-        this.speedo[2] = new Speedo("HEIGHTO", this.colorMain);
+        this.speedo[1] = new Speedo("NONE", this.colorMain);
+        this.speedo[2] = new Speedo("NONE", this.colorMain);
         this.speedo[3] = new Speedo("NONE", this.colorMain);
     }
     startPreview() {
@@ -131,3 +131,97 @@ export class Speedos {
         }
     }
 }
+export const presetDemo = (() => {
+    let speedos = new Speedos();
+    speedos.setSize("MEDIUM");
+    speedos.vdfElm.xpos = "cs-0.5";
+    speedos.vdfElm.ypos = "cs-0.5+54";
+    speedos.round = true;
+    speedos.drawShadows = true;
+    speedos.framerate = 30;
+    speedos.frametime = 1000 / speedos.framerate;
+    speedos.font = "roboto";
+    speedos.colorMain = m0reColor.WHITE;
+    speedos.colorClose = m0reColor.BLUE;
+    speedos.colorGood = m0reColor.GREEN;
+    speedos.colorMain_Heighto = m0reColor.WHITE;
+    speedos.colorDouble = m0reColor.BLUE;
+    speedos.colorTriple = m0reColor.GREEN;
+    speedos.colorMaxVel = m0reColor.YELLOW;
+    speedos.HSpeedoRange = {
+        closeMin: 700,
+        closeMax: 1200,
+        goodMin: 850,
+        goodMax: 900,
+    };
+    speedos.VSpeedoRange = {
+        closeMin: 800,
+        closeMax: 1500,
+        goodMin: 1100,
+        goodMax: 1200,
+    };
+    speedos.ASpeedoRange = {
+        closeMin: -1,
+        closeMax: -1,
+        goodMin: -1,
+        goodMax: -1,
+    };
+    speedos.HeightoThresholds = {
+        double: 10000,
+        triple: 10000,
+        maxVel: 10000,
+    };
+    speedos.speedo[0] = new Speedo("NONE", speedos.colorMain);
+    speedos.speedo[1] = new Speedo("HORIZONTAL", speedos.colorMain);
+    speedos.speedo[2] = new Speedo("VERTICAL", speedos.colorMain);
+    speedos.speedo[3] = new Speedo("NONE", speedos.colorMain);
+    return speedos;
+})();
+export const presetSoldier = (() => {
+    let speedos = new Speedos();
+    speedos.setSize("MEDIUM");
+    speedos.vdfElm.xpos = "cs-0.5";
+    speedos.vdfElm.ypos = "cs-0.5+54";
+    speedos.round = true;
+    speedos.drawShadows = true;
+    speedos.framerate = 30;
+    speedos.frametime = 1000 / speedos.framerate;
+    speedos.font = "roboto";
+    speedos.colorMain = m0reColor.WHITE;
+    speedos.colorClose = m0reColor.BLUE;
+    speedos.colorGood = m0reColor.GREEN;
+    speedos.colorMain_Heighto = m0reColor.WHITE;
+    speedos.colorDouble = m0reColor.BLUE;
+    speedos.colorTriple = m0reColor.GREEN;
+    speedos.colorMaxVel = m0reColor.YELLOW;
+    speedos.HSpeedoRange = {
+        closeMin: 850,
+        closeMax: 1350,
+        goodMin: 1050,
+        goodMax: 1150,
+    };
+    speedos.VSpeedoRange = {
+        closeMin: -1,
+        closeMax: -1,
+        goodMin: -1,
+        goodMax: -1,
+    };
+    speedos.ASpeedoRange = {
+        closeMin: 850,
+        closeMax: 1350,
+        goodMin: 1050,
+        goodMax: 1150,
+    };
+    speedos.HeightoThresholds = {
+        double: 1260,
+        triple: 2160,
+        maxVel: 7700,
+    };
+    speedos.speedo[0] = new Speedo("NONE", speedos.colorMain);
+    speedos.speedo[1] = new Speedo("HORIZONTAL", speedos.colorMain);
+    speedos.speedo[2] = new Speedo("HEIGHTO", speedos.colorMain);
+    speedos.speedo[3] = new Speedo("NONE", speedos.colorMain);
+    return speedos;
+})();
+Object.freeze(presetDemo);
+Object.freeze(presetSoldier);

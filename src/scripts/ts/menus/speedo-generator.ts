@@ -1,10 +1,11 @@
 import { SpeedoType } from "../speedo.js";
-import { Speedos } from "../speedos.js";
+import { Speedos, presetDemo, presetSoldier } from "../speedos.js";
 import { SpeedoSize } from "../speedos.js";
 import { Color } from "../color.js";
 import { zipSpeedos } from "../zip.js";
 import { Font } from "../speedos.js";
 import { matchClassStartingWith } from "../util.js";
+import * as _ from "lodash";
 
 const NUM_SPEEDOS = 4;
 const TF_SCREEN_WIDTH_16_9 = 852;
@@ -15,7 +16,7 @@ let hasReadVDF: boolean = false;
 
 const speedoColl = document.getElementsByClassName("speedo") as HTMLCollection; // collection of all speedo class elements
 const speedoElmArray = Array.prototype.slice.call(speedoColl) as HTMLElement[];
-const speedosObj = new Speedos();
+let speedosObj = _.cloneDeep(presetSoldier);
 
 //===================================================================================
 // PREVIEW RENDERING
@@ -188,6 +189,19 @@ function updateSpeedoStyles() {
 //===================================================================================
 // BUTTONS
 //-----------------------------------------------------------------------------------
+// PRESET
+const presetDemoElm = document.getElementById("preset-demo") as HTMLButtonElement;
+presetDemoElm.addEventListener("click", () => {
+        speedosObj = _.cloneDeep(presetDemo);
+        initialize();
+});
+
+const presetSoldierElm = document.getElementById("preset-soldier") as HTMLButtonElement;
+presetSoldierElm.addEventListener("click", () => {
+        speedosObj = _.cloneDeep(presetSoldier);
+        initialize();
+});
+
 // SLOTS
 const slot1Elm = document.getElementById("dropdown_slot_1") as HTMLSelectElement;
 const slot2Elm = document.getElementById("dropdown_slot_2") as HTMLSelectElement;
@@ -328,7 +342,6 @@ function updatePosition_x(): void {
         }
 
         speedosObj.vdfElm.xpos = newXPos;
-        console.log(xSliderElm.value);
 }
 
 /**
@@ -1025,6 +1038,10 @@ downloadElm.addEventListener("click", () => {
 // ON PAGE LOAD
 //-----------------------------------------------------------------------------------
 window.onload = () => {
+        initialize();
+};
+
+function initialize() {
         updateSpeedoStyles();
         speedosObj_to_Elements();
         updatePositionSize();
@@ -1059,7 +1076,7 @@ window.onload = () => {
                         }
                 });
         }, speedosObj.frametime);
-};
+}
 
 window.addEventListener("resize", () => {
         updatePositionSize();
