@@ -4,7 +4,7 @@ import { Speedos } from "./speedos";
 import { unzip, ZipInfo } from "unzipit";
 
 export async function zipSpeedos(speedos: Speedos) {
-        const zip_name = "speedo-generator-hud-0.1.5.zip";
+        const zip_name = "speedo-generator-hud-0.1.6.zip";
         const hud_resources_url = "http://localhost:5173/files/" + zip_name;
         const speedo_materials_path: string = "YOURHUD/materials/vgui/replay/thumbnails/speedo/";
         const speedo_resource_path: string = "YOURHUD/speedo/";

@@ -2,7 +2,7 @@ import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { unzip } from "unzipit";
 export async function zipSpeedos(speedos) {
-    const zip_name = "speedo-generator-hud-0.1.5.zip";
+    const zip_name = "speedo-generator-hud-0.1.6.zip";
     const hud_resources_url = "http://localhost:5173/files/" + zip_name;
     const speedo_materials_path = "YOURHUD/materials/vgui/replay/thumbnails/speedo/";
     const speedo_resource_path = "YOURHUD/speedo/";
