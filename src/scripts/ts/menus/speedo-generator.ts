@@ -11,6 +11,8 @@ const TF_SCREEN_WIDTH_16_9 = 852;
 const TF_SCREEN_WIDTH_4_3 = 640;
 const TF_SCREEN_HEIGHT = 480;
 
+let hasReadVDF: boolean = false;
+
 const speedoColl = document.getElementsByClassName("speedo") as HTMLCollection; // collection of all speedo class elements
 const speedoElmArray = Array.prototype.slice.call(speedoColl) as HTMLElement[];
 const speedosObj = new Speedos();
@@ -19,6 +21,12 @@ const speedosObj = new Speedos();
 // PREVIEW RENDERING
 //-----------------------------------------------------------------------------------
 
+/**
+ * Checks for style changes of the speedo object and updates the document speedo elements to match.
+ *
+ * @remarks
+ * Awful code, needs a full refactor.
+ */
 function updateSpeedoStyles() {
         switch (speedosObj.getSize()) {
                 case "SMALL":
@@ -204,8 +212,8 @@ slot4Elm.addEventListener("change", () => {
 });
 
 // POSITION
-const xSlider = document.getElementById("xpos") as HTMLInputElement;
-const ySlider = document.getElementById("ypos") as HTMLInputElement;
+const xSliderElm = document.getElementById("xpos") as HTMLInputElement;
+const ySliderElm = document.getElementById("ypos") as HTMLInputElement;
 
 const markerElm = document.getElementById("marker") as HTMLElement;
 const markerStyle = window.getComputedStyle(markerElm) as CSSStyleDeclaration;
@@ -217,11 +225,11 @@ let markerBoundsWidth: number;
 let markerBoundsHeight: number;
 let markerBounds: { width: number; height: number };
 
-xSlider.addEventListener("input", () => {
+xSliderElm.addEventListener("input", () => {
         updatePosition_x();
 });
 
-ySlider.addEventListener("input", () => {
+ySliderElm.addEventListener("input", () => {
         updatePosition_y();
 });
 
@@ -229,30 +237,33 @@ markerBoundsElm.addEventListener("drag", (event: MouseEvent) => {
         event.preventDefault();
 
         if (event.clientX != 0) {
-                let xValue: number = (event.offsetX / markerBoundsWidth) * +xSlider.max;
-                xSlider.value = xValue.toString();
+                let xValue: number = (event.offsetX / markerBoundsWidth) * +xSliderElm.max;
+                xSliderElm.value = xValue.toString();
 
                 updatePosition_x();
         }
         if (event.clientY != 0) {
-                let yValue: number = (event.offsetY / markerBoundsHeight) * +ySlider.max;
-                ySlider.value = yValue.toString();
+                let yValue: number = (event.offsetY / markerBoundsHeight) * +ySliderElm.max;
+                ySliderElm.value = yValue.toString();
 
                 updatePosition_y();
         }
 });
 
+/**
+ * Reads dimensions of markerBounds element and calls `updateMarkerSize()`.
+ */
 function updatePositionSize(): void {
         markerBoundsWidth = +markerBoundsStyle.getPropertyValue("width").replace("px", "") as number;
         markerBoundsHeight = +markerBoundsStyle.getPropertyValue("height").replace("px", "") as number;
         updateMarkerSize();
-        xSlider.value = readXPos();
-        ySlider.value = readYPos();
-        updatePosition_x();
-        updatePosition_y();
 }
 
+/**
+ * Sets dimensions of marker element, updates markerBounds, and clamps slider values to new bounds.
+ */
 function updateMarkerSize(): void {
+        // scale marker element to match size of markerbounds
         markerElm.style.width = "".concat(
                 (+speedosObj.vdfElm.wide * (markerBoundsWidth / TF_SCREEN_WIDTH_16_9)).toString(),
                 "px"
@@ -269,23 +280,46 @@ function updateMarkerSize(): void {
                 width: markerBoundsWidth - markerSize.width,
                 height: markerBoundsHeight - markerSize.height,
         };
-        xSlider.max = (TF_SCREEN_WIDTH_16_9 - +speedosObj.vdfElm.wide).toString();
-        ySlider.max = (TF_SCREEN_HEIGHT - +speedosObj.vdfElm.tall).toString();
+
+        // clamp slider values
+        let xValue = xSliderElm.value;
+        let yValue = ySliderElm.value;
+        let xMax = TF_SCREEN_WIDTH_16_9 - +speedosObj.vdfElm.wide;
+        let yMax = TF_SCREEN_HEIGHT - +speedosObj.vdfElm.tall;
+        xValue = Math.max(0, Math.min(+xValue, xMax)).toString();
+        yValue = Math.max(0, Math.min(+yValue, yMax)).toString();
+        xSliderElm.max = xMax.toString();
+        ySliderElm.max = yMax.toString();
+        xSliderElm.value = xValue;
+        ySliderElm.value = yValue;
+
+        // run only on first load
+        if (!hasReadVDF) {
+                readXPos();
+                readYPos();
+                hasReadVDF = true;
+        }
+
+        updatePosition_x();
+        updatePosition_y();
 }
 
+/**
+ * Positions marker element to match slider value and updates vdf xpos.
+ */
 function updatePosition_x(): void {
         // update marker horizontal position
-        markerElm.style.left = (+xSlider.value * (markerBounds.width / +xSlider.max)).toString();
+        markerElm.style.left = (+xSliderElm.value * (markerBounds.width / +xSliderElm.max)).toString();
 
         // calculate vdf xpos
-        let center: number = +xSlider.max / 2;
-        let xValue: number = +xSlider.value;
+        let center: number = +xSliderElm.max / 2;
+        let xValue: number = +xSliderElm.value;
         let xOffset: number = Math.round(xValue - center);
 
         let newXPos: string = "cs-0.5";
         if (xValue == 0) {
                 newXPos = "0";
-        } else if (xValue == +xSlider.max) {
+        } else if (xValue == +xSliderElm.max) {
                 newXPos = "rs1";
         } else if (xOffset > 0) {
                 newXPos = newXPos.concat("+", xOffset.toString());
@@ -294,21 +328,25 @@ function updatePosition_x(): void {
         }
 
         speedosObj.vdfElm.xpos = newXPos;
+        console.log(xSliderElm.value);
 }
 
+/**
+ * Positions marker element to match slider value and updates vdf ypos.
+ */
 function updatePosition_y(): void {
         // update marker vertical position
-        markerElm.style.top = (+ySlider.value * (markerBounds.height / +ySlider.max)).toString();
+        markerElm.style.top = (+ySliderElm.value * (markerBounds.height / +ySliderElm.max)).toString();
 
         // calculate vdf ypos
-        let center: number = +ySlider.max / 2;
-        let yValue: number = +ySlider.value;
+        let center: number = +ySliderElm.max / 2;
+        let yValue: number = +ySliderElm.value;
         let yOffset: number = Math.round(yValue - center);
 
         let newYPos: string = "cs-0.5";
         if (yValue == 0) {
                 newYPos = "0";
-        } else if (yValue == +ySlider.max) {
+        } else if (yValue == +ySliderElm.max) {
                 newYPos = "rs1";
         } else if (yOffset > 0) {
                 newYPos = newYPos.concat("+", yOffset.toString());
@@ -319,40 +357,52 @@ function updatePosition_y(): void {
         speedosObj.vdfElm.ypos = newYPos;
 }
 
-function readXPos(): string {
-        let s: string = speedosObj.vdfElm.xpos;
-        let center: number = +xSlider.max / 2;
+/**
+ * Reads vdf xpos into xSlider value.
+ */
+function readXPos() {
+        let value: string = speedosObj.vdfElm.xpos;
+        let center: number = +xSliderElm.max / 2;
 
         switch (true) {
-                case s.includes("cs-0.5"):
-                        s = s.replace("cs-0.5", "");
-                        s = (+s + center).toString();
-                        return s;
-                case s.includes("rs1"):
-                        s = xSlider.max;
-                        break;
+                case value.includes("cs-0.5"):
+                        value = value.replace("cs-0.5", "");
+                        value = (+value + center).toString();
+                        xSliderElm.value = value;
+                        return;
+                case value.includes("rs1"):
+                        value = xSliderElm.max;
+                        xSliderElm.value = value;
+                        return;
                 default:
                         break;
         }
-        return center.toString();
+        value = center.toString();
+        xSliderElm.value = value;
 }
 
-function readYPos(): string {
-        let s: string = speedosObj.vdfElm.ypos;
-        let center: number = +ySlider.max / 2;
+/**
+ * Reads vdf ypos into ySlider value.
+ */
+function readYPos() {
+        let value: string = speedosObj.vdfElm.ypos;
+        let center: number = +ySliderElm.max / 2;
 
         switch (true) {
-                case s.includes("cs-0.5"):
-                        s = s.replace("cs-0.5", "");
-                        s = (+s + center).toString();
-                        return s;
-                case s.includes("rs1"):
-                        s = ySlider.max;
-                        break;
+                case value.includes("cs-0.5"):
+                        value = value.replace("cs-0.5", "");
+                        value = (+value + center).toString();
+                        ySliderElm.value = value;
+                        return;
+                case value.includes("rs1"):
+                        value = ySliderElm.max;
+                        ySliderElm.value = value;
+                        return;
                 default:
                         break;
         }
-        return center.toString();
+        value = center.toString();
+        ySliderElm.value = value;
 }
 
 // POSITION IMAGE
@@ -360,17 +410,23 @@ let imageUploadElm = document.getElementById("imageupload") as HTMLInputElement;
 let positionPreviewImgElm = document.getElementById("position_preview_img") as HTMLImageElement;
 
 imageUploadElm.addEventListener("change", () => {
-        changeImage(imageUploadElm);
+        changeImage(imageUploadElm, positionPreviewImgElm);
 });
 
-function changeImage(input: HTMLInputElement) {
+/**
+ * Reads uploaded image and changes image on page to it.
+ *
+ * @param input `input[type="file"]` element to upload image
+ * @param output `img` element to update with uploaded image
+ */
+function changeImage(input: HTMLInputElement, output: HTMLImageElement) {
         let reader: FileReader;
 
         if (input.files && input.files[0]) {
                 reader = new FileReader();
                 reader.readAsDataURL(input.files[0]);
                 reader.onload = () => {
-                        positionPreviewImgElm.setAttribute("src", reader.result as string);
+                        output.setAttribute("src", reader.result as string);
                 };
         }
 }
@@ -569,7 +625,7 @@ text_hspeedo_good_max.addEventListener("change", () => {
 });
 
 function process_hspeedo_close_min() {
-        slider_process_min(slider_hspeedo_close_min, slider_hspeedo_close_max, text_hspeedo_close_min);
+        process_slider_min(slider_hspeedo_close_min, slider_hspeedo_close_max, text_hspeedo_close_min);
         slider_dual_fill_color(
                 speedosObj.colorClose,
                 track_hspeedo_close,
@@ -580,7 +636,7 @@ function process_hspeedo_close_min() {
 }
 
 function process_hspeedo_close_max() {
-        slider_process_max(slider_hspeedo_close_min, slider_hspeedo_close_max, text_hspeedo_close_max);
+        process_slider_max(slider_hspeedo_close_min, slider_hspeedo_close_max, text_hspeedo_close_max);
         slider_dual_fill_color(
                 speedosObj.colorClose,
                 track_hspeedo_close,
@@ -591,7 +647,7 @@ function process_hspeedo_close_max() {
 }
 
 function process_hspeedo_good_min() {
-        slider_process_min(slider_hspeedo_good_min, slider_hspeedo_good_max, text_hspeedo_good_min);
+        process_slider_min(slider_hspeedo_good_min, slider_hspeedo_good_max, text_hspeedo_good_min);
         slider_dual_fill_color(
                 speedosObj.colorGood,
                 track_hspeedo_good,
@@ -602,7 +658,7 @@ function process_hspeedo_good_min() {
 }
 
 function process_hspeedo_good_max() {
-        slider_process_max(slider_hspeedo_good_min, slider_hspeedo_good_max, text_hspeedo_good_max);
+        process_slider_max(slider_hspeedo_good_min, slider_hspeedo_good_max, text_hspeedo_good_max);
         slider_dual_fill_color(
                 speedosObj.colorGood,
                 track_hspeedo_good,
@@ -662,7 +718,7 @@ text_vspeedo_good_max.addEventListener("change", () => {
 });
 
 function process_vspeedo_close_min() {
-        slider_process_min(slider_vspeedo_close_min, slider_vspeedo_close_max, text_vspeedo_close_min);
+        process_slider_min(slider_vspeedo_close_min, slider_vspeedo_close_max, text_vspeedo_close_min);
         slider_dual_fill_color(
                 speedosObj.colorClose,
                 track_vspeedo_close,
@@ -673,7 +729,7 @@ function process_vspeedo_close_min() {
 }
 
 function process_vspeedo_close_max() {
-        slider_process_max(slider_vspeedo_close_min, slider_vspeedo_close_max, text_vspeedo_close_max);
+        process_slider_max(slider_vspeedo_close_min, slider_vspeedo_close_max, text_vspeedo_close_max);
         slider_dual_fill_color(
                 speedosObj.colorClose,
                 track_vspeedo_close,
@@ -684,7 +740,7 @@ function process_vspeedo_close_max() {
 }
 
 function process_vspeedo_good_min() {
-        slider_process_min(slider_vspeedo_good_min, slider_vspeedo_good_max, text_vspeedo_good_min);
+        process_slider_min(slider_vspeedo_good_min, slider_vspeedo_good_max, text_vspeedo_good_min);
         slider_dual_fill_color(
                 speedosObj.colorGood,
                 track_vspeedo_good,
@@ -695,7 +751,7 @@ function process_vspeedo_good_min() {
 }
 
 function process_vspeedo_good_max() {
-        slider_process_max(slider_vspeedo_good_min, slider_vspeedo_good_max, text_vspeedo_good_max);
+        process_slider_max(slider_vspeedo_good_min, slider_vspeedo_good_max, text_vspeedo_good_max);
         slider_dual_fill_color(
                 speedosObj.colorGood,
                 track_vspeedo_good,
@@ -755,47 +811,47 @@ text_aspeedo_good_max.addEventListener("change", () => {
 });
 
 function process_aspeedo_close_min() {
-        slider_process_min(slider_aspeedo_close_min, slider_aspeedo_close_max, text_aspeedo_close_min);
+        process_slider_min(slider_aspeedo_close_min, slider_aspeedo_close_max, text_aspeedo_close_min);
         slider_dual_fill_color(
                 speedosObj.colorClose,
                 track_aspeedo_close,
                 slider_aspeedo_close_min,
                 slider_aspeedo_close_max
         );
-        speedosObj.ASpeedoRange.closeMin = parseInt(slider_aspeedo_close_min.value);
+        speedosObj.ASpeedoRange.closeMin = +slider_aspeedo_close_min.value;
 }
 
 function process_aspeedo_close_max() {
-        slider_process_max(slider_aspeedo_close_min, slider_aspeedo_close_max, text_aspeedo_close_max);
+        process_slider_max(slider_aspeedo_close_min, slider_aspeedo_close_max, text_aspeedo_close_max);
         slider_dual_fill_color(
                 speedosObj.colorClose,
                 track_aspeedo_close,
                 slider_aspeedo_close_min,
                 slider_aspeedo_close_max
         );
-        speedosObj.ASpeedoRange.closeMax = parseInt(slider_aspeedo_close_max.value);
+        speedosObj.ASpeedoRange.closeMax = +slider_aspeedo_close_max.value;
 }
 
 function process_aspeedo_good_min() {
-        slider_process_min(slider_aspeedo_good_min, slider_aspeedo_good_max, text_aspeedo_good_min);
+        process_slider_min(slider_aspeedo_good_min, slider_aspeedo_good_max, text_aspeedo_good_min);
         slider_dual_fill_color(
                 speedosObj.colorGood,
                 track_aspeedo_good,
                 slider_aspeedo_good_min,
                 slider_aspeedo_good_max
         );
-        speedosObj.ASpeedoRange.goodMin = parseInt(slider_aspeedo_good_min.value);
+        speedosObj.ASpeedoRange.goodMin = +slider_aspeedo_good_min.value;
 }
 
 function process_aspeedo_good_max() {
-        slider_process_max(slider_aspeedo_good_min, slider_aspeedo_good_max, text_aspeedo_good_max);
+        process_slider_max(slider_aspeedo_good_min, slider_aspeedo_good_max, text_aspeedo_good_max);
         slider_dual_fill_color(
                 speedosObj.colorGood,
                 track_aspeedo_good,
                 slider_aspeedo_good_min,
                 slider_aspeedo_good_max
         );
-        speedosObj.ASpeedoRange.goodMax = parseInt(slider_aspeedo_good_max.value);
+        speedosObj.ASpeedoRange.goodMax = +slider_aspeedo_good_max.value;
 }
 
 // heighto
@@ -857,24 +913,48 @@ function process_heighto_maxVel() {
 }
 
 // all sliders
-function slider_process_min(sliderMin: HTMLInputElement, sliderMax: HTMLInputElement, textMin: HTMLInputElement) {
-        if (parseInt(sliderMin.value) >= parseInt(sliderMax.value)) {
-                sliderMin.value = (parseInt(sliderMax.value) - rangeGap).toString();
+/**
+ * Limits the value of the minimum slider to stay below the value of the maximum slider.
+ * Updates text input to reflect value.
+ *
+ * @param sliderMin
+ * @param sliderMax
+ * @param textMin
+ */
+function process_slider_min(sliderMin: HTMLInputElement, sliderMax: HTMLInputElement, textMin: HTMLInputElement) {
+        if (+sliderMin.value >= +sliderMax.value) {
+                sliderMin.value = (+sliderMax.value - rangeGap).toString();
         }
         if (textMin) {
                 textMin.value = sliderMin.value;
         }
 }
 
-function slider_process_max(sliderMin: HTMLInputElement, sliderMax: HTMLInputElement, textMax?: HTMLInputElement) {
-        if (parseInt(sliderMax.value) <= parseInt(sliderMin.value)) {
-                sliderMax.value = (parseInt(sliderMin.value) + rangeGap).toString();
+/**
+ * Limits the value of the maximum slider to stay above the value of the minimum slider.
+ * Updates text input to reflect value.
+ *
+ * @param sliderMin
+ * @param sliderMax
+ * @param textMin
+ */
+function process_slider_max(sliderMin: HTMLInputElement, sliderMax: HTMLInputElement, textMax?: HTMLInputElement) {
+        if (+sliderMax.value <= +sliderMin.value) {
+                sliderMax.value = (+sliderMin.value + rangeGap).toString();
         }
         if (textMax) {
                 textMax.value = sliderMax.value;
         }
 }
 
+/**
+ * Fills the color between minimum & maximum dual slider values.
+ *
+ * @param colorFocus Color to fill between minimum and maximum values.
+ * @param sliderTrack Div element to recolor.
+ * @param sliderMin Minimum value slider.
+ * @param sliderMax Maximum value slider.
+ */
 function slider_dual_fill_color(
         colorFocus: Color,
         sliderTrack: HTMLDivElement,
@@ -908,6 +988,13 @@ function slider_dual_fill_color(
         );
 }
 
+/**
+ * Fills the color above slider value.
+ *
+ * @param colorFocus Color to fill above slider value.
+ * @param sliderTrack Div element to recolor.
+ * @param slider
+ */
 function slider_fill_color(color: Color, sliderTrack: HTMLDivElement, slider: HTMLInputElement) {
         let colorNull = speedosObj.colorMain_Heighto.getCSSColor();
         let colorFocus = color.getCSSColor();
@@ -978,7 +1065,9 @@ window.addEventListener("resize", () => {
         updatePositionSize();
 });
 
-// load default settings based on defaults of speedosObj
+/**
+ * Loads values from speedo object into DOM elements.
+ */
 function speedosObj_to_Elements() {
         slot1Elm.value = speedosObj.speedo[0].speedoType;
         slot2Elm.value = speedosObj.speedo[1].speedoType;

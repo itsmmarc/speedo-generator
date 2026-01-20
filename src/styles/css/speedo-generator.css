@@ -135,7 +135,7 @@ body main label {
 }
 body main form {
   display: grid;
-  grid-template-columns: minmax(340px, 33%) clamp(40rem, 67%, 55rem);
+  grid-template-columns: minmax(340px, 33%) clamp(40rem, 67%, 100%);
   width: 100%;
 }
 @media only screen and (max-width: 1550px) {
