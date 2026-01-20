@@ -99,9 +99,39 @@ body main .top-bar h1 {
   background-color: rgba(0, 0, 0, 0.384);
   font-size: 4rem;
 }
-body main .top-bar button {
+body main .top-bar #top-bar-buttons {
+  display: flex;
+}
+body main .top-bar button,
+body main .top-bar #fake-upload-btn {
+  all: initial;
+  flex-basis: 180px;
   float: right;
+  border: solid;
+  border-width: 2px;
+  border-color: rgb(84, 84, 84) black black rgb(84, 84, 84);
+  background-color: rgb(104, 104, 104);
+  padding-inline: 6px;
+  padding-block: 1px;
   height: 2.2rem;
+  color: rgb(255, 255, 255);
+  font-size: 0.85rem;
+  font-style: normal;
+  font-weight: 900;
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "wdth" 100;
+  align-content: center;
+  text-align: center;
+}
+body main .top-bar button:active,
+body main .top-bar #fake-upload-btn:active {
+  border-color: black rgb(84, 84, 84) rgb(84, 84, 84) black;
+}
+body main .top-bar button input,
+body main .top-bar #fake-upload-btn input {
+  width: 0;
+  height: 0;
 }
 body main h2 {
   margin-bottom: 9px;

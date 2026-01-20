@@ -3,6 +3,8 @@
 $text-color: rgb(133, 133, 133);
 $text-color-light: rgb(255, 255, 255);
 $btn-color: rgb(104, 104, 104);
+$border-light: rgb(84, 84, 84);
+$border-dark: black;
 $main-padding: 2vw;
 $main-min-width: 600px;
 
@@ -107,9 +109,40 @@ body {
                                 background-color: rgba(0, 0, 0, 0.384);
                                 font-size: 4rem;
                         }
-                        button {
+                        #top-bar-buttons {
+                                display: flex;
+                        }
+                        button,
+                        #fake-upload-btn {
+                                all: initial;
+
+                                flex-basis: 180px;
                                 float: right;
+
+                                border: solid;
+                                border-width: 2px;
+                                border-color: $border-light $border-dark $border-dark $border-light;
+                                background-color: $btn-color;
+
+                                padding-inline: 6px;
+                                padding-block: 1px;
                                 height: 2.2rem;
+
+                                color: $text-color-light;
+
+                                font-size: 0.85rem;
+                                @include font-roboto();
+
+                                align-content: center;
+                                text-align: center;
+
+                                &:active {
+                                        border-color: $border-dark $border-light $border-light $border-dark;
+                                }
+                                input {
+                                        width: 0;
+                                        height: 0;
+                                }
                         }
                 }
                 h2 {

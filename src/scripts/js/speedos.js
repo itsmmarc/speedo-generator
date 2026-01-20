@@ -130,6 +130,35 @@ export class Speedos {
                 break;
         }
     }
+    async importFromJSON(input) {
+        if (!input.value.length)
+            return;
+        if (input.files && input.files[0]) {
+            let temp = new Speedos();
+            Object.assign(temp, JSON.parse(await input.files[0].text()));
+            for (let i = 0; i < 4; i++) {
+                this.speedo[i].speedoType = temp.speedo[i].speedoType;
+            }
+            this.round = temp.round;
+            this.drawShadows = temp.drawShadows;
+            // this.colorMain = temp.colorMain;
+            this.colorMain.clone(temp.colorMain);
+            this.colorClose.clone(temp.colorClose);
+            this.colorGood.clone(temp.colorGood);
+            this.colorMain_Heighto.clone(temp.colorMain_Heighto);
+            this.colorDouble.clone(temp.colorDouble);
+            this.colorTriple.clone(temp.colorTriple);
+            this.colorMaxVel.clone(temp.colorMaxVel);
+            this.HSpeedoRange = temp.HSpeedoRange;
+            this.VSpeedoRange = temp.VSpeedoRange;
+            this.ASpeedoRange = temp.ASpeedoRange;
+            this.HeightoThresholds = temp.HeightoThresholds;
+            this.framerate = temp.framerate;
+            this.frametime = temp.frametime;
+            this.vdfElm = temp.vdfElm;
+            this.font = temp.font;
+        }
+    }
 }
 export const presetDemo = (() => {
     let speedos = new Speedos();

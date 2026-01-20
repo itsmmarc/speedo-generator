@@ -1053,6 +1053,15 @@ downloadElm.addEventListener("click", () => {
         zipSpeedos(speedosObj);
 });
 
+// UPLOAD
+const uploadElm = document.getElementById("upload-btn") as HTMLInputElement;
+
+uploadElm.addEventListener("change", () => {
+        speedosObj.importFromJSON(uploadElm).then(() => {
+                initialize();
+        });
+});
+
 //===================================================================================
 // ON PAGE LOAD
 //-----------------------------------------------------------------------------------
@@ -1061,6 +1070,7 @@ window.onload = () => {
 };
 
 function initialize() {
+        hasReadVDF = false;
         updateSpeedoStyles();
         speedosObj_to_Elements();
         updatePositionSize();

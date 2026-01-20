@@ -23,7 +23,7 @@ export class Color {
     }
     getVMTColor() {
         let color = "";
-        color = color.concat('\"{ ', this.r.toString(), " ", this.g.toString(), " ", this.b.toString(), ' }\"');
+        color = color.concat('"{ ', this.r.toString(), " ", this.g.toString(), " ", this.b.toString(), ' }"');
         return color;
     }
     static input_to_color(s) {
@@ -35,5 +35,10 @@ export class Color {
         color.g = parseInt(g_hex, 16);
         color.b = parseInt(b_hex, 16);
         return color;
+    }
+    clone(from) {
+        this.r = from.r;
+        this.g = from.g;
+        this.b = from.b;
     }
 }
