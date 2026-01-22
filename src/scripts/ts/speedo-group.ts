@@ -26,16 +26,16 @@ export type Range = {
         goodMax: number;
 };
 
-export class Speedos {
+export class SpeedoGroup {
         previewSpeed?: number;
-        speedo: Speedo[];
+        speedos: Speedo[];
         round: boolean;
         drawShadows: boolean;
         private size: SpeedoSize; // must use setter so vdfElm can be updated to match
         colorMain: Color;
         colorClose: Color;
         colorGood: Color;
-        colorMain_Heighto: Color;
+        colorHeightoMain: Color;
         colorDouble: Color;
         colorTriple: Color;
         colorMaxVel: Color;
@@ -50,8 +50,7 @@ export class Speedos {
 
         constructor() {
                 this.vdfElm = new VDFElement("speedos");
-                this.size = <SpeedoSize>{};
-                this.setSize("MEDIUM");
+                this.setSize((this.size = "MEDIUM"));
                 this.vdfElm.xpos = "cs-0.5";
                 this.vdfElm.ypos = "cs-0.5";
 
@@ -65,7 +64,7 @@ export class Speedos {
                 this.colorMain = m0reColor.WHITE;
                 this.colorClose = m0reColor.BLUE;
                 this.colorGood = m0reColor.GREEN;
-                this.colorMain_Heighto = m0reColor.WHITE;
+                this.colorHeightoMain = m0reColor.WHITE;
                 this.colorDouble = m0reColor.BLUE;
                 this.colorTriple = m0reColor.GREEN;
                 this.colorMaxVel = m0reColor.YELLOW;
@@ -94,11 +93,11 @@ export class Speedos {
                         maxVel: 10000,
                 };
 
-                this.speedo = new Array<Speedo>(4);
-                this.speedo[0] = new Speedo("NONE" as SpeedoType, this.colorMain);
-                this.speedo[1] = new Speedo("NONE" as SpeedoType, this.colorMain);
-                this.speedo[2] = new Speedo("NONE" as SpeedoType, this.colorMain);
-                this.speedo[3] = new Speedo("NONE" as SpeedoType, this.colorMain);
+                this.speedos = [];
+                this.speedos.push(new Speedo("NONE" as SpeedoType, this.colorMain));
+                this.speedos.push(new Speedo("NONE" as SpeedoType, this.colorMain));
+                this.speedos.push(new Speedo("NONE" as SpeedoType, this.colorMain));
+                this.speedos.push(new Speedo("NONE" as SpeedoType, this.colorMain));
         }
 
         startPreview(): void {
@@ -123,8 +122,8 @@ export class Speedos {
                                 this.previewSpeed = sine_min;
                         }
                         // update speed & color of all speedo slots
-                        this.speedo.forEach((speedo) => {
-                                if (speedo.speedoType == "HEIGHTO") {
+                        for (const speedo of this.speedos) {
+                                if (speedo.speedoType === "HEIGHTO") {
                                         speedo.playerSpeed = Math.round(this.previewSpeed! * (9999 / 3500));
                                         if (this.round) {
                                                 speedo.playerSpeed /= 10;
@@ -135,7 +134,7 @@ export class Speedos {
                                         speedo.playerSpeed = this.previewSpeed!;
                                 }
                                 speedo.updateColor(this);
-                        });
+                        }
                 }, this.frametime);
         }
 
@@ -169,19 +168,18 @@ export class Speedos {
                 if (!input.value.length) return;
 
                 if (input.files && input.files[0]) {
-                        let temp = new Speedos();
+                        let temp = new SpeedoGroup();
                         Object.assign(temp, JSON.parse(await input.files[0].text()));
 
-                        for (let i = 0; i < 4; i++) {
-                                this.speedo[i].speedoType = temp.speedo[i].speedoType;
+                        for (const [index, speedo] of this.speedos.entries()) {
+                                speedo.speedoType = temp.speedos[index].speedoType;
                         }
                         this.round = temp.round;
                         this.drawShadows = temp.drawShadows;
-                        // this.colorMain = temp.colorMain;
                         this.colorMain.clone(temp.colorMain);
                         this.colorClose.clone(temp.colorClose);
                         this.colorGood.clone(temp.colorGood);
-                        this.colorMain_Heighto.clone(temp.colorMain_Heighto);
+                        this.colorHeightoMain.clone(temp.colorHeightoMain);
                         this.colorDouble.clone(temp.colorDouble);
                         this.colorTriple.clone(temp.colorTriple);
                         this.colorMaxVel.clone(temp.colorMaxVel);
@@ -197,112 +195,112 @@ export class Speedos {
         }
 }
 
-export const presetDemo = ((): Speedos => {
-        let speedos = new Speedos();
+export const presetDemo = ((): SpeedoGroup => {
+        let speedoGroup = new SpeedoGroup();
 
-        speedos.setSize("MEDIUM");
-        speedos.vdfElm.xpos = "cs-0.5";
-        speedos.vdfElm.ypos = "cs-0.5+54";
+        speedoGroup.setSize("MEDIUM");
+        speedoGroup.vdfElm.xpos = "cs-0.5";
+        speedoGroup.vdfElm.ypos = "cs-0.5+54";
 
-        speedos.round = true;
-        speedos.drawShadows = true;
-        speedos.framerate = 30;
-        speedos.frametime = 1000 / speedos.framerate;
+        speedoGroup.round = true;
+        speedoGroup.drawShadows = true;
+        speedoGroup.framerate = 30;
+        speedoGroup.frametime = 1000 / speedoGroup.framerate;
 
-        speedos.font = "roboto";
+        speedoGroup.font = "roboto";
 
-        speedos.colorMain = m0reColor.WHITE;
-        speedos.colorClose = m0reColor.BLUE;
-        speedos.colorGood = m0reColor.GREEN;
-        speedos.colorMain_Heighto = m0reColor.WHITE;
-        speedos.colorDouble = m0reColor.BLUE;
-        speedos.colorTriple = m0reColor.GREEN;
-        speedos.colorMaxVel = m0reColor.YELLOW;
+        speedoGroup.colorMain = m0reColor.WHITE;
+        speedoGroup.colorClose = m0reColor.BLUE;
+        speedoGroup.colorGood = m0reColor.GREEN;
+        speedoGroup.colorHeightoMain = m0reColor.WHITE;
+        speedoGroup.colorDouble = m0reColor.BLUE;
+        speedoGroup.colorTriple = m0reColor.GREEN;
+        speedoGroup.colorMaxVel = m0reColor.YELLOW;
 
-        speedos.HSpeedoRange = {
+        speedoGroup.HSpeedoRange = {
                 closeMin: 700,
                 closeMax: 1200,
                 goodMin: 850,
                 goodMax: 900,
         };
-        speedos.VSpeedoRange = {
+        speedoGroup.VSpeedoRange = {
                 closeMin: 800,
                 closeMax: 1500,
                 goodMin: 1100,
                 goodMax: 1200,
         };
-        speedos.ASpeedoRange = {
+        speedoGroup.ASpeedoRange = {
                 closeMin: -1,
                 closeMax: -1,
                 goodMin: -1,
                 goodMax: -1,
         };
-        speedos.HeightoThresholds = {
+        speedoGroup.HeightoThresholds = {
                 double: 10000,
                 triple: 10000,
                 maxVel: 10000,
         };
 
-        speedos.speedo[0] = new Speedo("NONE" as SpeedoType, speedos.colorMain);
-        speedos.speedo[1] = new Speedo("HORIZONTAL" as SpeedoType, speedos.colorMain);
-        speedos.speedo[2] = new Speedo("VERTICAL" as SpeedoType, speedos.colorMain);
-        speedos.speedo[3] = new Speedo("NONE" as SpeedoType, speedos.colorMain);
+        speedoGroup.speedos[0] = new Speedo("NONE" as SpeedoType, speedoGroup.colorMain);
+        speedoGroup.speedos[1] = new Speedo("HORIZONTAL" as SpeedoType, speedoGroup.colorMain);
+        speedoGroup.speedos[2] = new Speedo("VERTICAL" as SpeedoType, speedoGroup.colorMain);
+        speedoGroup.speedos[3] = new Speedo("NONE" as SpeedoType, speedoGroup.colorMain);
 
-        return speedos;
+        return speedoGroup;
 })();
+Object.freeze(presetDemo);
 
-export const presetSoldier = ((): Speedos => {
-        let speedos = new Speedos();
+export const presetSoldier = ((): SpeedoGroup => {
+        let speedoGroup = new SpeedoGroup();
 
-        speedos.setSize("MEDIUM");
-        speedos.vdfElm.xpos = "cs-0.5";
-        speedos.vdfElm.ypos = "cs-0.5+54";
+        speedoGroup.setSize("MEDIUM");
+        speedoGroup.vdfElm.xpos = "cs-0.5";
+        speedoGroup.vdfElm.ypos = "cs-0.5+54";
 
-        speedos.round = true;
-        speedos.drawShadows = true;
-        speedos.framerate = 30;
-        speedos.frametime = 1000 / speedos.framerate;
+        speedoGroup.round = true;
+        speedoGroup.drawShadows = true;
+        speedoGroup.framerate = 30;
+        speedoGroup.frametime = 1000 / speedoGroup.framerate;
 
-        speedos.font = "roboto";
+        speedoGroup.font = "roboto";
 
-        speedos.colorMain = m0reColor.WHITE;
-        speedos.colorClose = m0reColor.BLUE;
-        speedos.colorGood = m0reColor.GREEN;
-        speedos.colorMain_Heighto = m0reColor.WHITE;
-        speedos.colorDouble = m0reColor.BLUE;
-        speedos.colorTriple = m0reColor.GREEN;
-        speedos.colorMaxVel = m0reColor.YELLOW;
+        speedoGroup.colorMain = m0reColor.WHITE;
+        speedoGroup.colorClose = m0reColor.BLUE;
+        speedoGroup.colorGood = m0reColor.GREEN;
+        speedoGroup.colorHeightoMain = m0reColor.WHITE;
+        speedoGroup.colorDouble = m0reColor.BLUE;
+        speedoGroup.colorTriple = m0reColor.GREEN;
+        speedoGroup.colorMaxVel = m0reColor.YELLOW;
 
-        speedos.HSpeedoRange = {
+        speedoGroup.HSpeedoRange = {
                 closeMin: 850,
                 closeMax: 1350,
                 goodMin: 1050,
                 goodMax: 1150,
         };
-        speedos.VSpeedoRange = {
+        speedoGroup.VSpeedoRange = {
                 closeMin: -1,
                 closeMax: -1,
                 goodMin: -1,
                 goodMax: -1,
         };
-        speedos.ASpeedoRange = {
+        speedoGroup.ASpeedoRange = {
                 closeMin: 850,
                 closeMax: 1350,
                 goodMin: 1050,
                 goodMax: 1150,
         };
-        speedos.HeightoThresholds = {
+        speedoGroup.HeightoThresholds = {
                 double: 1260,
                 triple: 2160,
                 maxVel: 7700,
         };
 
-        speedos.speedo[0] = new Speedo("NONE" as SpeedoType, speedos.colorMain);
-        speedos.speedo[1] = new Speedo("HORIZONTAL" as SpeedoType, speedos.colorMain);
-        speedos.speedo[2] = new Speedo("HEIGHTO" as SpeedoType, speedos.colorMain);
-        speedos.speedo[3] = new Speedo("NONE" as SpeedoType, speedos.colorMain);
+        speedoGroup.speedos[0] = new Speedo("NONE" as SpeedoType, speedoGroup.colorMain);
+        speedoGroup.speedos[1] = new Speedo("HORIZONTAL" as SpeedoType, speedoGroup.colorMain);
+        speedoGroup.speedos[2] = new Speedo("HEIGHTO" as SpeedoType, speedoGroup.colorMain);
+        speedoGroup.speedos[3] = new Speedo("NONE" as SpeedoType, speedoGroup.colorMain);
 
-        return speedos;
+        return speedoGroup;
 })();
-Object.freeze(presetDemo);
 Object.freeze(presetSoldier);

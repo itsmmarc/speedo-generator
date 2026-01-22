@@ -1,16 +1,16 @@
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { unzip } from "unzipit";
-export async function zipSpeedos(speedos) {
+export async function zipSpeedos(speedoGroup) {
     const zip_name = "speedo-generator-hud-0.1.6.zip";
-    const hud_resources_url = "http://localhost:5173/files/" + zip_name;
+    const hud_resources_url = `http://localhost:5173/files/${zip_name}`;
     const speedo_materials_path = "YOURHUD/materials/vgui/replay/thumbnails/speedo/";
     const speedo_resource_path = "YOURHUD/speedo/";
     importHudResources(hud_resources_url).then((zip) => {
         zip.file("README.md", createReadme());
-        zip.file("".concat(speedo_materials_path, "speedo_config.vmt"), generateSpeedoConfig_vmt(speedos));
-        zip.file("".concat(speedo_resource_path, "speedo_config.res"), generateSpeedoConfig_res(speedos));
-        zip.file("".concat("YOURHUD/speedo_config.json"), generateSpeedoJSON(speedos));
+        zip.file(`${speedo_materials_path}speedo_config.vmt`, generateSpeedoConfig_vmt(speedoGroup));
+        zip.file(`${speedo_resource_path}speedo_config.res`, generateSpeedoConfig_res(speedoGroup));
+        zip.file("YOURHUD/speedo_config.json", generateSpeedoJSON(speedoGroup));
         zip.generateAsync({ type: "blob" }).then(function (content) {
             saveAs(content, "test.zip");
         });
@@ -35,87 +35,78 @@ async function importHudResources(url) {
     }
     return zip;
 }
-function generateSpeedoConfig_vmt(speedos) {
+function generateSpeedoConfig_vmt(speedoGroup) {
     let s = "";
     // font
-    s = s.concat("#base fonts/", speedos.font, "/digits.vmt");
-    s = s.concat("\nUnlitGeneric{\n");
+    s = s.concat(`#base fonts/${speedoGroup.font}/digits.vmt`);
+    s = s.concat('\n"UnlitGeneric"{\n');
     // rounding
-    s = s.concat("\t$round\t");
-    if (speedos.round) {
-        s = s.concat("1\n");
-    }
-    else {
-        s = s.concat("0\n");
-    }
+    s = s.concat(`\t$round\t${speedoGroup.round ? 1 : 0}\n`);
     // colors
-    s = s.concat("\t$colorMain\t", speedos.colorMain.getVMTColor(), "\n");
-    s = s.concat("\t$colorClose\t", speedos.colorClose.getVMTColor(), "\n");
-    s = s.concat("\t$colorGood\t", speedos.colorGood.getVMTColor(), "\n");
-    s = s.concat("\t$colorMainH\t", speedos.colorMain_Heighto.getVMTColor(), "\n");
-    s = s.concat("\t$colorDouble\t", speedos.colorDouble.getVMTColor(), "\n");
-    s = s.concat("\t$colorTriple\t", speedos.colorTriple.getVMTColor(), "\n");
-    s = s.concat("\t$colorMaxVel\t", speedos.colorMaxVel.getVMTColor(), "\n");
-    s = s.concat("\t$hCloseMin\t", speedos.HSpeedoRange.closeMin.toString(), "\n");
-    s = s.concat("\t$hCloseMax\t", speedos.HSpeedoRange.closeMax.toString(), "\n");
-    s = s.concat("\t$hGoodMin\t", speedos.HSpeedoRange.goodMin.toString(), "\n");
-    s = s.concat("\t$hGoodMax\t", speedos.HSpeedoRange.goodMax.toString(), "\n");
-    s = s.concat("\t$vCloseMin\t", speedos.HSpeedoRange.closeMin.toString(), "\n");
-    s = s.concat("\t$vCloseMax\t", speedos.HSpeedoRange.closeMax.toString(), "\n");
-    s = s.concat("\t$vGoodMin\t", speedos.HSpeedoRange.goodMin.toString(), "\n");
-    s = s.concat("\t$vGoodMax\t", speedos.HSpeedoRange.goodMax.toString(), "\n");
-    s = s.concat("\t$aCloseMin\t", speedos.HSpeedoRange.closeMin.toString(), "\n");
-    s = s.concat("\t$aCloseMax\t", speedos.HSpeedoRange.closeMax.toString(), "\n");
-    s = s.concat("\t$aGoodMin\t", speedos.HSpeedoRange.goodMin.toString(), "\n");
-    s = s.concat("\t$aGoodMax\t", speedos.HSpeedoRange.goodMax.toString(), "\n");
-    s = s.concat("\t$doubleThreshold\t", speedos.HeightoThresholds.double.toString(), "\n");
-    s = s.concat("\t$tripleThreshold\t", speedos.HeightoThresholds.triple.toString(), "\n");
-    s = s.concat("\t$maxVelThreshold\t", speedos.HeightoThresholds.maxVel.toString(), "\n");
+    s = s.concat(`\t$colorMain\t ${speedoGroup.colorMain.getVMTColor()}\n`);
+    s = s.concat(`\t$colorClose\t ${speedoGroup.colorClose.getVMTColor()}\n`);
+    s = s.concat(`\t$colorGood\t ${speedoGroup.colorGood.getVMTColor()}\n`);
+    s = s.concat(`\t$colorMainH\t ${speedoGroup.colorHeightoMain.getVMTColor()}\n`);
+    s = s.concat(`\t$colorDouble\t ${speedoGroup.colorDouble.getVMTColor()}\n`);
+    s = s.concat(`\t$colorTriple\t ${speedoGroup.colorTriple.getVMTColor()}\n`);
+    s = s.concat(`\t$colorMaxVel\t ${speedoGroup.colorMaxVel.getVMTColor()}\n`);
+    s = s.concat(`\t$hCloseMin\t ${speedoGroup.HSpeedoRange.closeMin.toString()}\n`);
+    s = s.concat(`\t$hCloseMax\t ${speedoGroup.HSpeedoRange.closeMax.toString()}\n`);
+    s = s.concat(`\t$hGoodMin\t ${speedoGroup.HSpeedoRange.goodMin.toString()}\n`);
+    s = s.concat(`\t$hGoodMax\t ${speedoGroup.HSpeedoRange.goodMax.toString()}\n`);
+    s = s.concat(`\t$vCloseMin\t ${speedoGroup.HSpeedoRange.closeMin.toString()}\n`);
+    s = s.concat(`\t$vCloseMax\t ${speedoGroup.HSpeedoRange.closeMax.toString()}\n`);
+    s = s.concat(`\t$vGoodMin\t ${speedoGroup.HSpeedoRange.goodMin.toString()}\n`);
+    s = s.concat(`\t$vGoodMax\t ${speedoGroup.HSpeedoRange.goodMax.toString()}\n`);
+    s = s.concat(`\t$aCloseMin\t ${speedoGroup.HSpeedoRange.closeMin.toString()}\n`);
+    s = s.concat(`\t$aCloseMax\t ${speedoGroup.HSpeedoRange.closeMax.toString()}\n`);
+    s = s.concat(`\t$aGoodMin\t ${speedoGroup.HSpeedoRange.goodMin.toString()}\n`);
+    s = s.concat(`\t$aGoodMax\t ${speedoGroup.HSpeedoRange.goodMax.toString()}\n`);
+    s = s.concat(`\t$doubleThreshold\t ${speedoGroup.HeightoThresholds.double.toString()}\n`);
+    s = s.concat(`\t$tripleThreshold\t ${speedoGroup.HeightoThresholds.triple.toString()}\n`);
+    s = s.concat(`\t$maxVelThreshold\t ${speedoGroup.HeightoThresholds.maxVel.toString()}\n`);
     s = s.concat("}");
     return s;
 }
-function generateSpeedoConfig_res(speedos) {
+function generateSpeedoConfig_res(speedoGroup) {
     let s = "";
+    let baseSlot;
     let i = 1;
-    speedos.speedo.forEach((speedo) => {
-        if (speedo.speedoType == "NONE") {
-            s = s.concat("//");
-        }
-        s = s.concat("#base slot/", (i++).toString(), "/");
+    for (const speedo of speedoGroup.speedos) {
+        baseSlot = `#base slot/${(i++).toString()}/`;
         switch (speedo.speedoType) {
             case "ABSOLUTE":
-                s = s.concat("aspeedo.res\n");
+                s = s.concat(`${baseSlot}aspeedo.res\n`);
                 break;
             case "HORIZONTAL":
-                s = s.concat("hspeedo.res\n");
+                s = s.concat(`${baseSlot}hspeedo.res\n`);
                 break;
             case "VERTICAL":
-                s = s.concat("vspeedo.res\n");
+                s = s.concat(`${baseSlot}vspeedo.res\n`);
                 break;
             case "HEIGHTO":
-                s = s.concat("heighto.res\n");
+                s = s.concat(`${baseSlot}heighto.res\n`);
                 break;
             case "NONE":
             default:
-                s = s.concat("NULL\n");
+                s = s.concat(`// ${baseSlot}NULL\n`);
                 break;
         }
-    });
+    }
     s = s.concat("\nspeedo_config.res{\n\tspeedos{\n");
-    s = s.concat("\t\twide ", speedos.vdfElm.wide, "\n");
-    s = s.concat("\t\ttall ", speedos.vdfElm.tall, "\n");
-    s = s.concat("\t\txpos ", speedos.vdfElm.xpos, "\n");
-    s = s.concat("\t\typos ", speedos.vdfElm.ypos, "\n");
+    s = s.concat(`\t\twide ${speedoGroup.vdfElm.wide}\n`);
+    s = s.concat(`\t\ttall ${speedoGroup.vdfElm.tall}\n`);
+    s = s.concat(`\t\txpos ${speedoGroup.vdfElm.xpos}\n`);
+    s = s.concat(`\t\typos ${speedoGroup.vdfElm.ypos}\n`);
     let shadowsVisible;
-    if (speedos.drawShadows) {
+    if (speedoGroup.drawShadows) {
         shadowsVisible = "1";
     }
     else {
         shadowsVisible = "0";
     }
-    for (let i = 1; i <= 4; i++) {
-        s = s.concat("\t\tslot_", i.toString(), "_container{\n\t\t\tshadows_container{");
-        s = s.concat("\n\t\t\t\tvisible ", shadowsVisible, "\n\t\t\t}\n\t\t}\n");
+    for (const [index, speedo] of speedoGroup.speedos.entries()) {
+        s = s.concat(`\t\tslot_${index + 1}_container{\n`, `\t\t\tshadows_container{\n`, `\t\t\t\tvisible ${shadowsVisible}\n`, `\t\t\t}\n`, `\t\t}\n`);
     }
     s = s.concat("\t}\n}\n");
     return s;
@@ -132,10 +123,12 @@ function createReadme() {
         "\n## Usage:\n" +
         "Use the command `speedo_toggle` (or `speedo_enable` and `speedo_disable`) ingame to toggle the speedos on and off");
 }
-function generateSpeedoJSON(speedos) {
-    return JSON.stringify(speedos, function (key, val) {
+function generateSpeedoJSON(speedoGroup) {
+    const tabSize = 4;
+    return JSON.stringify(speedoGroup, (key, val) => {
+        // exclude variables not relevant to config
         if (key !== "previewSpeed" && key !== "playerSpeed") {
             return val;
         }
-    }, 4);
+    }, tabSize);
 }

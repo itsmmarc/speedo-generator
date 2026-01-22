@@ -12,7 +12,7 @@ export class Color {
         // function to return rgb value in css syntax
         getCSSColor(): string {
                 let color: string = "";
-                color = color.concat("rgb(", this.r.toString(), ",", this.g.toString(), ",", this.b.toString(), ")");
+                color = `rgb(${this.r}, ${this.g}, ${this.b})`;
 
                 return color;
         }
@@ -22,14 +22,14 @@ export class Color {
                 let r_hex = this.r.toString(16).padStart(2, "0");
                 let g_hex = this.g.toString(16).padStart(2, "0");
                 let b_hex = this.b.toString(16).padStart(2, "0");
-                color = color.concat("#", r_hex, g_hex, b_hex);
+                color = `#${r_hex}${g_hex}${b_hex}`;
 
                 return color;
         }
 
         getVMTColor(): string {
                 let color: string = "";
-                color = color.concat('"{ ', this.r.toString(), " ", this.g.toString(), " ", this.b.toString(), ' }"');
+                color = `\"{ ${this.r} ${this.g} ${this.b} }\"`;
                 return color;
         }
 

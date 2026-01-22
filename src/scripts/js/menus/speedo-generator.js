@@ -1,4 +1,4 @@
-import { presetDemo, presetSoldier } from "../speedos.js";
+import { presetDemo, presetSoldier } from "../speedo-group.js";
 import { Color } from "../color.js";
 import { zipSpeedos } from "../zip.js";
 import { matchClassStartingWith } from "../util.js";
@@ -11,166 +11,99 @@ const TF_SCREEN_HEIGHT = 480;
 let hasReadVDF = false;
 const speedoColl = document.getElementsByClassName("speedo"); // collection of all speedo class elements
 const speedoElmArray = Array.prototype.slice.call(speedoColl);
-let speedosObj = _.cloneDeep(presetSoldier);
+let speedoGroup = _.cloneDeep(presetSoldier);
 //===================================================================================
 // PREVIEW RENDERING
 //-----------------------------------------------------------------------------------
 /**
  * Checks for style changes of the speedo object and updates the document speedo elements to match.
- *
- * @remarks
- * Awful code, needs a full refactor.
  */
 function updateSpeedoStyles() {
-    switch (speedosObj.getSize()) {
+    updateSpeedoSize();
+    updateSpeedoFont();
+    updateSpeedoVisibility();
+}
+function updateSpeedoSize() {
+    $(".speedo").removeClass((index, className) => {
+        return matchClassStartingWith("speedo-size-", className);
+    });
+    switch (speedoGroup.getSize()) {
         case "SMALL":
-            $(".speedo").removeClass("speedo-size-medium");
-            $(".speedo").removeClass("speedo-size-large");
             $(".speedo").addClass("speedo-size-small");
             break;
         case "MEDIUM":
-            $(".speedo").removeClass("speedo-size-small");
-            $(".speedo").removeClass("speedo-size-large");
             $(".speedo").addClass("speedo-size-medium");
             break;
         case "LARGE":
-            $(".speedo").removeClass("speedo-size-small");
-            $(".speedo").removeClass("speedo-size-medium");
             $(".speedo").addClass("speedo-size-large");
             break;
         default:
             break;
     }
-    switch (speedosObj.font) {
+}
+function updateSpeedoFont() {
+    $(".speedo").removeClass((index, className) => {
+        return matchClassStartingWith("font-", className);
+    });
+    switch (speedoGroup.font) {
         case "bahnschrift":
-            if (!$(".speedo").hasClass("font-bahnschrift")) {
-                $(".speedo").removeClass((index, className) => {
-                    return matchClassStartingWith("font", className);
-                });
-                $(".speedo").addClass("font-bahnschrift");
-            }
+            $(".speedo").addClass("font-bahnschrift");
             break;
         case "coolvetica":
-            if (!$(".speedo").hasClass("font-coolvetica")) {
-                $(".speedo").removeClass((index, className) => {
-                    return matchClassStartingWith("font", className);
-                });
-                $(".speedo").addClass("font-coolvetica");
-            }
+            $(".speedo").addClass("font-coolvetica");
             break;
         case "coolvetica_italic":
-            if (!$(".speedo").hasClass("font-coolvetica-italic")) {
-                $(".speedo").removeClass((index, className) => {
-                    return matchClassStartingWith("font", className);
-                });
-                $(".speedo").addClass("font-coolvetica_italic");
-            }
+            $(".speedo").addClass("font-coolvetica_italic");
             break;
         case "eternal":
-            if (!$(".speedo").hasClass("font-eternal")) {
-                $(".speedo").removeClass((index, className) => {
-                    return matchClassStartingWith("font", className);
-                });
-                $(".speedo").addClass("font-eternal");
-            }
+            $(".speedo").addClass("font-eternal");
             break;
         case "montserrat":
-            if (!$(".speedo").hasClass("font-montserrat")) {
-                $(".speedo").removeClass((index, className) => {
-                    return matchClassStartingWith("font", className);
-                });
-                $(".speedo").addClass("font-montserrat");
-            }
+            $(".speedo").addClass("font-montserrat");
             break;
         case "nk57":
-            if (!$(".speedo").hasClass("font-nk57")) {
-                $(".speedo").removeClass((index, className) => {
-                    return matchClassStartingWith("font", className);
-                });
-                $(".speedo").addClass("font-nk57");
-            }
+            $(".speedo").addClass("font-nk57");
             break;
         case "poppins":
-            if (!$(".speedo").hasClass("font-poppins")) {
-                $(".speedo").removeClass((index, className) => {
-                    return matchClassStartingWith("font", className);
-                });
-                $(".speedo").addClass("font-poppins");
-            }
+            $(".speedo").addClass("font-poppins");
             break;
         case "quake":
-            if (!$(".speedo").hasClass("font-quake")) {
-                $(".speedo").removeClass((index, className) => {
-                    return matchClassStartingWith("font", className);
-                });
-                $(".speedo").addClass("font-quake");
-            }
+            $(".speedo").addClass("font-quake");
             break;
         case "renogare":
-            if (!$(".speedo").hasClass("font-renogare")) {
-                $(".speedo").removeClass((index, className) => {
-                    return matchClassStartingWith("font", className);
-                });
-                $(".speedo").addClass("font-renogare");
-            }
+            $(".speedo").addClass("font-renogare");
             break;
         case "roboto":
-            if (!$(".speedo").hasClass("font-roboto")) {
-                $(".speedo").removeClass((index, className) => {
-                    return matchClassStartingWith("font", className);
-                });
-                $(".speedo").addClass("font-roboto");
-            }
+            $(".speedo").addClass("font-roboto");
             break;
         case "square":
-            if (!$(".speedo").hasClass("font-square")) {
-                $(".speedo").removeClass((index, className) => {
-                    return matchClassStartingWith("font", className);
-                });
-                $(".speedo").addClass("font-square");
-            }
+            $(".speedo").addClass("font-square");
             break;
         case "surface":
-            if (!$(".speedo").hasClass("font-surface")) {
-                $(".speedo").removeClass((index, className) => {
-                    return matchClassStartingWith("font", className);
-                });
-                $(".speedo").addClass("font-surface");
-            }
+            $(".speedo").addClass("font-surface");
             break;
         default:
-            console.log("error in speeds object font, ", speedosObj.font, " is not a valid font");
+            console.log("error in speedo object font, ", speedoGroup.font, " is not a valid font");
             break;
     }
-    speedoElmArray.forEach((speedoElm) => {
-        let slot = "slot_";
-        for (let i = 1; i <= NUM_SPEEDOS; i++) {
-            slot += i;
-            let speedoObj = speedosObj.speedo[i - 1];
-            if (speedoElm.classList.contains(slot)) {
-                // Check if speedo should be visible
-                if (speedoObj.speedoType == "NONE" && !speedoElm.classList.contains("hidden")) {
-                    speedoElm.classList.add("hidden");
-                }
-                else if (speedoObj.speedoType != "NONE" && speedoElm.classList.contains("hidden")) {
-                    speedoElm.classList.remove("hidden");
-                }
-                // check if shadows should be drawn
-                if (speedoObj.speedoType != "NONE") {
-                    if (speedoElm.classList.contains("shadow")) {
-                        if (speedosObj.drawShadows && speedoElm.classList.contains("hidden")) {
-                            speedoElm.classList.remove("hidden");
-                        }
-                        else if (!speedosObj.drawShadows &&
-                            !speedoElm.classList.contains("hidden")) {
-                            speedoElm.classList.add("hidden");
-                        }
-                    }
-                }
-            }
-            slot = slot.slice(0, -1);
+}
+function updateSpeedoVisibility() {
+    let slotSelector;
+    for (const [index, speedo] of speedoGroup.speedos.entries()) {
+        slotSelector = `.speedo.slot_${index + 1}`;
+        if (speedo.speedoType === "NONE") {
+            $(slotSelector).not(".hidden").addClass("hidden");
         }
-    });
+        else {
+            $(`${slotSelector}.hidden`).not(".shadow").removeClass("hidden");
+            if (speedoGroup.drawShadows) {
+                $(`${slotSelector}.shadow.hidden`).removeClass("hidden");
+            }
+            else {
+                $(`${slotSelector}.shadow`).not(".hidden").addClass("hidden");
+            }
+        }
+    }
 }
 //===================================================================================
 // BUTTONS
@@ -178,12 +111,12 @@ function updateSpeedoStyles() {
 // PRESET
 const presetDemoElm = document.getElementById("preset-demo");
 presetDemoElm.addEventListener("click", () => {
-    speedosObj = _.cloneDeep(presetDemo);
+    speedoGroup = _.cloneDeep(presetDemo);
     initialize();
 });
 const presetSoldierElm = document.getElementById("preset-soldier");
 presetSoldierElm.addEventListener("click", () => {
-    speedosObj = _.cloneDeep(presetSoldier);
+    speedoGroup = _.cloneDeep(presetSoldier);
     initialize();
 });
 // SLOTS
@@ -192,19 +125,19 @@ const slot2Elm = document.getElementById("dropdown_slot_2");
 const slot3Elm = document.getElementById("dropdown_slot_3");
 const slot4Elm = document.getElementById("dropdown_slot_4");
 slot1Elm.addEventListener("change", () => {
-    speedosObj.speedo[0].speedoType = slot1Elm.selectedOptions[0].value;
+    speedoGroup.speedos[0].speedoType = slot1Elm.selectedOptions[0].value;
     updateSpeedoStyles();
 });
 slot2Elm.addEventListener("change", () => {
-    speedosObj.speedo[1].speedoType = slot2Elm.selectedOptions[0].value;
+    speedoGroup.speedos[1].speedoType = slot2Elm.selectedOptions[0].value;
     updateSpeedoStyles();
 });
 slot3Elm.addEventListener("change", () => {
-    speedosObj.speedo[2].speedoType = slot3Elm.selectedOptions[0].value;
+    speedoGroup.speedos[2].speedoType = slot3Elm.selectedOptions[0].value;
     updateSpeedoStyles();
 });
 slot4Elm.addEventListener("change", () => {
-    speedosObj.speedo[3].speedoType = slot4Elm.selectedOptions[0].value;
+    speedoGroup.speedos[3].speedoType = slot4Elm.selectedOptions[0].value;
     updateSpeedoStyles();
 });
 // POSITION
@@ -263,11 +196,11 @@ function updatePositionSize() {
  */
 function updateMarkerSize() {
     // scale marker element to match size of markerbounds
-    markerElm.style.width = "".concat((+speedosObj.vdfElm.wide * (markerBoundsWidth / TF_SCREEN_WIDTH_CURRENT)).toString(), "px");
-    markerElm.style.height = "".concat((+speedosObj.vdfElm.tall * (markerBoundsHeight / TF_SCREEN_HEIGHT)).toString(), "px");
+    markerElm.style.width = `${Number(speedoGroup.vdfElm.wide) * (markerBoundsWidth / TF_SCREEN_WIDTH_CURRENT)}px`;
+    markerElm.style.height = `${Number(speedoGroup.vdfElm.tall) * (markerBoundsHeight / TF_SCREEN_HEIGHT)}px`;
     markerSize = {
-        width: +markerStyle.getPropertyValue("width").replace("px", ""),
-        height: +markerStyle.getPropertyValue("height").replace("px", ""),
+        width: parseFloat(markerStyle.getPropertyValue("width")),
+        height: parseFloat(markerStyle.getPropertyValue("height")),
     };
     markerBounds = {
         width: markerBoundsWidth - markerSize.width,
@@ -276,8 +209,8 @@ function updateMarkerSize() {
     // clamp slider values
     let xValue = xSliderElm.value;
     let yValue = ySliderElm.value;
-    let xMax = TF_SCREEN_WIDTH_CURRENT - +speedosObj.vdfElm.wide;
-    let yMax = TF_SCREEN_HEIGHT - +speedosObj.vdfElm.tall;
+    let xMax = TF_SCREEN_WIDTH_CURRENT - +speedoGroup.vdfElm.wide;
+    let yMax = TF_SCREEN_HEIGHT - +speedoGroup.vdfElm.tall;
     xValue = Math.max(0, Math.min(+xValue, xMax)).toString();
     yValue = Math.max(0, Math.min(+yValue, yMax)).toString();
     xSliderElm.max = xMax.toString();
@@ -290,7 +223,7 @@ function updateMarkerSize() {
         readYPos();
         hasReadVDF = true;
     }
-    if (speedosObj.vdfElm.xpos == "rs1") {
+    if (speedoGroup.vdfElm.xpos === "rs1") {
         xSliderElm.value = xSliderElm.max;
     }
     updatePosition_x();
@@ -307,19 +240,19 @@ function updatePosition_x() {
     let xValue = +xSliderElm.value;
     let xOffset = Math.round(xValue - center);
     let newXPos = "cs-0.5";
-    if (xValue == 0) {
+    if (xValue === 0) {
         newXPos = "0";
     }
-    else if (xValue == +xSliderElm.max) {
+    else if (xValue === Number(xSliderElm.max)) {
         newXPos = "rs1";
     }
     else if (xOffset > 0) {
-        newXPos = newXPos.concat("+", xOffset.toString());
+        newXPos = `+${xOffset}`;
     }
     else if (xOffset < 0) {
-        newXPos = newXPos.concat(xOffset.toString());
+        newXPos = xOffset.toString();
     }
-    speedosObj.vdfElm.xpos = newXPos;
+    speedoGroup.vdfElm.xpos = newXPos;
 }
 /**
  * Positions marker element to match slider value and updates vdf ypos.
@@ -332,30 +265,30 @@ function updatePosition_y() {
     let yValue = +ySliderElm.value;
     let yOffset = Math.round(yValue - center);
     let newYPos = "cs-0.5";
-    if (yValue == 0) {
+    if (yValue === 0) {
         newYPos = "0";
     }
-    else if (yValue == +ySliderElm.max) {
+    else if (yValue === Number(ySliderElm.max)) {
         newYPos = "rs1";
     }
     else if (yOffset > 0) {
-        newYPos = newYPos.concat("+", yOffset.toString());
+        newYPos = `+${yOffset}`;
     }
     else if (yOffset < 0) {
-        newYPos = newYPos.concat(yOffset.toString());
+        newYPos = yOffset.toString();
     }
-    speedosObj.vdfElm.ypos = newYPos;
+    speedoGroup.vdfElm.ypos = newYPos;
 }
 /**
  * Reads vdf xpos into xSlider value.
  */
 function readXPos() {
-    let value = speedosObj.vdfElm.xpos;
+    let value = speedoGroup.vdfElm.xpos;
     let center = +xSliderElm.max / 2;
     switch (true) {
         case value.includes("cs-0.5"):
             value = value.replace("cs-0.5", "");
-            value = (+value + center).toString();
+            value = (Number(value) + center).toString();
             xSliderElm.value = value;
             return;
         case value.includes("rs1"):
@@ -372,12 +305,12 @@ function readXPos() {
  * Reads vdf ypos into ySlider value.
  */
 function readYPos() {
-    let value = speedosObj.vdfElm.ypos;
+    let value = speedoGroup.vdfElm.ypos;
     let center = +ySliderElm.max / 2;
     switch (true) {
         case value.includes("cs-0.5"):
             value = value.replace("cs-0.5", "");
-            value = (+value + center).toString();
+            value = (Number(value) + center).toString();
             ySliderElm.value = value;
             return;
         case value.includes("rs1"):
@@ -415,26 +348,26 @@ function changeImage(input, output) {
 // FONT
 const speedoFontElm = document.getElementById("fonts");
 speedoFontElm.addEventListener("change", () => {
-    speedosObj.font = speedoFontElm.value;
+    speedoGroup.font = speedoFontElm.value;
     updateSpeedoStyles();
 });
 // SIZE
 const speedoSizeElm = document.getElementById("sizes");
 speedoSizeElm.addEventListener("change", () => {
-    speedosObj.setSize(speedoSizeElm.value);
+    speedoGroup.setSize(speedoSizeElm.value);
     updateMarkerSize();
     updateSpeedoStyles();
 });
 // SHADOWS
 const shadowsElm = document.getElementById("shadows_checkbox");
 shadowsElm.addEventListener("change", () => {
-    speedosObj.drawShadows = shadowsElm.checked;
+    speedoGroup.drawShadows = shadowsElm.checked;
     updateSpeedoStyles();
 });
 // ROUNDING
 const roundingElm = document.getElementById("rounding_checkbox");
 roundingElm.addEventListener("change", () => {
-    speedosObj.round = roundingElm.checked;
+    speedoGroup.round = roundingElm.checked;
 });
 // COLORS
 const colorMainElm = document.getElementById("colorMain");
@@ -445,43 +378,43 @@ const colorDoubleElm = document.getElementById("colorDouble");
 const colorTripleElm = document.getElementById("colorTriple");
 const colorMaxVelElm = document.getElementById("colorMaxVel");
 colorMainElm.addEventListener("input", () => {
-    speedosObj.colorMain = Color.input_to_color(colorMainElm.value);
-    slider_dual_fill_color(speedosObj.colorClose, track_hspeedo_close, slider_hspeedo_close_min, slider_hspeedo_close_max);
-    slider_dual_fill_color(speedosObj.colorClose, track_vspeedo_close, slider_vspeedo_close_min, slider_vspeedo_close_max);
-    slider_dual_fill_color(speedosObj.colorClose, track_aspeedo_close, slider_aspeedo_close_min, slider_aspeedo_close_max);
-    slider_dual_fill_color(speedosObj.colorGood, track_hspeedo_good, slider_hspeedo_good_min, slider_hspeedo_good_max);
-    slider_dual_fill_color(speedosObj.colorGood, track_vspeedo_good, slider_vspeedo_good_min, slider_vspeedo_good_max);
-    slider_dual_fill_color(speedosObj.colorGood, track_aspeedo_good, slider_aspeedo_good_min, slider_aspeedo_good_max);
+    speedoGroup.colorMain = Color.input_to_color(colorMainElm.value);
+    slider_dual_fill_color(speedoGroup.colorClose, track_hspeedo_close, slider_hspeedo_close_min, slider_hspeedo_close_max);
+    slider_dual_fill_color(speedoGroup.colorClose, track_vspeedo_close, slider_vspeedo_close_min, slider_vspeedo_close_max);
+    slider_dual_fill_color(speedoGroup.colorClose, track_aspeedo_close, slider_aspeedo_close_min, slider_aspeedo_close_max);
+    slider_dual_fill_color(speedoGroup.colorGood, track_hspeedo_good, slider_hspeedo_good_min, slider_hspeedo_good_max);
+    slider_dual_fill_color(speedoGroup.colorGood, track_vspeedo_good, slider_vspeedo_good_min, slider_vspeedo_good_max);
+    slider_dual_fill_color(speedoGroup.colorGood, track_aspeedo_good, slider_aspeedo_good_min, slider_aspeedo_good_max);
 });
 colorCloseElm.addEventListener("input", () => {
-    speedosObj.colorClose = Color.input_to_color(colorCloseElm.value);
-    slider_dual_fill_color(speedosObj.colorClose, track_hspeedo_close, slider_hspeedo_close_min, slider_hspeedo_close_max);
-    slider_dual_fill_color(speedosObj.colorClose, track_vspeedo_close, slider_vspeedo_close_min, slider_vspeedo_close_max);
-    slider_dual_fill_color(speedosObj.colorClose, track_aspeedo_close, slider_aspeedo_close_min, slider_aspeedo_close_max);
+    speedoGroup.colorClose = Color.input_to_color(colorCloseElm.value);
+    slider_dual_fill_color(speedoGroup.colorClose, track_hspeedo_close, slider_hspeedo_close_min, slider_hspeedo_close_max);
+    slider_dual_fill_color(speedoGroup.colorClose, track_vspeedo_close, slider_vspeedo_close_min, slider_vspeedo_close_max);
+    slider_dual_fill_color(speedoGroup.colorClose, track_aspeedo_close, slider_aspeedo_close_min, slider_aspeedo_close_max);
 });
 colorGoodElm.addEventListener("input", () => {
-    speedosObj.colorGood = Color.input_to_color(colorGoodElm.value);
-    slider_dual_fill_color(speedosObj.colorGood, track_hspeedo_good, slider_hspeedo_good_min, slider_hspeedo_good_max);
-    slider_dual_fill_color(speedosObj.colorGood, track_vspeedo_good, slider_vspeedo_good_min, slider_vspeedo_good_max);
-    slider_dual_fill_color(speedosObj.colorGood, track_aspeedo_good, slider_aspeedo_good_min, slider_aspeedo_good_max);
+    speedoGroup.colorGood = Color.input_to_color(colorGoodElm.value);
+    slider_dual_fill_color(speedoGroup.colorGood, track_hspeedo_good, slider_hspeedo_good_min, slider_hspeedo_good_max);
+    slider_dual_fill_color(speedoGroup.colorGood, track_vspeedo_good, slider_vspeedo_good_min, slider_vspeedo_good_max);
+    slider_dual_fill_color(speedoGroup.colorGood, track_aspeedo_good, slider_aspeedo_good_min, slider_aspeedo_good_max);
 });
 colorMainHeightoElm.addEventListener("input", () => {
-    speedosObj.colorMain_Heighto = Color.input_to_color(colorMainHeightoElm.value);
-    slider_fill_color(speedosObj.colorDouble, track_heighto_double, slider_heighto_double);
-    slider_fill_color(speedosObj.colorTriple, track_heighto_triple, slider_heighto_triple);
-    slider_fill_color(speedosObj.colorMaxVel, track_heighto_maxVel, slider_heighto_maxVel);
+    speedoGroup.colorHeightoMain = Color.input_to_color(colorMainHeightoElm.value);
+    slider_fill_color(speedoGroup.colorDouble, track_heighto_double, slider_heighto_double);
+    slider_fill_color(speedoGroup.colorTriple, track_heighto_triple, slider_heighto_triple);
+    slider_fill_color(speedoGroup.colorMaxVel, track_heighto_maxVel, slider_heighto_maxVel);
 });
 colorDoubleElm.addEventListener("input", () => {
-    speedosObj.colorDouble = Color.input_to_color(colorDoubleElm.value);
-    slider_fill_color(speedosObj.colorDouble, track_heighto_double, slider_heighto_double);
+    speedoGroup.colorDouble = Color.input_to_color(colorDoubleElm.value);
+    slider_fill_color(speedoGroup.colorDouble, track_heighto_double, slider_heighto_double);
 });
 colorTripleElm.addEventListener("input", () => {
-    speedosObj.colorTriple = Color.input_to_color(colorTripleElm.value);
-    slider_fill_color(speedosObj.colorTriple, track_heighto_triple, slider_heighto_triple);
+    speedoGroup.colorTriple = Color.input_to_color(colorTripleElm.value);
+    slider_fill_color(speedoGroup.colorTriple, track_heighto_triple, slider_heighto_triple);
 });
 colorMaxVelElm.addEventListener("input", () => {
-    speedosObj.colorMaxVel = Color.input_to_color(colorMaxVelElm.value);
-    slider_fill_color(speedosObj.colorMaxVel, track_heighto_maxVel, slider_heighto_maxVel);
+    speedoGroup.colorMaxVel = Color.input_to_color(colorMaxVelElm.value);
+    slider_fill_color(speedoGroup.colorMaxVel, track_heighto_maxVel, slider_heighto_maxVel);
 });
 // COLOR RANGES
 const rangeGap = 0;
@@ -526,23 +459,23 @@ text_hspeedo_good_max.addEventListener("change", () => {
 });
 function process_hspeedo_close_min() {
     process_slider_min(slider_hspeedo_close_min, slider_hspeedo_close_max, text_hspeedo_close_min);
-    slider_dual_fill_color(speedosObj.colorClose, track_hspeedo_close, slider_hspeedo_close_min, slider_hspeedo_close_max);
-    speedosObj.HSpeedoRange.closeMin = parseInt(slider_hspeedo_close_min.value);
+    slider_dual_fill_color(speedoGroup.colorClose, track_hspeedo_close, slider_hspeedo_close_min, slider_hspeedo_close_max);
+    speedoGroup.HSpeedoRange.closeMin = parseInt(slider_hspeedo_close_min.value);
 }
 function process_hspeedo_close_max() {
     process_slider_max(slider_hspeedo_close_min, slider_hspeedo_close_max, text_hspeedo_close_max);
-    slider_dual_fill_color(speedosObj.colorClose, track_hspeedo_close, slider_hspeedo_close_min, slider_hspeedo_close_max);
-    speedosObj.HSpeedoRange.closeMax = parseInt(slider_hspeedo_close_max.value);
+    slider_dual_fill_color(speedoGroup.colorClose, track_hspeedo_close, slider_hspeedo_close_min, slider_hspeedo_close_max);
+    speedoGroup.HSpeedoRange.closeMax = parseInt(slider_hspeedo_close_max.value);
 }
 function process_hspeedo_good_min() {
     process_slider_min(slider_hspeedo_good_min, slider_hspeedo_good_max, text_hspeedo_good_min);
-    slider_dual_fill_color(speedosObj.colorGood, track_hspeedo_good, slider_hspeedo_good_min, slider_hspeedo_good_max);
-    speedosObj.HSpeedoRange.goodMin = parseInt(slider_hspeedo_good_min.value);
+    slider_dual_fill_color(speedoGroup.colorGood, track_hspeedo_good, slider_hspeedo_good_min, slider_hspeedo_good_max);
+    speedoGroup.HSpeedoRange.goodMin = parseInt(slider_hspeedo_good_min.value);
 }
 function process_hspeedo_good_max() {
     process_slider_max(slider_hspeedo_good_min, slider_hspeedo_good_max, text_hspeedo_good_max);
-    slider_dual_fill_color(speedosObj.colorGood, track_hspeedo_good, slider_hspeedo_good_min, slider_hspeedo_good_max);
-    speedosObj.HSpeedoRange.goodMax = parseInt(slider_hspeedo_good_max.value);
+    slider_dual_fill_color(speedoGroup.colorGood, track_hspeedo_good, slider_hspeedo_good_min, slider_hspeedo_good_max);
+    speedoGroup.HSpeedoRange.goodMax = parseInt(slider_hspeedo_good_max.value);
 }
 // vspeedo
 const slider_vspeedo_close_min = document.getElementById("slider-vspeedo-close-min");
@@ -585,23 +518,23 @@ text_vspeedo_good_max.addEventListener("change", () => {
 });
 function process_vspeedo_close_min() {
     process_slider_min(slider_vspeedo_close_min, slider_vspeedo_close_max, text_vspeedo_close_min);
-    slider_dual_fill_color(speedosObj.colorClose, track_vspeedo_close, slider_vspeedo_close_min, slider_vspeedo_close_max);
-    speedosObj.VSpeedoRange.closeMin = parseInt(slider_vspeedo_close_min.value);
+    slider_dual_fill_color(speedoGroup.colorClose, track_vspeedo_close, slider_vspeedo_close_min, slider_vspeedo_close_max);
+    speedoGroup.VSpeedoRange.closeMin = parseInt(slider_vspeedo_close_min.value);
 }
 function process_vspeedo_close_max() {
     process_slider_max(slider_vspeedo_close_min, slider_vspeedo_close_max, text_vspeedo_close_max);
-    slider_dual_fill_color(speedosObj.colorClose, track_vspeedo_close, slider_vspeedo_close_min, slider_vspeedo_close_max);
-    speedosObj.VSpeedoRange.closeMax = parseInt(slider_vspeedo_close_max.value);
+    slider_dual_fill_color(speedoGroup.colorClose, track_vspeedo_close, slider_vspeedo_close_min, slider_vspeedo_close_max);
+    speedoGroup.VSpeedoRange.closeMax = parseInt(slider_vspeedo_close_max.value);
 }
 function process_vspeedo_good_min() {
     process_slider_min(slider_vspeedo_good_min, slider_vspeedo_good_max, text_vspeedo_good_min);
-    slider_dual_fill_color(speedosObj.colorGood, track_vspeedo_good, slider_vspeedo_good_min, slider_vspeedo_good_max);
-    speedosObj.VSpeedoRange.goodMin = parseInt(slider_vspeedo_good_min.value);
+    slider_dual_fill_color(speedoGroup.colorGood, track_vspeedo_good, slider_vspeedo_good_min, slider_vspeedo_good_max);
+    speedoGroup.VSpeedoRange.goodMin = parseInt(slider_vspeedo_good_min.value);
 }
 function process_vspeedo_good_max() {
     process_slider_max(slider_vspeedo_good_min, slider_vspeedo_good_max, text_vspeedo_good_max);
-    slider_dual_fill_color(speedosObj.colorGood, track_vspeedo_good, slider_vspeedo_good_min, slider_vspeedo_good_max);
-    speedosObj.VSpeedoRange.goodMax = parseInt(slider_vspeedo_good_max.value);
+    slider_dual_fill_color(speedoGroup.colorGood, track_vspeedo_good, slider_vspeedo_good_min, slider_vspeedo_good_max);
+    speedoGroup.VSpeedoRange.goodMax = parseInt(slider_vspeedo_good_max.value);
 }
 // aspeedo
 const slider_aspeedo_close_min = document.getElementById("slider-aspeedo-close-min");
@@ -644,23 +577,23 @@ text_aspeedo_good_max.addEventListener("change", () => {
 });
 function process_aspeedo_close_min() {
     process_slider_min(slider_aspeedo_close_min, slider_aspeedo_close_max, text_aspeedo_close_min);
-    slider_dual_fill_color(speedosObj.colorClose, track_aspeedo_close, slider_aspeedo_close_min, slider_aspeedo_close_max);
-    speedosObj.ASpeedoRange.closeMin = +slider_aspeedo_close_min.value;
+    slider_dual_fill_color(speedoGroup.colorClose, track_aspeedo_close, slider_aspeedo_close_min, slider_aspeedo_close_max);
+    speedoGroup.ASpeedoRange.closeMin = +slider_aspeedo_close_min.value;
 }
 function process_aspeedo_close_max() {
     process_slider_max(slider_aspeedo_close_min, slider_aspeedo_close_max, text_aspeedo_close_max);
-    slider_dual_fill_color(speedosObj.colorClose, track_aspeedo_close, slider_aspeedo_close_min, slider_aspeedo_close_max);
-    speedosObj.ASpeedoRange.closeMax = +slider_aspeedo_close_max.value;
+    slider_dual_fill_color(speedoGroup.colorClose, track_aspeedo_close, slider_aspeedo_close_min, slider_aspeedo_close_max);
+    speedoGroup.ASpeedoRange.closeMax = +slider_aspeedo_close_max.value;
 }
 function process_aspeedo_good_min() {
     process_slider_min(slider_aspeedo_good_min, slider_aspeedo_good_max, text_aspeedo_good_min);
-    slider_dual_fill_color(speedosObj.colorGood, track_aspeedo_good, slider_aspeedo_good_min, slider_aspeedo_good_max);
-    speedosObj.ASpeedoRange.goodMin = +slider_aspeedo_good_min.value;
+    slider_dual_fill_color(speedoGroup.colorGood, track_aspeedo_good, slider_aspeedo_good_min, slider_aspeedo_good_max);
+    speedoGroup.ASpeedoRange.goodMin = +slider_aspeedo_good_min.value;
 }
 function process_aspeedo_good_max() {
     process_slider_max(slider_aspeedo_good_min, slider_aspeedo_good_max, text_aspeedo_good_max);
-    slider_dual_fill_color(speedosObj.colorGood, track_aspeedo_good, slider_aspeedo_good_min, slider_aspeedo_good_max);
-    speedosObj.ASpeedoRange.goodMax = +slider_aspeedo_good_max.value;
+    slider_dual_fill_color(speedoGroup.colorGood, track_aspeedo_good, slider_aspeedo_good_min, slider_aspeedo_good_max);
+    speedoGroup.ASpeedoRange.goodMax = +slider_aspeedo_good_max.value;
 }
 // heighto
 const slider_heighto_double = document.getElementById("slider-heighto-double");
@@ -695,18 +628,18 @@ text_heighto_maxVel.addEventListener("change", () => {
 });
 function process_heighto_double() {
     text_heighto_double.value = slider_heighto_double.value;
-    slider_fill_color(speedosObj.colorDouble, track_heighto_double, slider_heighto_double);
-    speedosObj.HeightoThresholds.double = parseInt(slider_heighto_double.value);
+    slider_fill_color(speedoGroup.colorDouble, track_heighto_double, slider_heighto_double);
+    speedoGroup.HeightoThresholds.double = parseInt(slider_heighto_double.value);
 }
 function process_heighto_triple() {
     text_heighto_triple.value = slider_heighto_triple.value;
-    slider_fill_color(speedosObj.colorTriple, track_heighto_triple, slider_heighto_triple);
-    speedosObj.HeightoThresholds.triple = parseInt(slider_heighto_triple.value);
+    slider_fill_color(speedoGroup.colorTriple, track_heighto_triple, slider_heighto_triple);
+    speedoGroup.HeightoThresholds.triple = parseInt(slider_heighto_triple.value);
 }
 function process_heighto_maxVel() {
     text_heighto_maxVel.value = slider_heighto_maxVel.value;
-    slider_fill_color(speedosObj.colorMaxVel, track_heighto_maxVel, slider_heighto_maxVel);
-    speedosObj.HeightoThresholds.maxVel = parseInt(slider_heighto_maxVel.value);
+    slider_fill_color(speedoGroup.colorMaxVel, track_heighto_maxVel, slider_heighto_maxVel);
+    speedoGroup.HeightoThresholds.maxVel = parseInt(slider_heighto_maxVel.value);
 }
 // all sliders
 /**
@@ -750,11 +683,17 @@ function process_slider_max(sliderMin, sliderMax, textMax) {
  * @param sliderMax Maximum value slider.
  */
 function slider_dual_fill_color(colorFocus, sliderTrack, sliderMin, sliderMax) {
-    let colorMainCSS = speedosObj.colorMain.getCSSColor();
+    let colorMainCSS = speedoGroup.colorMain.getCSSColor();
     let colorFocusCSS = colorFocus.getCSSColor();
     let percent1 = ((parseInt(sliderMin.value) / parseInt(sliderMin.max)) * 100).toString();
     let percent2 = ((parseInt(sliderMax.value) / parseInt(sliderMax.max)) * 100).toString();
-    sliderTrack.style.background = "".concat("linear-gradient( to right, ", colorMainCSS, ", ", colorMainCSS, " ", percent1, "%, ", colorFocusCSS, " ", percent1, "%, ", colorFocusCSS, " ", percent2, "%, ", colorMainCSS, " ", percent2, "% )");
+    sliderTrack.style.background =
+        `linear-gradient( to right, ` +
+            `${colorMainCSS}, ` +
+            `${colorMainCSS}, ${percent1}%, ` +
+            `${colorFocusCSS}, ${percent1}%, ` +
+            `${colorFocusCSS} ${percent2}%, ` +
+            `${colorMainCSS} ${percent2}% )`;
 }
 /**
  * Fills the color above slider value.
@@ -764,20 +703,24 @@ function slider_dual_fill_color(colorFocus, sliderTrack, sliderMin, sliderMax) {
  * @param slider
  */
 function slider_fill_color(color, sliderTrack, slider) {
-    let colorNull = speedosObj.colorMain_Heighto.getCSSColor();
+    let colorNull = speedoGroup.colorHeightoMain.getCSSColor();
     let colorFocus = color.getCSSColor();
     let percent = ((parseInt(slider.value) / parseInt(slider.max)) * 100).toString();
-    sliderTrack.style.background = "".concat("linear-gradient( to right, ", colorNull, ", ", colorNull, " ", percent, "%, ", colorFocus, " ", percent, "%)");
+    sliderTrack.style.background =
+        `linear-gradient( to right, ` +
+            `${colorNull}, ` +
+            `${colorNull} ${percent}%, ` +
+            `${colorFocus} ${percent}%)`;
 }
 // DOWNLOAD
 const downloadElm = document.getElementById("download-btn");
 downloadElm.addEventListener("click", () => {
-    zipSpeedos(speedosObj);
+    zipSpeedos(speedoGroup);
 });
 // UPLOAD
 const uploadElm = document.getElementById("upload-btn");
 uploadElm.addEventListener("change", () => {
-    speedosObj.importFromJSON(uploadElm).then(() => {
+    speedoGroup.importFromJSON(uploadElm).then(() => {
         initialize();
     });
 });
@@ -790,7 +733,7 @@ window.onload = () => {
 function initialize() {
     hasReadVDF = false;
     updateSpeedoStyles();
-    speedosObj_to_Elements();
+    readSpeedoGroupToPage();
     updatePositionSize();
     process_hspeedo_close_min();
     process_hspeedo_close_max();
@@ -807,13 +750,13 @@ function initialize() {
     process_heighto_double();
     process_heighto_triple();
     process_heighto_maxVel();
-    speedosObj.startPreview();
+    speedoGroup.startPreview();
     setInterval(() => {
         speedoElmArray.forEach((speedoElm) => {
             let slot = "slot_";
             for (let i = 1; i <= NUM_SPEEDOS; i++) {
                 slot += i;
-                let speedoObj = speedosObj.speedo[i - 1];
+                let speedoObj = speedoGroup.speedos[i - 1];
                 if (speedoElm.classList.contains(slot)) {
                     speedoElm.textContent = speedoObj.playerSpeed.toString();
                     speedoElm.style.setProperty("color", speedoObj.color.getCSSColor());
@@ -821,7 +764,7 @@ function initialize() {
                 slot = slot.slice(0, -1);
             }
         });
-    }, speedosObj.frametime);
+    }, speedoGroup.frametime);
 }
 window.addEventListener("resize", () => {
     updatePositionSize();
@@ -829,35 +772,35 @@ window.addEventListener("resize", () => {
 /**
  * Loads values from speedo object into DOM elements.
  */
-function speedosObj_to_Elements() {
-    slot1Elm.value = speedosObj.speedo[0].speedoType;
-    slot2Elm.value = speedosObj.speedo[1].speedoType;
-    slot3Elm.value = speedosObj.speedo[2].speedoType;
-    slot4Elm.value = speedosObj.speedo[3].speedoType;
-    speedoFontElm.value = speedosObj.font;
-    speedoSizeElm.value = speedosObj.getSize();
-    shadowsElm.checked = speedosObj.drawShadows;
-    roundingElm.checked = speedosObj.round;
-    colorMainElm.value = speedosObj.colorMain.getInputColor();
-    colorCloseElm.value = speedosObj.colorClose.getInputColor();
-    colorGoodElm.value = speedosObj.colorGood.getInputColor();
-    colorMainHeightoElm.value = speedosObj.colorMain_Heighto.getInputColor();
-    colorDoubleElm.value = speedosObj.colorDouble.getInputColor();
-    colorTripleElm.value = speedosObj.colorTriple.getInputColor();
-    colorMaxVelElm.value = speedosObj.colorMaxVel.getInputColor();
-    slider_hspeedo_close_min.value = speedosObj.HSpeedoRange.closeMin.toString();
-    slider_hspeedo_close_max.value = speedosObj.HSpeedoRange.closeMax.toString();
-    slider_hspeedo_good_min.value = speedosObj.HSpeedoRange.goodMin.toString();
-    slider_hspeedo_good_max.value = speedosObj.HSpeedoRange.goodMax.toString();
-    slider_vspeedo_close_min.value = speedosObj.VSpeedoRange.closeMin.toString();
-    slider_vspeedo_close_max.value = speedosObj.VSpeedoRange.closeMax.toString();
-    slider_vspeedo_good_min.value = speedosObj.VSpeedoRange.goodMin.toString();
-    slider_vspeedo_good_max.value = speedosObj.VSpeedoRange.goodMax.toString();
-    slider_aspeedo_close_min.value = speedosObj.ASpeedoRange.closeMin.toString();
-    slider_aspeedo_close_max.value = speedosObj.ASpeedoRange.closeMax.toString();
-    slider_aspeedo_good_min.value = speedosObj.ASpeedoRange.goodMin.toString();
-    slider_aspeedo_good_max.value = speedosObj.ASpeedoRange.goodMax.toString();
-    slider_heighto_double.value = speedosObj.HeightoThresholds.double.toString();
-    slider_heighto_triple.value = speedosObj.HeightoThresholds.triple.toString();
-    slider_heighto_maxVel.value = speedosObj.HeightoThresholds.maxVel.toString();
+function readSpeedoGroupToPage() {
+    slot1Elm.value = speedoGroup.speedos[0].speedoType;
+    slot2Elm.value = speedoGroup.speedos[1].speedoType;
+    slot3Elm.value = speedoGroup.speedos[2].speedoType;
+    slot4Elm.value = speedoGroup.speedos[3].speedoType;
+    speedoFontElm.value = speedoGroup.font;
+    speedoSizeElm.value = speedoGroup.getSize();
+    shadowsElm.checked = speedoGroup.drawShadows;
+    roundingElm.checked = speedoGroup.round;
+    colorMainElm.value = speedoGroup.colorMain.getInputColor();
+    colorCloseElm.value = speedoGroup.colorClose.getInputColor();
+    colorGoodElm.value = speedoGroup.colorGood.getInputColor();
+    colorMainHeightoElm.value = speedoGroup.colorHeightoMain.getInputColor();
+    colorDoubleElm.value = speedoGroup.colorDouble.getInputColor();
+    colorTripleElm.value = speedoGroup.colorTriple.getInputColor();
+    colorMaxVelElm.value = speedoGroup.colorMaxVel.getInputColor();
+    slider_hspeedo_close_min.value = speedoGroup.HSpeedoRange.closeMin.toString();
+    slider_hspeedo_close_max.value = speedoGroup.HSpeedoRange.closeMax.toString();
+    slider_hspeedo_good_min.value = speedoGroup.HSpeedoRange.goodMin.toString();
+    slider_hspeedo_good_max.value = speedoGroup.HSpeedoRange.goodMax.toString();
+    slider_vspeedo_close_min.value = speedoGroup.VSpeedoRange.closeMin.toString();
+    slider_vspeedo_close_max.value = speedoGroup.VSpeedoRange.closeMax.toString();
+    slider_vspeedo_good_min.value = speedoGroup.VSpeedoRange.goodMin.toString();
+    slider_vspeedo_good_max.value = speedoGroup.VSpeedoRange.goodMax.toString();
+    slider_aspeedo_close_min.value = speedoGroup.ASpeedoRange.closeMin.toString();
+    slider_aspeedo_close_max.value = speedoGroup.ASpeedoRange.closeMax.toString();
+    slider_aspeedo_good_min.value = speedoGroup.ASpeedoRange.goodMin.toString();
+    slider_aspeedo_good_max.value = speedoGroup.ASpeedoRange.goodMax.toString();
+    slider_heighto_double.value = speedoGroup.HeightoThresholds.double.toString();
+    slider_heighto_triple.value = speedoGroup.HeightoThresholds.triple.toString();
+    slider_heighto_maxVel.value = speedoGroup.HeightoThresholds.maxVel.toString();
 }
