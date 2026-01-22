@@ -71,9 +71,8 @@ function generateSpeedoConfig_vmt(speedoGroup) {
 function generateSpeedoConfig_res(speedoGroup) {
     let s = "";
     let baseSlot;
-    let i = 1;
-    for (const speedo of speedoGroup.speedos) {
-        baseSlot = `#base slot/${(i++).toString()}/`;
+    for (const [index, speedo] of speedoGroup.speedos.entries()) {
+        baseSlot = `#base slot/${(index + 1).toString()}/`;
         switch (speedo.speedoType) {
             case "ABSOLUTE":
                 s = s.concat(`${baseSlot}aspeedo.res\n`);

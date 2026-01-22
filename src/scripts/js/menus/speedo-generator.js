@@ -3,14 +3,11 @@ import { Color } from "../color.js";
 import { zipSpeedos } from "../zip.js";
 import { matchClassStartingWith } from "../util.js";
 import * as _ from "lodash";
-const NUM_SPEEDOS = 4;
 const TF_SCREEN_WIDTH_16_9 = 852;
 const TF_SCREEN_WIDTH_4_3 = 640;
 let TF_SCREEN_WIDTH_CURRENT = TF_SCREEN_WIDTH_16_9;
 const TF_SCREEN_HEIGHT = 480;
 let hasReadVDF = false;
-const speedoColl = document.getElementsByClassName("speedo"); // collection of all speedo class elements
-const speedoElmArray = Array.prototype.slice.call(speedoColl);
 let speedoGroup = _.cloneDeep(presetSoldier);
 //===================================================================================
 // PREVIEW RENDERING
@@ -83,7 +80,7 @@ function updateSpeedoFont() {
             $(".speedo").addClass("font-surface");
             break;
         default:
-            console.log("error in speedo object font, ", speedoGroup.font, " is not a valid font");
+            console.log(`error in speedo object font, ${speedoGroup.font} is not a valid font`);
             break;
     }
 }
@@ -173,12 +170,12 @@ ySliderElm.addEventListener("input", () => {
 markerBoundsElm.addEventListener("drag", (event) => {
     event.preventDefault();
     if (event.clientX != 0) {
-        let xValue = (event.offsetX / markerBoundsWidth) * +xSliderElm.max;
+        let xValue = (event.offsetX / markerBoundsWidth) * Number(xSliderElm.max);
         xSliderElm.value = xValue.toString();
         updatePosition_x();
     }
     if (event.clientY != 0) {
-        let yValue = (event.offsetY / markerBoundsHeight) * +ySliderElm.max;
+        let yValue = (event.offsetY / markerBoundsHeight) * Number(ySliderElm.max);
         ySliderElm.value = yValue.toString();
         updatePosition_y();
     }
@@ -187,8 +184,8 @@ markerBoundsElm.addEventListener("drag", (event) => {
  * Reads dimensions of markerBounds element and calls `updateMarkerSize()`.
  */
 function updatePositionSize() {
-    markerBoundsWidth = +markerBoundsStyle.getPropertyValue("width").replace("px", "");
-    markerBoundsHeight = +markerBoundsStyle.getPropertyValue("height").replace("px", "");
+    markerBoundsWidth = parseInt(markerBoundsStyle.getPropertyValue("width"));
+    markerBoundsHeight = parseInt(markerBoundsStyle.getPropertyValue("height"));
     updateMarkerSize();
 }
 /**
@@ -209,10 +206,10 @@ function updateMarkerSize() {
     // clamp slider values
     let xValue = xSliderElm.value;
     let yValue = ySliderElm.value;
-    let xMax = TF_SCREEN_WIDTH_CURRENT - +speedoGroup.vdfElm.wide;
-    let yMax = TF_SCREEN_HEIGHT - +speedoGroup.vdfElm.tall;
-    xValue = Math.max(0, Math.min(+xValue, xMax)).toString();
-    yValue = Math.max(0, Math.min(+yValue, yMax)).toString();
+    let xMax = TF_SCREEN_WIDTH_CURRENT - Number(speedoGroup.vdfElm.wide);
+    let yMax = TF_SCREEN_HEIGHT - Number(speedoGroup.vdfElm.tall);
+    xValue = Math.max(0, Math.min(Number(xValue), xMax)).toString();
+    yValue = Math.max(0, Math.min(Number(yValue), yMax)).toString();
     xSliderElm.max = xMax.toString();
     ySliderElm.max = yMax.toString();
     xSliderElm.value = xValue;
@@ -234,10 +231,10 @@ function updateMarkerSize() {
  */
 function updatePosition_x() {
     // update marker horizontal position
-    markerElm.style.left = (+xSliderElm.value * (markerBounds.width / +xSliderElm.max)).toString();
+    markerElm.style.left = (Number(xSliderElm.value) * (markerBounds.width / Number(xSliderElm.max))).toString();
     // calculate vdf xpos
-    let center = +xSliderElm.max / 2;
-    let xValue = +xSliderElm.value;
+    let center = Number(xSliderElm.max) / 2;
+    let xValue = Number(xSliderElm.value);
     let xOffset = Math.round(xValue - center);
     let newXPos = "cs-0.5";
     if (xValue === 0) {
@@ -259,10 +256,10 @@ function updatePosition_x() {
  */
 function updatePosition_y() {
     // update marker vertical position
-    markerElm.style.top = (+ySliderElm.value * (markerBounds.height / +ySliderElm.max)).toString();
+    markerElm.style.top = (Number(ySliderElm.value) * (markerBounds.height / Number(ySliderElm.max))).toString();
     // calculate vdf ypos
-    let center = +ySliderElm.max / 2;
-    let yValue = +ySliderElm.value;
+    let center = Number(ySliderElm.max) / 2;
+    let yValue = Number(ySliderElm.value);
     let yOffset = Math.round(yValue - center);
     let newYPos = "cs-0.5";
     if (yValue === 0) {
@@ -284,7 +281,7 @@ function updatePosition_y() {
  */
 function readXPos() {
     let value = speedoGroup.vdfElm.xpos;
-    let center = +xSliderElm.max / 2;
+    let center = Number(xSliderElm.max) / 2;
     switch (true) {
         case value.includes("cs-0.5"):
             value = value.replace("cs-0.5", "");
@@ -306,7 +303,7 @@ function readXPos() {
  */
 function readYPos() {
     let value = speedoGroup.vdfElm.ypos;
-    let center = +ySliderElm.max / 2;
+    let center = Number(ySliderElm.max) / 2;
     switch (true) {
         case value.includes("cs-0.5"):
             value = value.replace("cs-0.5", "");
@@ -578,22 +575,22 @@ text_aspeedo_good_max.addEventListener("change", () => {
 function process_aspeedo_close_min() {
     process_slider_min(slider_aspeedo_close_min, slider_aspeedo_close_max, text_aspeedo_close_min);
     slider_dual_fill_color(speedoGroup.colorClose, track_aspeedo_close, slider_aspeedo_close_min, slider_aspeedo_close_max);
-    speedoGroup.ASpeedoRange.closeMin = +slider_aspeedo_close_min.value;
+    speedoGroup.ASpeedoRange.closeMin = Number(slider_aspeedo_close_min.value);
 }
 function process_aspeedo_close_max() {
     process_slider_max(slider_aspeedo_close_min, slider_aspeedo_close_max, text_aspeedo_close_max);
     slider_dual_fill_color(speedoGroup.colorClose, track_aspeedo_close, slider_aspeedo_close_min, slider_aspeedo_close_max);
-    speedoGroup.ASpeedoRange.closeMax = +slider_aspeedo_close_max.value;
+    speedoGroup.ASpeedoRange.closeMax = Number(slider_aspeedo_close_max.value);
 }
 function process_aspeedo_good_min() {
     process_slider_min(slider_aspeedo_good_min, slider_aspeedo_good_max, text_aspeedo_good_min);
     slider_dual_fill_color(speedoGroup.colorGood, track_aspeedo_good, slider_aspeedo_good_min, slider_aspeedo_good_max);
-    speedoGroup.ASpeedoRange.goodMin = +slider_aspeedo_good_min.value;
+    speedoGroup.ASpeedoRange.goodMin = Number(slider_aspeedo_good_min.value);
 }
 function process_aspeedo_good_max() {
     process_slider_max(slider_aspeedo_good_min, slider_aspeedo_good_max, text_aspeedo_good_max);
     slider_dual_fill_color(speedoGroup.colorGood, track_aspeedo_good, slider_aspeedo_good_min, slider_aspeedo_good_max);
-    speedoGroup.ASpeedoRange.goodMax = +slider_aspeedo_good_max.value;
+    speedoGroup.ASpeedoRange.goodMax = Number(slider_aspeedo_good_max.value);
 }
 // heighto
 const slider_heighto_double = document.getElementById("slider-heighto-double");
@@ -651,8 +648,8 @@ function process_heighto_maxVel() {
  * @param textMin
  */
 function process_slider_min(sliderMin, sliderMax, textMin) {
-    if (+sliderMin.value >= +sliderMax.value) {
-        sliderMin.value = (+sliderMax.value - rangeGap).toString();
+    if (Number(sliderMin.value) >= Number(sliderMax.value)) {
+        sliderMin.value = (Number(sliderMax.value) - rangeGap).toString();
     }
     if (textMin) {
         textMin.value = sliderMin.value;
@@ -667,8 +664,8 @@ function process_slider_min(sliderMin, sliderMax, textMin) {
  * @param textMin
  */
 function process_slider_max(sliderMin, sliderMax, textMax) {
-    if (+sliderMax.value <= +sliderMin.value) {
-        sliderMax.value = (+sliderMin.value + rangeGap).toString();
+    if (Number(sliderMax.value) <= Number(sliderMin.value)) {
+        sliderMax.value = (Number(sliderMin.value) + rangeGap).toString();
     }
     if (textMax) {
         textMax.value = sliderMax.value;
@@ -752,18 +749,10 @@ function initialize() {
     process_heighto_maxVel();
     speedoGroup.startPreview();
     setInterval(() => {
-        speedoElmArray.forEach((speedoElm) => {
-            let slot = "slot_";
-            for (let i = 1; i <= NUM_SPEEDOS; i++) {
-                slot += i;
-                let speedoObj = speedoGroup.speedos[i - 1];
-                if (speedoElm.classList.contains(slot)) {
-                    speedoElm.textContent = speedoObj.playerSpeed.toString();
-                    speedoElm.style.setProperty("color", speedoObj.color.getCSSColor());
-                }
-                slot = slot.slice(0, -1);
-            }
-        });
+        for (const [index, speedo] of speedoGroup.speedos.entries()) {
+            $(`.speedo.slot_${index + 1}`).text(speedo.playerSpeed);
+            $(`.speedo.slot_${index + 1}`).css("color", speedo.color.getCSSColor());
+        }
     }, speedoGroup.frametime);
 }
 window.addEventListener("resize", () => {

@@ -88,9 +88,8 @@ function generateSpeedoConfig_res(speedoGroup: SpeedoGroup): string {
         let s: string = "";
         let baseSlot: string;
 
-        let i: number = 1;
-        for (const speedo of speedoGroup.speedos) {
-                baseSlot = `#base slot/${(i++).toString()}/`;
+        for (const [index, speedo] of speedoGroup.speedos.entries()) {
+                baseSlot = `#base slot/${(index + 1).toString()}/`;
 
                 switch (speedo.speedoType) {
                         case "ABSOLUTE":
