@@ -130,11 +130,11 @@ export class SpeedoGroup {
         }
     }
     async importFromJSON(input) {
-        if (!input.value.length)
+        if (!input[0].value.length)
             return;
-        if (input.files && input.files[0]) {
+        if (input[0].files && input[0].files[0]) {
             let temp = new SpeedoGroup();
-            Object.assign(temp, JSON.parse(await input.files[0].text()));
+            Object.assign(temp, JSON.parse(await input[0].files[0].text()));
             for (const [index, speedo] of this.speedos.entries()) {
                 speedo.speedoType = temp.speedos[index].speedoType;
             }

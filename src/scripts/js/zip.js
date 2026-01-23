@@ -36,37 +36,33 @@ async function importHudResources(url) {
     return zip;
 }
 function generateSpeedoConfig_vmt(speedoGroup) {
-    let s = "";
-    // font
-    s = s.concat(`#base fonts/${speedoGroup.font}/digits.vmt`);
-    s = s.concat('\n"UnlitGeneric"{\n');
-    // rounding
-    s = s.concat(`\t$round\t${speedoGroup.round ? 1 : 0}\n`);
-    // colors
-    s = s.concat(`\t$colorMain\t ${speedoGroup.colorMain.getVMTColor()}\n`);
-    s = s.concat(`\t$colorClose\t ${speedoGroup.colorClose.getVMTColor()}\n`);
-    s = s.concat(`\t$colorGood\t ${speedoGroup.colorGood.getVMTColor()}\n`);
-    s = s.concat(`\t$colorMainH\t ${speedoGroup.colorHeightoMain.getVMTColor()}\n`);
-    s = s.concat(`\t$colorDouble\t ${speedoGroup.colorDouble.getVMTColor()}\n`);
-    s = s.concat(`\t$colorTriple\t ${speedoGroup.colorTriple.getVMTColor()}\n`);
-    s = s.concat(`\t$colorMaxVel\t ${speedoGroup.colorMaxVel.getVMTColor()}\n`);
-    s = s.concat(`\t$hCloseMin\t ${speedoGroup.HSpeedoRange.closeMin.toString()}\n`);
-    s = s.concat(`\t$hCloseMax\t ${speedoGroup.HSpeedoRange.closeMax.toString()}\n`);
-    s = s.concat(`\t$hGoodMin\t ${speedoGroup.HSpeedoRange.goodMin.toString()}\n`);
-    s = s.concat(`\t$hGoodMax\t ${speedoGroup.HSpeedoRange.goodMax.toString()}\n`);
-    s = s.concat(`\t$vCloseMin\t ${speedoGroup.HSpeedoRange.closeMin.toString()}\n`);
-    s = s.concat(`\t$vCloseMax\t ${speedoGroup.HSpeedoRange.closeMax.toString()}\n`);
-    s = s.concat(`\t$vGoodMin\t ${speedoGroup.HSpeedoRange.goodMin.toString()}\n`);
-    s = s.concat(`\t$vGoodMax\t ${speedoGroup.HSpeedoRange.goodMax.toString()}\n`);
-    s = s.concat(`\t$aCloseMin\t ${speedoGroup.HSpeedoRange.closeMin.toString()}\n`);
-    s = s.concat(`\t$aCloseMax\t ${speedoGroup.HSpeedoRange.closeMax.toString()}\n`);
-    s = s.concat(`\t$aGoodMin\t ${speedoGroup.HSpeedoRange.goodMin.toString()}\n`);
-    s = s.concat(`\t$aGoodMax\t ${speedoGroup.HSpeedoRange.goodMax.toString()}\n`);
-    s = s.concat(`\t$doubleThreshold\t ${speedoGroup.HeightoThresholds.double.toString()}\n`);
-    s = s.concat(`\t$tripleThreshold\t ${speedoGroup.HeightoThresholds.triple.toString()}\n`);
-    s = s.concat(`\t$maxVelThreshold\t ${speedoGroup.HeightoThresholds.maxVel.toString()}\n`);
-    s = s.concat("}");
-    return s;
+    return (`#base fonts/${speedoGroup.font}/digits.vmt` +
+        '\n"UnlitGeneric"{\n' +
+        `\t$round\t${speedoGroup.round ? 1 : 0}\n` +
+        `\t$framerate\t${speedoGroup.framerate}\n` +
+        `\t$colorMain\t ${speedoGroup.colorMain.getVMTColor()}\n` +
+        `\t$colorClose\t ${speedoGroup.colorClose.getVMTColor()}\n` +
+        `\t$colorGood\t ${speedoGroup.colorGood.getVMTColor()}\n` +
+        `\t$colorMainH\t ${speedoGroup.colorHeightoMain.getVMTColor()}\n` +
+        `\t$colorDouble\t ${speedoGroup.colorDouble.getVMTColor()}\n` +
+        `\t$colorTriple\t ${speedoGroup.colorTriple.getVMTColor()}\n` +
+        `\t$colorMaxVel\t ${speedoGroup.colorMaxVel.getVMTColor()}\n` +
+        `\t$hCloseMin\t ${speedoGroup.HSpeedoRange.closeMin.toString()}\n` +
+        `\t$hCloseMax\t ${speedoGroup.HSpeedoRange.closeMax.toString()}\n` +
+        `\t$hGoodMin\t ${speedoGroup.HSpeedoRange.goodMin.toString()}\n` +
+        `\t$hGoodMax\t ${speedoGroup.HSpeedoRange.goodMax.toString()}\n` +
+        `\t$vCloseMin\t ${speedoGroup.HSpeedoRange.closeMin.toString()}\n` +
+        `\t$vCloseMax\t ${speedoGroup.HSpeedoRange.closeMax.toString()}\n` +
+        `\t$vGoodMin\t ${speedoGroup.HSpeedoRange.goodMin.toString()}\n` +
+        `\t$vGoodMax\t ${speedoGroup.HSpeedoRange.goodMax.toString()}\n` +
+        `\t$aCloseMin\t ${speedoGroup.HSpeedoRange.closeMin.toString()}\n` +
+        `\t$aCloseMax\t ${speedoGroup.HSpeedoRange.closeMax.toString()}\n` +
+        `\t$aGoodMin\t ${speedoGroup.HSpeedoRange.goodMin.toString()}\n` +
+        `\t$aGoodMax\t ${speedoGroup.HSpeedoRange.goodMax.toString()}\n` +
+        `\t$doubleThreshold\t ${speedoGroup.HeightoThresholds.double.toString()}\n` +
+        `\t$tripleThreshold\t ${speedoGroup.HeightoThresholds.triple.toString()}\n` +
+        `\t$maxVelThreshold\t ${speedoGroup.HeightoThresholds.maxVel.toString()}\n` +
+        "}");
 }
 function generateSpeedoConfig_res(speedoGroup) {
     let s = "";
@@ -126,7 +122,7 @@ function generateSpeedoJSON(speedoGroup) {
     const tabSize = 4;
     return JSON.stringify(speedoGroup, (key, val) => {
         // exclude variables not relevant to config
-        if (key !== "previewSpeed" && key !== "playerSpeed") {
+        if (key !== "previewSpeed" && key !== "playerSpeed" && key !== "color") {
             return val;
         }
     }, tabSize);
