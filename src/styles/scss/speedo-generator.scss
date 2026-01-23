@@ -424,9 +424,10 @@ body {
                         text-align: center;
                 }
                 .shadow {
+                        $shadow-depth: 4px;
                         z-index: -1;
-                        margin-top: 0.3rem;
-                        margin-left: 0.3rem;
+                        margin-top: $shadow-depth;
+                        margin-left: $shadow-depth;
                         color: rgba(0, 0, 0, 0.8) !important;
                 }
                 .speedo-size-small {

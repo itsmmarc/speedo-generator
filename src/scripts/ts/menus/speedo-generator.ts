@@ -16,29 +16,32 @@ let speedoGroup = _.cloneDeep(presetSoldier);
 
 const presetDemoElm = $("#preset-demo").filter("button");
 const presetSoldierElm = $("#preset-soldier").filter("button");
-const slot1Elm = $("#dropdown_slot_1").filter("select");
-const slot2Elm = $("#dropdown_slot_2").filter("select");
-const slot3Elm = $("#dropdown_slot_3").filter("select");
-const slot4Elm = $("#dropdown_slot_4").filter("select");
+
 const aspectRatio4x3Elm = $("#4x3").filter("button");
 const aspectRatio16x9Elm = $("#16x9").filter("button");
+
+const downloadElm = $("#download-btn").filter("button");
+const uploadElm = $("#upload-btn").filter("input") as JQuery<HTMLInputElement>;
+
+const slotElms = $("select.slot").filter("select") as JQuery<HTMLSelectElement>;
+
+const speedoFontElm = $("#fonts").filter("select") as JQuery<HTMLSelectElement>;
+const speedoSizeElm = $("#sizes").filter("select") as JQuery<HTMLSelectElement>;
+const shadowsElm = $("#shadows_checkbox");
+const roundingElm = $("#rounding_checkbox");
+
 const positionPreviewElm = $("#position_preview").filter("div");
 const xSliderElm = $("#xpos").filter("input");
 const ySliderElm = $("#ypos").filter("input");
-
 const markerElm = $("#marker").filter("div");
 let markerSize: { width: number; height: number };
-
 const markerBoundsElm = document.getElementById("position_preview_img") as HTMLImageElement; // using image within to prevent dragging on upload image button
 let markerBoundsWidth: number;
 let markerBoundsHeight: number;
 let markerBounds: { width: number; height: number };
 let imageUploadElm = $("#imageupload").filter("input") as JQuery<HTMLInputElement>;
 let positionPreviewImgElm = $("#position_preview_img").filter("img") as JQuery<HTMLImageElement>;
-const speedoFontElm = $("#fonts").filter("select") as JQuery<HTMLSelectElement>;
-const speedoSizeElm = $("#sizes").filter("select") as JQuery<HTMLSelectElement>;
-const shadowsElm = $("#shadows_checkbox");
-const roundingElm = $("#rounding_checkbox");
+
 const colorMainElm = $("#colorMain");
 const colorCloseElm = $("#colorClose");
 const colorGoodElm = $("#colorGood");
@@ -47,7 +50,9 @@ const colorMainHeightoElm = $("#colorMain_Heighto");
 const colorDoubleElm = $("#colorDouble");
 const colorTripleElm = $("#colorTriple");
 const colorMaxVelElm = $("#colorMaxVel");
+
 const rangeGap: number = 0;
+
 const slider_hspeedo_close_min = $("#slider-hspeedo-close-min").filter("input") as JQuery<HTMLInputElement>;
 const slider_hspeedo_close_max = $("#slider-hspeedo-close-max").filter("input") as JQuery<HTMLInputElement>;
 const text_hspeedo_close_min = $("#text-hspeedo-close-min").filter("input") as JQuery<HTMLInputElement>;
@@ -59,6 +64,7 @@ const slider_hspeedo_good_max = $("#slider-hspeedo-good-max").filter("input") as
 const text_hspeedo_good_min = $("#text-hspeedo-good-min").filter("input") as JQuery<HTMLInputElement>;
 const text_hspeedo_good_max = $("#text-hspeedo-good-max").filter("input") as JQuery<HTMLInputElement>;
 const track_hspeedo_good = $("#track-hspeedo-good");
+
 const slider_vspeedo_close_min = $("#slider-vspeedo-close-min").filter("input") as JQuery<HTMLInputElement>;
 const slider_vspeedo_close_max = $("#slider-vspeedo-close-max").filter("input") as JQuery<HTMLInputElement>;
 const text_vspeedo_close_min = $("#text-vspeedo-close-min").filter("input") as JQuery<HTMLInputElement>;
@@ -70,6 +76,7 @@ const slider_vspeedo_good_max = $("#slider-vspeedo-good-max").filter("input") as
 const text_vspeedo_good_min = $("#text-vspeedo-good-min").filter("input") as JQuery<HTMLInputElement>;
 const text_vspeedo_good_max = $("#text-vspeedo-good-max").filter("input") as JQuery<HTMLInputElement>;
 const track_vspeedo_good = $("#track-vspeedo-good");
+
 const slider_aspeedo_close_min = $("#slider-aspeedo-close-min").filter("input") as JQuery<HTMLInputElement>;
 const slider_aspeedo_close_max = $("#slider-aspeedo-close-max").filter("input") as JQuery<HTMLInputElement>;
 const text_aspeedo_close_min = $("#text-aspeedo-close-min").filter("input") as JQuery<HTMLInputElement>;
@@ -81,6 +88,7 @@ const slider_aspeedo_good_max = $("#slider-aspeedo-good-max").filter("input") as
 const text_aspeedo_good_min = $("#text-aspeedo-good-min").filter("input") as JQuery<HTMLInputElement>;
 const text_aspeedo_good_max = $("#text-aspeedo-good-max").filter("input") as JQuery<HTMLInputElement>;
 const track_aspeedo_good = $("#track-aspeedo-good");
+
 const slider_heighto_double = $("#slider-heighto-double").filter("input") as JQuery<HTMLInputElement>;
 const text_heighto_double = $("#text-heighto-double").filter("input") as JQuery<HTMLInputElement>;
 const track_heighto_double = $("#track-heighto-double");
@@ -92,12 +100,17 @@ const track_heighto_triple = $("#track-heighto-triple");
 const slider_heighto_maxVel = $("#slider-heighto-maxvel").filter("input") as JQuery<HTMLInputElement>;
 const text_heighto_maxVel = $("#text-heighto-maxvel").filter("input") as JQuery<HTMLInputElement>;
 const track_heighto_maxVel = $("#track-heighto-maxvel");
-const downloadElm = $("#download-btn").filter("button");
-const uploadElm = $("#upload-btn").filter("input") as JQuery<HTMLInputElement>;
 
 $(() => {
         addListeners();
         initialize();
+        speedoGroup.startPreview();
+        setInterval(() => {
+                for (const [index, speedo] of speedoGroup.speedos.entries()) {
+                        $(`.speedo.slot_${index + 1}`).text(speedo.playerSpeed);
+                        $(`.speedo.slot_${index + 1}`).css("color", speedo.color.getCSSColor());
+                }
+        }, speedoGroup.frametime);
 });
 
 window.addEventListener("resize", () => {
@@ -115,21 +128,11 @@ function addListeners() {
                 initialize();
         });
 
-        slot1Elm.on("change", () => {
-                speedoGroup.speedos[0].speedoType = slot1Elm.val() as SpeedoType;
-                updateSpeedoStyles();
-        });
-        slot2Elm.on("change", () => {
-                // speedoGroup.speedos[1].speedoType = slot2Elm.val() as SpeedoType;
-                updateSpeedoStyles();
-        });
-        slot3Elm.on("change", () => {
-                speedoGroup.speedos[2].speedoType = slot3Elm.val() as SpeedoType;
-                updateSpeedoStyles();
-        });
-        slot4Elm.on("change", () => {
-                speedoGroup.speedos[3].speedoType = slot4Elm.val() as SpeedoType;
-                updateSpeedoStyles();
+        slotElms.each((index, slotElm) => {
+                slotElm.addEventListener("change", () => {
+                        speedoGroup.speedos[index].speedoType = slotElm.value as SpeedoType;
+                        updateSpeedoStyles();
+                });
         });
 
         aspectRatio16x9Elm.on("click", () => {
@@ -724,25 +727,15 @@ function initialize() {
                 track_heighto_maxVel,
                 speedoGroup.colorMaxVel,
         );
-
-        speedoGroup.startPreview();
-        setInterval(() => {
-                for (const [index, speedo] of speedoGroup.speedos.entries()) {
-                        $(`.speedo.slot_${index + 1}`).text(speedo.playerSpeed);
-                        $(`.speedo.slot_${index + 1}`).css("color", speedo.color.getCSSColor());
-                        console.log(index);
-                }
-        }, speedoGroup.frametime);
 }
 
 /**
  * Loads values from speedo object into DOM elements.
  */
 function readSpeedoGroupToPage(): void {
-        slot1Elm.val(speedoGroup.speedos[0].speedoType);
-        slot2Elm.val(speedoGroup.speedos[1].speedoType);
-        slot3Elm.val(speedoGroup.speedos[2].speedoType);
-        slot4Elm.val(speedoGroup.speedos[3].speedoType);
+        slotElms.each((index, slotElm) => {
+                slotElm.value = speedoGroup.speedos[index].speedoType;
+        });
         speedoFontElm.val(speedoGroup.font);
         speedoSizeElm.val(speedoGroup.getSize());
         shadowsElm.attr("checked", speedoGroup.drawShadows.toString());

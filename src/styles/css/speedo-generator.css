@@ -384,8 +384,8 @@ body aside .speedo {
 }
 body aside .shadow {
   z-index: -1;
-  margin-top: 0.3rem;
-  margin-left: 0.3rem;
+  margin-top: 4px;
+  margin-left: 4px;
   color: rgba(0, 0, 0, 0.8) !important;
 }
 body aside .speedo-size-small {

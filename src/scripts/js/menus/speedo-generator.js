@@ -11,12 +11,15 @@ let hasReadVDF = false;
 let speedoGroup = _.cloneDeep(presetSoldier);
 const presetDemoElm = $("#preset-demo").filter("button");
 const presetSoldierElm = $("#preset-soldier").filter("button");
-const slot1Elm = $("#dropdown_slot_1").filter("select");
-const slot2Elm = $("#dropdown_slot_2").filter("select");
-const slot3Elm = $("#dropdown_slot_3").filter("select");
-const slot4Elm = $("#dropdown_slot_4").filter("select");
 const aspectRatio4x3Elm = $("#4x3").filter("button");
 const aspectRatio16x9Elm = $("#16x9").filter("button");
+const downloadElm = $("#download-btn").filter("button");
+const uploadElm = $("#upload-btn").filter("input");
+const slotElms = $("select.slot").filter("select");
+const speedoFontElm = $("#fonts").filter("select");
+const speedoSizeElm = $("#sizes").filter("select");
+const shadowsElm = $("#shadows_checkbox");
+const roundingElm = $("#rounding_checkbox");
 const positionPreviewElm = $("#position_preview").filter("div");
 const xSliderElm = $("#xpos").filter("input");
 const ySliderElm = $("#ypos").filter("input");
@@ -28,10 +31,6 @@ let markerBoundsHeight;
 let markerBounds;
 let imageUploadElm = $("#imageupload").filter("input");
 let positionPreviewImgElm = $("#position_preview_img").filter("img");
-const speedoFontElm = $("#fonts").filter("select");
-const speedoSizeElm = $("#sizes").filter("select");
-const shadowsElm = $("#shadows_checkbox");
-const roundingElm = $("#rounding_checkbox");
 const colorMainElm = $("#colorMain");
 const colorCloseElm = $("#colorClose");
 const colorGoodElm = $("#colorGood");
@@ -79,11 +78,16 @@ const track_heighto_triple = $("#track-heighto-triple");
 const slider_heighto_maxVel = $("#slider-heighto-maxvel").filter("input");
 const text_heighto_maxVel = $("#text-heighto-maxvel").filter("input");
 const track_heighto_maxVel = $("#track-heighto-maxvel");
-const downloadElm = $("#download-btn").filter("button");
-const uploadElm = $("#upload-btn").filter("input");
 $(() => {
     addListeners();
     initialize();
+    speedoGroup.startPreview();
+    setInterval(() => {
+        for (const [index, speedo] of speedoGroup.speedos.entries()) {
+            $(`.speedo.slot_${index + 1}`).text(speedo.playerSpeed);
+            $(`.speedo.slot_${index + 1}`).css("color", speedo.color.getCSSColor());
+        }
+    }, speedoGroup.frametime);
 });
 window.addEventListener("resize", () => {
     updatePositionSize();
@@ -97,21 +101,11 @@ function addListeners() {
         speedoGroup = _.cloneDeep(presetSoldier);
         initialize();
     });
-    slot1Elm.on("change", () => {
-        speedoGroup.speedos[0].speedoType = slot1Elm.val();
-        updateSpeedoStyles();
-    });
-    slot2Elm.on("change", () => {
-        // speedoGroup.speedos[1].speedoType = slot2Elm.val() as SpeedoType;
-        updateSpeedoStyles();
-    });
-    slot3Elm.on("change", () => {
-        speedoGroup.speedos[2].speedoType = slot3Elm.val();
-        updateSpeedoStyles();
-    });
-    slot4Elm.on("change", () => {
-        speedoGroup.speedos[3].speedoType = slot4Elm.val();
-        updateSpeedoStyles();
+    slotElms.each((index, slotElm) => {
+        slotElm.addEventListener("change", () => {
+            speedoGroup.speedos[index].speedoType = slotElm.value;
+            updateSpeedoStyles();
+        });
     });
     aspectRatio16x9Elm.on("click", () => {
         TF_SCREEN_WIDTH_CURRENT = TF_SCREEN_WIDTH_16_9;
@@ -340,23 +334,14 @@ function initialize() {
     speedoGroup.HeightoThresholds.double = processRangeSingle(slider_heighto_double, text_heighto_double, track_heighto_double, speedoGroup.colorDouble);
     speedoGroup.HeightoThresholds.triple = processRangeSingle(slider_heighto_triple, text_heighto_triple, track_heighto_triple, speedoGroup.colorTriple);
     speedoGroup.HeightoThresholds.maxVel = processRangeSingle(slider_heighto_maxVel, text_heighto_maxVel, track_heighto_maxVel, speedoGroup.colorMaxVel);
-    speedoGroup.startPreview();
-    setInterval(() => {
-        for (const [index, speedo] of speedoGroup.speedos.entries()) {
-            $(`.speedo.slot_${index + 1}`).text(speedo.playerSpeed);
-            $(`.speedo.slot_${index + 1}`).css("color", speedo.color.getCSSColor());
-            console.log(index);
-        }
-    }, speedoGroup.frametime);
 }
 /**
  * Loads values from speedo object into DOM elements.
  */
 function readSpeedoGroupToPage() {
-    slot1Elm.val(speedoGroup.speedos[0].speedoType);
-    slot2Elm.val(speedoGroup.speedos[1].speedoType);
-    slot3Elm.val(speedoGroup.speedos[2].speedoType);
-    slot4Elm.val(speedoGroup.speedos[3].speedoType);
+    slotElms.each((index, slotElm) => {
+        slotElm.value = speedoGroup.speedos[index].speedoType;
+    });
     speedoFontElm.val(speedoGroup.font);
     speedoSizeElm.val(speedoGroup.getSize());
     shadowsElm.attr("checked", speedoGroup.drawShadows.toString());
