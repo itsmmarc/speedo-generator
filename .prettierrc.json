@@ -18,6 +18,12 @@
             "options": {
                 "tabWidth": 4
             }
+        },
+        {
+            "files": "*.jsonc",
+            "options": {
+                "trailingComma": "none"
+            }
         }
     ]
 }
