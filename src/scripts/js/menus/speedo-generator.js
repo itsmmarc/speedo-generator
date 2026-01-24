@@ -14,7 +14,7 @@ const presetSoldierElm = $("#preset-soldier").filter("button");
 const aspectRatio4x3Elm = $("#4x3").filter("button");
 const aspectRatio16x9Elm = $("#16x9").filter("button");
 const downloadElm = $("#download-btn").filter("button");
-const uploadElm = $("#upload-btn").filter("input");
+const uploadJSONElm = $("#upload-btn").filter("input");
 const slotElms = $("select.slot").filter("select");
 const speedoFontElm = $("#fonts").filter("select");
 const speedoSizeElm = $("#sizes").filter("select");
@@ -29,7 +29,7 @@ const markerBoundsElm = document.getElementById("position_preview_img"); // usin
 let markerBoundsWidth;
 let markerBoundsHeight;
 let markerBounds;
-const imageUploadElm = $("#imageupload").filter("input");
+const uploadImageElm = $("#imageupload").filter("input");
 const positionPreviewImgElm = $("#position_preview_img").filter("img");
 const colorMainElm = $("#colorMain");
 const colorCloseElm = $("#colorClose");
@@ -74,7 +74,7 @@ function addListeners() {
     slotElms.each((index, slotElm) => {
         slotElm.addEventListener("change", () => {
             speedoGroup.speedos[index].speedoType = slotElm.value;
-            updateSpeedoStyles();
+            updateSpeedoVisibility();
         });
     });
     aspectRatio16x9Elm.on("click", () => {
@@ -106,21 +106,20 @@ function addListeners() {
             updatePosition_y();
         }
     });
-    imageUploadElm.on("change", () => {
-        changeImage(imageUploadElm, positionPreviewImgElm);
+    uploadImageElm.on("change", () => {
+        changeImage(uploadImageElm, positionPreviewImgElm);
     });
     speedoFontElm.on("change", () => {
-        speedoGroup.font = speedoFontElm.val();
-        updateSpeedoStyles();
+        updateSpeedoFont();
     });
     speedoSizeElm.on("change", () => {
         speedoGroup.setSize(speedoSizeElm.val());
         updateMarkerSize();
-        updateSpeedoStyles();
+        updateSpeedoSize();
     });
     shadowsElm.on("change", () => {
         speedoGroup.drawShadows = shadowsElm.prop("checked");
-        updateSpeedoStyles();
+        updateSpeedoVisibility();
     });
     roundingElm.on("change", () => {
         speedoGroup.round = roundingElm.prop("checked");
@@ -215,16 +214,18 @@ function addListeners() {
     downloadElm.on("click", () => {
         zipSpeedos(speedoGroup);
     });
-    uploadElm.on("change", () => {
-        speedoGroup.importFromJSON(uploadElm).then(() => {
+    uploadJSONElm.on("change", () => {
+        speedoGroup.importFromJSON(uploadJSONElm).then(() => {
             initialize();
         });
     });
 }
 function initialize() {
     hasReadVDF = false;
-    updateSpeedoStyles();
     readSpeedoGroupToPage();
+    updateSpeedoSize();
+    updateSpeedoFont();
+    updateSpeedoVisibility();
     updatePositionSize();
     dualRangeContainerElms.each(function () {
         let container = getDualRangeContainer(this);
@@ -264,14 +265,6 @@ function readSpeedoGroupToPage() {
     slider_heighto_triple.val(speedoGroup.HeightoThresholds.triple.toString());
     slider_heighto_maxVel.val(speedoGroup.HeightoThresholds.maxVel.toString());
 }
-/**
- * Checks for style changes of the speedo object and updates the document speedo elements to match.
- */
-function updateSpeedoStyles() {
-    updateSpeedoSize();
-    updateSpeedoFont();
-    updateSpeedoVisibility();
-}
 function updateSpeedoSize() {
     $(".speedo-container").removeClass((index, className) => {
         return matchClassStartingWith("speedo-size-", className);
@@ -291,50 +284,12 @@ function updateSpeedoSize() {
     }
 }
 function updateSpeedoFont() {
+    speedoGroup.font = speedoFontElm.val();
+    speedoGroup.hasCustomFont = speedoGroup.font.includes("custom");
     $(".speedo").removeClass((index, className) => {
         return matchClassStartingWith("font-", className);
     });
-    switch (speedoGroup.font) {
-        case "bahnschrift":
-            $(".speedo").addClass("font-bahnschrift");
-            break;
-        case "coolvetica":
-            $(".speedo").addClass("font-coolvetica");
-            break;
-        case "coolvetica_italic":
-            $(".speedo").addClass("font-coolvetica_italic");
-            break;
-        case "eternal":
-            $(".speedo").addClass("font-eternal");
-            break;
-        case "montserrat":
-            $(".speedo").addClass("font-montserrat");
-            break;
-        case "nk57":
-            $(".speedo").addClass("font-nk57");
-            break;
-        case "poppins":
-            $(".speedo").addClass("font-poppins");
-            break;
-        case "quake":
-            $(".speedo").addClass("font-quake");
-            break;
-        case "renogare":
-            $(".speedo").addClass("font-renogare");
-            break;
-        case "roboto":
-            $(".speedo").addClass("font-roboto");
-            break;
-        case "square":
-            $(".speedo").addClass("font-square");
-            break;
-        case "surface":
-            $(".speedo").addClass("font-surface");
-            break;
-        default:
-            console.log(`error in speedo object font, ${speedoGroup.font} is not a valid font`);
-            break;
-    }
+    $(".speedo").addClass(`font-${speedoGroup.font.toString()}`);
 }
 function updateSpeedoVisibility() {
     let slotSelector;
@@ -651,4 +606,44 @@ function getDualRangeColor(container) {
         : container.isGood
             ? speedoGroup.colorGood
             : new Color(0, 0, 0);
+}
+////////////////////////
+const uploadFontBtn = $("input#upload-font");
+let customFontCounter = 1;
+uploadFontBtn.on("change", () => {
+    uploadFont(uploadFontBtn);
+});
+function uploadFont(input) {
+    let reader;
+    if (input[0].files && input[0].files[0]) {
+        reader = new FileReader();
+        reader.readAsDataURL(input[0].files[0]);
+        reader.onload = () => {
+            if (reader.result) {
+                loadFont(reader.result);
+            }
+        };
+    }
+}
+function loadFont(fontdata) {
+    const fontName = `custom${customFontCounter++}`;
+    const font = new FontFace(fontName, `url(${fontdata})`);
+    document.fonts.add(font);
+    font.load().then(() => {
+        console.log(`font: ${font.status}`);
+        const css = `.font-${fontName}{font-family: ${fontName}}`;
+        const style = document.createElement("style");
+        style.innerText = css;
+        style.setAttribute("id", "fontName");
+        $("body").append(style);
+        addFontPreview(font);
+    });
+}
+function addFontPreview(font) {
+    const option = document.createElement("option");
+    option.value = font.family;
+    option.innerText = font.family;
+    speedoFontElm.append(option);
+    speedoFontElm.val(font.family);
+    updateSpeedoFont();
 }

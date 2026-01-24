@@ -25,6 +25,7 @@ export class SpeedoGroup {
     frametime;
     vdfElm;
     font;
+    hasCustomFont;
     constructor() {
         this.vdfElm = new VDFElement("speedos");
         this.setSize((this.size = "MEDIUM"));
@@ -35,6 +36,7 @@ export class SpeedoGroup {
         this.framerate = 30;
         this.frametime = 1000 / this.framerate;
         this.font = "roboto";
+        this.hasCustomFont = false;
         this.colorMain = m0reColor.WHITE;
         this.colorClose = m0reColor.BLUE;
         this.colorGood = m0reColor.GREEN;

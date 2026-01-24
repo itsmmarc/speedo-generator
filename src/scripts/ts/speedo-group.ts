@@ -5,19 +5,6 @@ import { m0reColor } from "./m0recolors.js";
 import { VDFElement } from "./vdfelement.js";
 
 export type SpeedoSize = "SMALL" | "MEDIUM" | "LARGE";
-export type Font =
-        | "bahnschrift"
-        | "coolvetica"
-        | "coolvetica_italic"
-        | "eternal"
-        | "montserrat"
-        | "nk57"
-        | "poppins"
-        | "quake"
-        | "renogare"
-        | "roboto"
-        | "square"
-        | "surface";
 
 export type Range = {
         min: number;
@@ -47,7 +34,8 @@ export class SpeedoGroup {
         framerate: number;
         frametime: number;
         vdfElm: VDFElement;
-        font: Font;
+        font: string;
+        hasCustomFont: boolean;
 
         constructor() {
                 this.vdfElm = new VDFElement("speedos");
@@ -61,6 +49,7 @@ export class SpeedoGroup {
                 this.frametime = 1000 / this.framerate;
 
                 this.font = "roboto";
+                this.hasCustomFont = false;
 
                 this.colorMain = m0reColor.WHITE;
                 this.colorClose = m0reColor.BLUE;

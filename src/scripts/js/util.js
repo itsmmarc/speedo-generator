@@ -5,6 +5,6 @@
  * @returns className param if the string begins with the starting param, else returns an empty string
  */
 export function matchClassStartingWith(starting, className) {
-    let regex = `\\b${starting}[a-zA-Z\\-\\_]*`;
+    let regex = `\\b${starting}[a-zA-Z0-9\\-\\_]*`;
     return (className.match(regex) || []).join(" ");
 }

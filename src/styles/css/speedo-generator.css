@@ -105,7 +105,7 @@ body main .top-bar #top-bar-buttons {
   display: flex;
 }
 body main .top-bar button,
-body main .top-bar #fake-upload-btn {
+body main .top-bar .fake-upload-btn {
   all: initial;
   flex-basis: 180px;
   float: right;
@@ -127,11 +127,11 @@ body main .top-bar #fake-upload-btn {
   text-align: center;
 }
 body main .top-bar button:active,
-body main .top-bar #fake-upload-btn:active {
+body main .top-bar .fake-upload-btn:active {
   border-color: black rgb(84, 84, 84) rgb(84, 84, 84) black;
 }
 body main .top-bar button input,
-body main .top-bar #fake-upload-btn input {
+body main .top-bar .fake-upload-btn input {
   width: 0;
   height: 0;
 }

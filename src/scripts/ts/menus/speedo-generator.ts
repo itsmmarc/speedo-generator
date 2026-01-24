@@ -21,7 +21,7 @@ const aspectRatio4x3Elm = $("#4x3").filter("button");
 const aspectRatio16x9Elm = $("#16x9").filter("button");
 
 const downloadElm = $("#download-btn").filter("button");
-const uploadElm = $("#upload-btn").filter("input") as JQuery<HTMLInputElement>;
+const uploadJSONElm = $("#upload-btn").filter("input") as JQuery<HTMLInputElement>;
 
 const slotElms = $("select.slot").filter("select") as JQuery<HTMLSelectElement>;
 
@@ -39,7 +39,7 @@ const markerBoundsElm = document.getElementById("position_preview_img") as HTMLI
 let markerBoundsWidth: number;
 let markerBoundsHeight: number;
 let markerBounds: { width: number; height: number };
-const imageUploadElm = $("#imageupload").filter("input") as JQuery<HTMLInputElement>;
+const uploadImageElm = $("#imageupload").filter("input") as JQuery<HTMLInputElement>;
 const positionPreviewImgElm = $("#position_preview_img").filter("img") as JQuery<HTMLImageElement>;
 
 const colorMainElm = $("#colorMain");
@@ -96,7 +96,7 @@ function addListeners() {
         slotElms.each((index, slotElm) => {
                 slotElm.addEventListener("change", () => {
                         speedoGroup.speedos[index].speedoType = slotElm.value as SpeedoType;
-                        updateSpeedoStyles();
+                        updateSpeedoVisibility();
                 });
         });
 
@@ -135,24 +135,23 @@ function addListeners() {
                 }
         });
 
-        imageUploadElm.on("change", () => {
-                changeImage(imageUploadElm, positionPreviewImgElm);
+        uploadImageElm.on("change", () => {
+                changeImage(uploadImageElm, positionPreviewImgElm);
         });
 
         speedoFontElm.on("change", () => {
-                speedoGroup.font = speedoFontElm.val() as Font;
-                updateSpeedoStyles();
+                updateSpeedoFont();
         });
 
         speedoSizeElm.on("change", () => {
                 speedoGroup.setSize(speedoSizeElm.val() as SpeedoSize);
                 updateMarkerSize();
-                updateSpeedoStyles();
+                updateSpeedoSize();
         });
 
         shadowsElm.on("change", () => {
                 speedoGroup.drawShadows = shadowsElm.prop("checked");
-                updateSpeedoStyles();
+                updateSpeedoVisibility();
         });
 
         roundingElm.on("change", () => {
@@ -317,16 +316,18 @@ function addListeners() {
                 zipSpeedos(speedoGroup);
         });
 
-        uploadElm.on("change", () => {
-                speedoGroup.importFromJSON(uploadElm).then(() => {
+        uploadJSONElm.on("change", () => {
+                speedoGroup.importFromJSON(uploadJSONElm).then(() => {
                         initialize();
                 });
         });
 }
 function initialize() {
         hasReadVDF = false;
-        updateSpeedoStyles();
         readSpeedoGroupToPage();
+        updateSpeedoSize();
+        updateSpeedoFont();
+        updateSpeedoVisibility();
         updatePositionSize();
         dualRangeContainerElms.each(function (this: HTMLElement) {
                 let container = getDualRangeContainer(this);
@@ -398,15 +399,6 @@ function readSpeedoGroupToPage(): void {
         slider_heighto_maxVel.val(speedoGroup.HeightoThresholds.maxVel.toString());
 }
 
-/**
- * Checks for style changes of the speedo object and updates the document speedo elements to match.
- */
-function updateSpeedoStyles(): void {
-        updateSpeedoSize();
-        updateSpeedoFont();
-        updateSpeedoVisibility();
-}
-
 function updateSpeedoSize(): void {
         $(".speedo-container").removeClass((index, className) => {
                 return matchClassStartingWith("speedo-size-", className);
@@ -427,51 +419,14 @@ function updateSpeedoSize(): void {
         }
 }
 function updateSpeedoFont(): void {
+        speedoGroup.font = speedoFontElm.val() as Font;
+        speedoGroup.hasCustomFont = speedoGroup.font.includes("custom");
+
         $(".speedo").removeClass((index, className) => {
                 return matchClassStartingWith("font-", className);
         });
 
-        switch (speedoGroup.font) {
-                case "bahnschrift":
-                        $(".speedo").addClass("font-bahnschrift");
-                        break;
-                case "coolvetica":
-                        $(".speedo").addClass("font-coolvetica");
-                        break;
-                case "coolvetica_italic":
-                        $(".speedo").addClass("font-coolvetica_italic");
-                        break;
-                case "eternal":
-                        $(".speedo").addClass("font-eternal");
-                        break;
-                case "montserrat":
-                        $(".speedo").addClass("font-montserrat");
-                        break;
-                case "nk57":
-                        $(".speedo").addClass("font-nk57");
-                        break;
-                case "poppins":
-                        $(".speedo").addClass("font-poppins");
-                        break;
-                case "quake":
-                        $(".speedo").addClass("font-quake");
-                        break;
-                case "renogare":
-                        $(".speedo").addClass("font-renogare");
-                        break;
-                case "roboto":
-                        $(".speedo").addClass("font-roboto");
-                        break;
-                case "square":
-                        $(".speedo").addClass("font-square");
-                        break;
-                case "surface":
-                        $(".speedo").addClass("font-surface");
-                        break;
-                default:
-                        console.log(`error in speedo object font, ${speedoGroup.font} is not a valid font`);
-                        break;
-        }
+        $(".speedo").addClass(`font-${speedoGroup.font.toString()}`);
 }
 function updateSpeedoVisibility() {
         let slotSelector: string;
@@ -867,4 +822,51 @@ function getDualRangeColor(container: DualRangeContainer): Color {
                 : container.isGood
                   ? speedoGroup.colorGood
                   : new Color(0, 0, 0);
+}
+
+////////////////////////
+
+const uploadFontBtn = $("input#upload-font") as JQuery<HTMLInputElement>;
+let customFontCounter = 1;
+uploadFontBtn.on("change", () => {
+        uploadFont(uploadFontBtn);
+});
+function uploadFont(input: JQuery<HTMLInputElement>) {
+        let reader: FileReader;
+
+        if (input[0].files && input[0].files[0]) {
+                reader = new FileReader();
+                reader.readAsDataURL(input[0].files[0]);
+                reader.onload = () => {
+                        if (reader.result) {
+                                loadFont(reader.result as string);
+                        }
+                };
+        }
+}
+
+function loadFont(fontdata: string) {
+        const fontName = `custom${customFontCounter++}`;
+        const font = new FontFace(fontName, `url(${fontdata})`);
+        document.fonts.add(font);
+        font.load().then(() => {
+                console.log(`font: ${font.status}`);
+
+                const css = `.font-${fontName}{font-family: ${fontName}}`;
+                const style = document.createElement("style");
+                style.innerText = css;
+                style.setAttribute("id", "fontName");
+                $("body").append(style);
+
+                addFontPreview(font);
+        });
+}
+
+function addFontPreview(font: FontFace) {
+        const option = document.createElement("option");
+        option.value = font.family;
+        option.innerText = font.family;
+        speedoFontElm.append(option);
+        speedoFontElm.val(font.family);
+        updateSpeedoFont();
 }

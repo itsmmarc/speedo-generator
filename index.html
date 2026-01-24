@@ -23,9 +23,13 @@
                 <h1 class="">Speedo Generator</h1>
                 <div id="top-bar-buttons">
                     <button id="download-btn">Download</button>
-                    <label id="fake-upload-btn">
+                    <label class="fake-upload-btn">
                         <input type="file" id="upload-btn"></input>
-                        <div >Upload</div>
+                        <div >Upload JSON</div>
+                    </label>
+                    <label class="fake-upload-btn">
+                        <input type="file" id="upload-font"></input>
+                        <div >Upload Font</div>
                     </label>
                     <button id="preset-soldier">Soldier</button>
                     <button id="preset-demo">Demo</button>
@@ -80,18 +84,9 @@
                             Font
                             <br />
                             <select name="fonts" id="fonts">
-                                <option value="bahnschrift">bahnschrift</option>
-                                <option value="coolvetica">coolvetica</option>
-                                <option value="coolvetica_italic">coolvetica_italic</option>
-                                <option value="eternal">eternal</option>
                                 <option value="montserrat">montserrat</option>
-                                <option value="nk57">nk57</option>
                                 <option value="poppins">poppins</option>
-                                <option value="quake">quake</option>
-                                <option value="renogare">renogare</option>
                                 <option value="roboto">roboto</option>
-                                <option value="square">square</option>
-                                <option value="surface">surface</option>
                             </select>
                         </label>
                     </div>
@@ -305,7 +300,8 @@
             <div class="speedo slot_4"></div>
             <div class="speedo slot_4 shadow"></div>
         </aside>
-
+        <canvas hidden id="frame-canvas" width="256" height="64">
+        </canvas>
         <footer>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
             <script type="module" src="src/scripts/js/menus/speedo-generator.js"></script>

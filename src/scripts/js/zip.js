@@ -11,6 +11,9 @@ export async function zipSpeedos(speedoGroup) {
         zip.file(`${speedo_materials_path}speedo_config.vmt`, generateSpeedoConfig_vmt(speedoGroup));
         zip.file(`${speedo_resource_path}speedo_config.res`, generateSpeedoConfig_res(speedoGroup));
         zip.file("YOURHUD/speedo_config.json", generateSpeedoJSON(speedoGroup));
+        if (speedoGroup.hasCustomFont) {
+            generateSpeedoFrames(speedoGroup);
+        }
         zip.generateAsync({ type: "blob" }).then(function (content) {
             saveAs(content, "test.zip");
         });
@@ -126,4 +129,22 @@ function generateSpeedoJSON(speedoGroup) {
             return val;
         }
     }, tabSize);
+}
+function generateSpeedoFrames(speedoGroup) {
+    const width = 256;
+    const height = 64;
+    const fontSize = 64;
+    let imagesURL = [];
+    const canvas = document.getElementById("frame-canvas");
+    const ctx = canvas.getContext("2d");
+    ctx.font = `${fontSize}px ${speedoGroup.font}`;
+    for (let i = 0; i <= 10; i++) {
+        if (i !== 10) {
+            let textWidth = ctx.measureText(i.toString()).width;
+            let center = { x: width / 2 - textWidth / 2, y: height };
+            ctx.fillText(i.toString(), center.x, center.y);
+        }
+        imagesURL[i] = canvas.toDataURL("image/png");
+        ctx.clearRect(0, 0, width, height);
+    }
 }
