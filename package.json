@@ -14,7 +14,8 @@
         "@types/jquery": "^3.5.33",
         "@types/lodash": "^4.17.23",
         "typescript": "~5.9.3",
-        "vite": "^7.2.4"
+        "vite": "^7.2.4",
+        "wrangler": "^4.60.0"
     },
     "dependencies": {
         "@types/jszip": "^3.4.0",
