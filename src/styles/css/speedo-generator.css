@@ -72,6 +72,20 @@ body main {
   padding-right: 2vw;
   padding-left: 2vw;
 }
+body main ul {
+  font-style: normal;
+  font-weight: 900;
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "wdth" 100;
+  color: red;
+  font-size: 1.2rem;
+}
+body main ul li {
+  margin-top: 9px;
+  margin-bottom: 9px;
+  font-size: 1rem;
+}
 @media only screen and (max-width: 1550px) {
   body main {
     min-width: 600px;
