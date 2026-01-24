@@ -137,7 +137,7 @@ function generateSpeedoConfigRes(speedoGroup: SpeedoGroup): string {
                 shadowsVisible = "0";
         }
 
-        for (const [index, speedo] of speedoGroup.speedos.entries()) {
+        for (const [index, _] of speedoGroup.speedos.entries()) {
                 s = s.concat(
                         `\t\tslot_${index + 1}_container{\n`,
                         `\t\t\tshadows_container{\n`,

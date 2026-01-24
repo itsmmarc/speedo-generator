@@ -400,7 +400,7 @@ function readSpeedoGroupToPage(): void {
 }
 
 function updateSpeedoSize(): void {
-        $(".speedo-container").removeClass((index, className) => {
+        $(".speedo-container").removeClass((_, className) => {
                 return matchClassStartingWith("speedo-size-", className);
         });
 
@@ -422,7 +422,7 @@ function updateSpeedoFont(): void {
         speedoGroup.font = speedoFontElm.val() as string;
         speedoGroup.hasCustomFont = speedoGroup.font.includes("custom");
 
-        $(".speedo").removeClass((index, className) => {
+        $(".speedo").removeClass((_, className) => {
                 return matchClassStartingWith("font-", className);
         });
 

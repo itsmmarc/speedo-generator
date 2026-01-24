@@ -266,7 +266,7 @@ function readSpeedoGroupToPage() {
     slider_heighto_maxVel.val(speedoGroup.HeightoThresholds.maxVel.toString());
 }
 function updateSpeedoSize() {
-    $(".speedo-container").removeClass((index, className) => {
+    $(".speedo-container").removeClass((_, className) => {
         return matchClassStartingWith("speedo-size-", className);
     });
     switch (speedoGroup.getSize()) {
@@ -286,7 +286,7 @@ function updateSpeedoSize() {
 function updateSpeedoFont() {
     speedoGroup.font = speedoFontElm.val();
     speedoGroup.hasCustomFont = speedoGroup.font.includes("custom");
-    $(".speedo").removeClass((index, className) => {
+    $(".speedo").removeClass((_, className) => {
         return matchClassStartingWith("font-", className);
     });
     $(".speedo").addClass(`font-${speedoGroup.font.toString()}`);
