@@ -38,20 +38,20 @@ export class Speedo {
     isClose(speedoGroup) {
         switch (this.speedoType) {
             case "HORIZONTAL":
-                if (this.playerSpeed > speedoGroup.HSpeedoRange.closeMin &&
-                    this.playerSpeed < speedoGroup.HSpeedoRange.closeMax) {
+                if (this.playerSpeed > speedoGroup.HSpeedoCloseRange.min &&
+                    this.playerSpeed < speedoGroup.HSpeedoCloseRange.max) {
                     return true;
                 }
                 return false;
             case "VERTICAL":
-                if (this.playerSpeed > speedoGroup.VSpeedoRange.closeMin &&
-                    this.playerSpeed < speedoGroup.VSpeedoRange.closeMax) {
+                if (this.playerSpeed > speedoGroup.VSpeedoCloseRange.min &&
+                    this.playerSpeed < speedoGroup.VSpeedoCloseRange.max) {
                     return true;
                 }
                 return false;
             case "ABSOLUTE":
-                if (this.playerSpeed > speedoGroup.ASpeedoRange.closeMin &&
-                    this.playerSpeed < speedoGroup.ASpeedoRange.closeMax) {
+                if (this.playerSpeed > speedoGroup.ASpeedoCloseRange.min &&
+                    this.playerSpeed < speedoGroup.ASpeedoCloseRange.max) {
                     return true;
                 }
                 return false;
@@ -62,20 +62,20 @@ export class Speedo {
     isGood(speedoGroup) {
         switch (this.speedoType) {
             case "HORIZONTAL":
-                if (this.playerSpeed > speedoGroup.HSpeedoRange.goodMin &&
-                    this.playerSpeed < speedoGroup.HSpeedoRange.goodMax) {
+                if (this.playerSpeed > speedoGroup.HSpeedoGoodRange.min &&
+                    this.playerSpeed < speedoGroup.HSpeedoGoodRange.max) {
                     return true;
                 }
                 return false;
             case "VERTICAL":
-                if (this.playerSpeed > speedoGroup.VSpeedoRange.goodMin &&
-                    this.playerSpeed < speedoGroup.VSpeedoRange.goodMax) {
+                if (this.playerSpeed > speedoGroup.VSpeedoGoodRange.min &&
+                    this.playerSpeed < speedoGroup.VSpeedoGoodRange.max) {
                     return true;
                 }
                 return false;
             case "ABSOLUTE":
-                if (this.playerSpeed > speedoGroup.ASpeedoRange.goodMin &&
-                    this.playerSpeed < speedoGroup.ASpeedoRange.goodMax) {
+                if (this.playerSpeed > speedoGroup.ASpeedoGoodRange.min &&
+                    this.playerSpeed < speedoGroup.ASpeedoGoodRange.max) {
                     return true;
                 }
                 return false;

@@ -29,8 +29,8 @@ const markerBoundsElm = document.getElementById("position_preview_img"); // usin
 let markerBoundsWidth;
 let markerBoundsHeight;
 let markerBounds;
-let imageUploadElm = $("#imageupload").filter("input");
-let positionPreviewImgElm = $("#position_preview_img").filter("img");
+const imageUploadElm = $("#imageupload").filter("input");
+const positionPreviewImgElm = $("#position_preview_img").filter("img");
 const colorMainElm = $("#colorMain");
 const colorCloseElm = $("#colorClose");
 const colorGoodElm = $("#colorGood");
@@ -39,36 +39,7 @@ const colorDoubleElm = $("#colorDouble");
 const colorTripleElm = $("#colorTriple");
 const colorMaxVelElm = $("#colorMaxVel");
 const rangeGap = 0;
-const slider_hspeedo_close_min = $("#slider-hspeedo-close-min").filter("input");
-const slider_hspeedo_close_max = $("#slider-hspeedo-close-max").filter("input");
-const text_hspeedo_close_min = $("#text-hspeedo-close-min").filter("input");
-const text_hspeedo_close_max = $("#text-hspeedo-close-max").filter("input");
-const track_hspeedo_close = $("#track-hspeedo-close");
-const slider_hspeedo_good_min = $("#slider-hspeedo-good-min").filter("input");
-const slider_hspeedo_good_max = $("#slider-hspeedo-good-max").filter("input");
-const text_hspeedo_good_min = $("#text-hspeedo-good-min").filter("input");
-const text_hspeedo_good_max = $("#text-hspeedo-good-max").filter("input");
-const track_hspeedo_good = $("#track-hspeedo-good");
-const slider_vspeedo_close_min = $("#slider-vspeedo-close-min").filter("input");
-const slider_vspeedo_close_max = $("#slider-vspeedo-close-max").filter("input");
-const text_vspeedo_close_min = $("#text-vspeedo-close-min").filter("input");
-const text_vspeedo_close_max = $("#text-vspeedo-close-max").filter("input");
-const track_vspeedo_close = $("#track-vspeedo-close");
-const slider_vspeedo_good_min = $("#slider-vspeedo-good-min").filter("input");
-const slider_vspeedo_good_max = $("#slider-vspeedo-good-max").filter("input");
-const text_vspeedo_good_min = $("#text-vspeedo-good-min").filter("input");
-const text_vspeedo_good_max = $("#text-vspeedo-good-max").filter("input");
-const track_vspeedo_good = $("#track-vspeedo-good");
-const slider_aspeedo_close_min = $("#slider-aspeedo-close-min").filter("input");
-const slider_aspeedo_close_max = $("#slider-aspeedo-close-max").filter("input");
-const text_aspeedo_close_min = $("#text-aspeedo-close-min").filter("input");
-const text_aspeedo_close_max = $("#text-aspeedo-close-max").filter("input");
-const track_aspeedo_close = $("#track-aspeedo-close");
-const slider_aspeedo_good_min = $("#slider-aspeedo-good-min").filter("input");
-const slider_aspeedo_good_max = $("#slider-aspeedo-good-max").filter("input");
-const text_aspeedo_good_min = $("#text-aspeedo-good-min").filter("input");
-const text_aspeedo_good_max = $("#text-aspeedo-good-max").filter("input");
-const track_aspeedo_good = $("#track-aspeedo-good");
+const dualRangeContainerElms = $(".range-container.dual");
 const slider_heighto_double = $("#slider-heighto-double").filter("input");
 const text_heighto_double = $("#text-heighto-double").filter("input");
 const track_heighto_double = $("#track-heighto-double");
@@ -81,7 +52,6 @@ const track_heighto_maxVel = $("#track-heighto-maxvel");
 $(() => {
     addListeners();
     initialize();
-    speedoGroup.startPreview();
     setInterval(() => {
         for (const [index, speedo] of speedoGroup.speedos.entries()) {
             $(`.speedo.slot_${index + 1}`).text(speedo.playerSpeed);
@@ -158,130 +128,67 @@ function addListeners() {
     // COLORS
     colorMainElm.on("input", () => {
         speedoGroup.colorMain = Color.input_to_color(colorMainElm.val());
-        slider_dual_fill_color(speedoGroup.colorClose, track_hspeedo_close, slider_hspeedo_close_min, slider_hspeedo_close_max);
-        slider_dual_fill_color(speedoGroup.colorClose, track_vspeedo_close, slider_vspeedo_close_min, slider_vspeedo_close_max);
-        slider_dual_fill_color(speedoGroup.colorClose, track_aspeedo_close, slider_aspeedo_close_min, slider_aspeedo_close_max);
-        slider_dual_fill_color(speedoGroup.colorGood, track_hspeedo_good, slider_hspeedo_good_min, slider_hspeedo_good_max);
-        slider_dual_fill_color(speedoGroup.colorGood, track_vspeedo_good, slider_vspeedo_good_min, slider_vspeedo_good_max);
-        slider_dual_fill_color(speedoGroup.colorGood, track_aspeedo_good, slider_aspeedo_good_min, slider_aspeedo_good_max);
+        dualRangeContainerElms.each(function () {
+            let container = getDualRangeContainer(this);
+            let color = getDualRangeColor(container);
+            fillDualSlider(color, container.sliderTrack, container.sliderMin, container.sliderMax);
+        });
     });
     colorCloseElm.on("input", () => {
         speedoGroup.colorClose = Color.input_to_color(colorCloseElm.val());
-        slider_dual_fill_color(speedoGroup.colorClose, track_hspeedo_close, slider_hspeedo_close_min, slider_hspeedo_close_max);
-        slider_dual_fill_color(speedoGroup.colorClose, track_vspeedo_close, slider_vspeedo_close_min, slider_vspeedo_close_max);
-        slider_dual_fill_color(speedoGroup.colorClose, track_aspeedo_close, slider_aspeedo_close_min, slider_aspeedo_close_max);
+        dualRangeContainerElms.filter(".close").each(function () {
+            let container = getDualRangeContainer(this);
+            let color = getDualRangeColor(container);
+            fillDualSlider(color, container.sliderTrack, container.sliderMin, container.sliderMax);
+        });
     });
     colorGoodElm.on("input", () => {
         speedoGroup.colorGood = Color.input_to_color(colorGoodElm.val());
-        slider_dual_fill_color(speedoGroup.colorGood, track_hspeedo_good, slider_hspeedo_good_min, slider_hspeedo_good_max);
-        slider_dual_fill_color(speedoGroup.colorGood, track_vspeedo_good, slider_vspeedo_good_min, slider_vspeedo_good_max);
-        slider_dual_fill_color(speedoGroup.colorGood, track_aspeedo_good, slider_aspeedo_good_min, slider_aspeedo_good_max);
+        dualRangeContainerElms.filter(".good").each(function () {
+            let container = getDualRangeContainer(this);
+            let color = getDualRangeColor(container);
+            fillDualSlider(color, container.sliderTrack, container.sliderMin, container.sliderMax);
+        });
     });
     colorMainHeightoElm.on("input", () => {
         speedoGroup.colorHeightoMain = Color.input_to_color(colorMainHeightoElm.val());
-        slider_fill_color(speedoGroup.colorDouble, track_heighto_double, slider_heighto_double);
-        slider_fill_color(speedoGroup.colorTriple, track_heighto_triple, slider_heighto_triple);
-        slider_fill_color(speedoGroup.colorMaxVel, track_heighto_maxVel, slider_heighto_maxVel);
+        fillSingleSlider(speedoGroup.colorDouble, track_heighto_double, slider_heighto_double);
+        fillSingleSlider(speedoGroup.colorTriple, track_heighto_triple, slider_heighto_triple);
+        fillSingleSlider(speedoGroup.colorMaxVel, track_heighto_maxVel, slider_heighto_maxVel);
     });
     colorDoubleElm.on("input", () => {
         speedoGroup.colorDouble = Color.input_to_color(colorDoubleElm.val());
-        slider_fill_color(speedoGroup.colorDouble, track_heighto_double, slider_heighto_double);
+        fillSingleSlider(speedoGroup.colorDouble, track_heighto_double, slider_heighto_double);
     });
     colorTripleElm.on("input", () => {
         speedoGroup.colorTriple = Color.input_to_color(colorTripleElm.val());
-        slider_fill_color(speedoGroup.colorTriple, track_heighto_triple, slider_heighto_triple);
+        fillSingleSlider(speedoGroup.colorTriple, track_heighto_triple, slider_heighto_triple);
     });
     colorMaxVelElm.on("input", () => {
         speedoGroup.colorMaxVel = Color.input_to_color(colorMaxVelElm.val());
-        slider_fill_color(speedoGroup.colorMaxVel, track_heighto_maxVel, slider_heighto_maxVel);
+        fillSingleSlider(speedoGroup.colorMaxVel, track_heighto_maxVel, slider_heighto_maxVel);
     });
     // COLOR RANGES
-    // hspeedo
-    slider_hspeedo_close_min.on("input", () => {
-        speedoGroup.HSpeedoRange.closeMin = processRangeMin(slider_hspeedo_close_min, slider_hspeedo_close_max, track_hspeedo_close, text_hspeedo_close_min, speedoGroup.colorClose);
-    });
-    slider_hspeedo_close_max.on("input", () => {
-        speedoGroup.HSpeedoRange.closeMax = processRangeMax(slider_hspeedo_close_min, slider_hspeedo_close_max, track_hspeedo_close, text_hspeedo_close_max, speedoGroup.colorClose);
-    });
-    slider_hspeedo_good_min.on("input", () => {
-        speedoGroup.HSpeedoRange.goodMin = processRangeMin(slider_hspeedo_good_min, slider_hspeedo_good_max, track_hspeedo_good, text_hspeedo_good_min, speedoGroup.colorGood);
-    });
-    slider_hspeedo_good_max.on("input", () => {
-        speedoGroup.HSpeedoRange.goodMax = processRangeMax(slider_hspeedo_good_min, slider_hspeedo_good_max, track_hspeedo_good, text_hspeedo_good_max, speedoGroup.colorGood);
-    });
-    text_hspeedo_close_min.on("change", () => {
-        slider_hspeedo_close_min.val(text_hspeedo_close_min.val());
-        speedoGroup.HSpeedoRange.closeMin = processRangeMin(slider_hspeedo_close_min, slider_hspeedo_close_max, track_hspeedo_close, text_hspeedo_close_min, speedoGroup.colorClose);
-    });
-    text_hspeedo_close_max.on("change", () => {
-        slider_hspeedo_close_max.val(text_hspeedo_close_max.val());
-        speedoGroup.HSpeedoRange.closeMax = processRangeMax(slider_hspeedo_close_min, slider_hspeedo_close_max, track_hspeedo_close, text_hspeedo_close_max, speedoGroup.colorClose);
-    });
-    text_hspeedo_good_min.on("change", () => {
-        slider_hspeedo_good_min.val(text_hspeedo_good_min.val());
-        speedoGroup.HSpeedoRange.goodMin = processRangeMin(slider_hspeedo_good_min, slider_hspeedo_good_max, track_hspeedo_good, text_hspeedo_good_min, speedoGroup.colorGood);
-    });
-    text_hspeedo_good_max.on("change", () => {
-        slider_hspeedo_good_max.val(text_hspeedo_good_max.val());
-        speedoGroup.HSpeedoRange.goodMax = processRangeMax(slider_hspeedo_good_min, slider_hspeedo_good_max, track_hspeedo_good, text_hspeedo_good_max, speedoGroup.colorGood);
-    });
-    // vspeedo
-    slider_vspeedo_close_min.on("input", () => {
-        speedoGroup.VSpeedoRange.closeMin = processRangeMin(slider_vspeedo_close_min, slider_vspeedo_close_max, track_vspeedo_close, text_vspeedo_close_min, speedoGroup.colorClose);
-    });
-    slider_vspeedo_close_max.on("input", () => {
-        speedoGroup.VSpeedoRange.closeMax = processRangeMax(slider_vspeedo_close_min, slider_vspeedo_close_max, track_vspeedo_close, text_vspeedo_close_max, speedoGroup.colorClose);
-    });
-    slider_vspeedo_good_min.on("input", () => {
-        speedoGroup.VSpeedoRange.goodMin = processRangeMin(slider_vspeedo_good_min, slider_vspeedo_good_max, track_vspeedo_good, text_vspeedo_good_min, speedoGroup.colorGood);
-    });
-    slider_vspeedo_good_max.on("input", () => {
-        speedoGroup.VSpeedoRange.goodMax = processRangeMax(slider_vspeedo_good_min, slider_vspeedo_good_max, track_vspeedo_good, text_vspeedo_good_max, speedoGroup.colorGood);
-    });
-    text_vspeedo_close_min.on("change", () => {
-        slider_vspeedo_close_min.val(text_vspeedo_close_min.val());
-        speedoGroup.VSpeedoRange.closeMin = processRangeMin(slider_vspeedo_close_min, slider_vspeedo_close_max, track_vspeedo_close, text_vspeedo_close_min, speedoGroup.colorClose);
-    });
-    text_vspeedo_close_max.on("change", () => {
-        slider_vspeedo_close_max.val(text_vspeedo_close_max.val());
-        speedoGroup.VSpeedoRange.closeMax = processRangeMax(slider_vspeedo_close_min, slider_vspeedo_close_max, track_vspeedo_close, text_vspeedo_close_max, speedoGroup.colorClose);
-    });
-    text_vspeedo_good_min.on("change", () => {
-        slider_vspeedo_good_min.val(text_vspeedo_good_min.val());
-        speedoGroup.VSpeedoRange.goodMin = processRangeMin(slider_vspeedo_good_min, slider_vspeedo_good_max, track_vspeedo_good, text_vspeedo_good_min, speedoGroup.colorGood);
-    });
-    text_vspeedo_good_max.on("change", () => {
-        slider_vspeedo_good_max.val(text_vspeedo_good_max.val());
-        speedoGroup.VSpeedoRange.goodMax = processRangeMax(slider_vspeedo_good_min, slider_vspeedo_good_max, track_vspeedo_good, text_vspeedo_good_max, speedoGroup.colorGood);
-    });
-    // aspeedo
-    slider_aspeedo_close_min.on("input", () => {
-        speedoGroup.ASpeedoRange.closeMin = processRangeMin(slider_aspeedo_close_min, slider_aspeedo_close_max, track_aspeedo_close, text_aspeedo_close_min, speedoGroup.colorClose);
-    });
-    slider_aspeedo_close_max.on("input", () => {
-        speedoGroup.ASpeedoRange.closeMax = processRangeMax(slider_aspeedo_close_min, slider_aspeedo_close_max, track_aspeedo_close, text_aspeedo_close_max, speedoGroup.colorClose);
-    });
-    slider_aspeedo_good_min.on("input", () => {
-        speedoGroup.ASpeedoRange.goodMin = processRangeMin(slider_aspeedo_good_min, slider_aspeedo_good_max, track_aspeedo_good, text_aspeedo_good_min, speedoGroup.colorGood);
-    });
-    slider_aspeedo_good_max.on("input", () => {
-        speedoGroup.ASpeedoRange.goodMax = processRangeMax(slider_aspeedo_good_min, slider_aspeedo_good_max, track_aspeedo_good, text_aspeedo_good_max, speedoGroup.colorGood);
-    });
-    text_aspeedo_close_min.on("change", () => {
-        slider_aspeedo_close_min.val(text_aspeedo_close_min.val());
-        speedoGroup.ASpeedoRange.closeMin = processRangeMin(slider_aspeedo_close_min, slider_aspeedo_close_max, track_aspeedo_close, text_aspeedo_close_min, speedoGroup.colorClose);
-    });
-    text_aspeedo_close_max.on("change", () => {
-        slider_aspeedo_close_max.val(text_aspeedo_close_max.val());
-        speedoGroup.ASpeedoRange.closeMax = processRangeMax(slider_aspeedo_close_min, slider_aspeedo_close_max, track_aspeedo_close, text_aspeedo_close_max, speedoGroup.colorClose);
-    });
-    text_aspeedo_good_min.on("change", () => {
-        slider_aspeedo_good_min.val(text_aspeedo_good_min.val());
-        speedoGroup.ASpeedoRange.goodMin = processRangeMin(slider_aspeedo_good_min, slider_aspeedo_good_max, track_aspeedo_good, text_aspeedo_good_min, speedoGroup.colorGood);
-    });
-    text_aspeedo_good_max.on("change", () => {
-        slider_aspeedo_good_max.val(text_aspeedo_good_max.val());
-        speedoGroup.ASpeedoRange.goodMax = processRangeMax(slider_aspeedo_good_min, slider_aspeedo_good_max, track_aspeedo_good, text_aspeedo_good_max, speedoGroup.colorGood);
+    dualRangeContainerElms.each(function () {
+        let container = getDualRangeContainer(this);
+        container.sliderMin.on("input", () => {
+            let color = getDualRangeColor(container);
+            container.range.min = processRangeMin(container.sliderMin, container.sliderMax, container.sliderTrack, container.textMin, color);
+        });
+        container.sliderMax.on("input", () => {
+            let color = getDualRangeColor(container);
+            container.range.max = processRangeMax(container.sliderMin, container.sliderMax, container.sliderTrack, container.textMax, color);
+        });
+        container.textMin.on("change", () => {
+            let color = getDualRangeColor(container);
+            container.sliderMin.val(container.textMin.val());
+            container.range.min = processRangeMin(container.sliderMin, container.sliderMax, container.sliderTrack, container.textMin, color);
+        });
+        container.textMax.on("change", () => {
+            let color = getDualRangeColor(container);
+            container.sliderMax.val(container.textMax.val());
+            container.range.max = processRangeMax(container.sliderMin, container.sliderMax, container.sliderTrack, container.textMax, color);
+        });
     });
     // heighto
     slider_heighto_double.on("input", () => {
@@ -319,21 +226,16 @@ function initialize() {
     updateSpeedoStyles();
     readSpeedoGroupToPage();
     updatePositionSize();
-    speedoGroup.HSpeedoRange.closeMin = processRangeMin(slider_hspeedo_close_min, slider_hspeedo_close_max, track_hspeedo_close, text_hspeedo_close_min, speedoGroup.colorClose);
-    speedoGroup.HSpeedoRange.closeMax = processRangeMax(slider_hspeedo_close_min, slider_hspeedo_close_max, track_hspeedo_close, text_hspeedo_close_max, speedoGroup.colorClose);
-    speedoGroup.HSpeedoRange.goodMin = processRangeMin(slider_hspeedo_good_min, slider_hspeedo_good_max, track_hspeedo_good, text_hspeedo_good_min, speedoGroup.colorGood);
-    speedoGroup.HSpeedoRange.goodMax = processRangeMax(slider_hspeedo_good_min, slider_hspeedo_good_max, track_hspeedo_good, text_hspeedo_good_max, speedoGroup.colorGood);
-    speedoGroup.VSpeedoRange.closeMin = processRangeMin(slider_vspeedo_close_min, slider_vspeedo_close_max, track_vspeedo_close, text_vspeedo_close_min, speedoGroup.colorClose);
-    speedoGroup.VSpeedoRange.closeMax = processRangeMax(slider_vspeedo_close_min, slider_vspeedo_close_max, track_vspeedo_close, text_vspeedo_close_max, speedoGroup.colorClose);
-    speedoGroup.VSpeedoRange.goodMin = processRangeMin(slider_vspeedo_good_min, slider_vspeedo_good_max, track_vspeedo_good, text_vspeedo_good_min, speedoGroup.colorGood);
-    speedoGroup.VSpeedoRange.goodMax = processRangeMax(slider_vspeedo_good_min, slider_vspeedo_good_max, track_vspeedo_good, text_vspeedo_good_max, speedoGroup.colorGood);
-    speedoGroup.ASpeedoRange.closeMin = processRangeMin(slider_aspeedo_close_min, slider_aspeedo_close_max, track_aspeedo_close, text_aspeedo_close_min, speedoGroup.colorClose);
-    speedoGroup.ASpeedoRange.closeMax = processRangeMax(slider_aspeedo_close_min, slider_aspeedo_close_max, track_aspeedo_close, text_aspeedo_close_max, speedoGroup.colorClose);
-    speedoGroup.ASpeedoRange.goodMin = processRangeMin(slider_aspeedo_good_min, slider_aspeedo_good_max, track_aspeedo_good, text_aspeedo_good_min, speedoGroup.colorGood);
-    speedoGroup.ASpeedoRange.goodMax = processRangeMax(slider_aspeedo_good_min, slider_aspeedo_good_max, track_aspeedo_good, text_aspeedo_good_max, speedoGroup.colorGood);
+    dualRangeContainerElms.each(function () {
+        let container = getDualRangeContainer(this);
+        let color = getDualRangeColor(container);
+        container.range.min = processRangeMin(container.sliderMin, container.sliderMax, container.sliderTrack, container.textMin, color);
+        container.range.max = processRangeMax(container.sliderMin, container.sliderMax, container.sliderTrack, container.textMax, color);
+    });
     speedoGroup.HeightoThresholds.double = processRangeSingle(slider_heighto_double, text_heighto_double, track_heighto_double, speedoGroup.colorDouble);
     speedoGroup.HeightoThresholds.triple = processRangeSingle(slider_heighto_triple, text_heighto_triple, track_heighto_triple, speedoGroup.colorTriple);
     speedoGroup.HeightoThresholds.maxVel = processRangeSingle(slider_heighto_maxVel, text_heighto_maxVel, track_heighto_maxVel, speedoGroup.colorMaxVel);
+    speedoGroup.startPreview();
 }
 /**
  * Loads values from speedo object into DOM elements.
@@ -353,18 +255,11 @@ function readSpeedoGroupToPage() {
     colorDoubleElm.val(speedoGroup.colorDouble.getInputColor());
     colorTripleElm.val(speedoGroup.colorTriple.getInputColor());
     colorMaxVelElm.val(speedoGroup.colorMaxVel.getInputColor());
-    slider_hspeedo_close_min.val(speedoGroup.HSpeedoRange.closeMin.toString());
-    slider_hspeedo_close_max.val(speedoGroup.HSpeedoRange.closeMax.toString());
-    slider_hspeedo_good_min.val(speedoGroup.HSpeedoRange.goodMin.toString());
-    slider_hspeedo_good_max.val(speedoGroup.HSpeedoRange.goodMax.toString());
-    slider_vspeedo_close_min.val(speedoGroup.VSpeedoRange.closeMin.toString());
-    slider_vspeedo_close_max.val(speedoGroup.VSpeedoRange.closeMax.toString());
-    slider_vspeedo_good_min.val(speedoGroup.VSpeedoRange.goodMin.toString());
-    slider_vspeedo_good_max.val(speedoGroup.VSpeedoRange.goodMax.toString());
-    slider_aspeedo_close_min.val(speedoGroup.ASpeedoRange.closeMin.toString());
-    slider_aspeedo_close_max.val(speedoGroup.ASpeedoRange.closeMax.toString());
-    slider_aspeedo_good_min.val(speedoGroup.ASpeedoRange.goodMin.toString());
-    slider_aspeedo_good_max.val(speedoGroup.ASpeedoRange.goodMax.toString());
+    dualRangeContainerElms.each(function () {
+        let container = getDualRangeContainer(this);
+        container.sliderMin.val(container.range.min.toString());
+        container.sliderMax.val(container.range.max.toString());
+    });
     slider_heighto_double.val(speedoGroup.HeightoThresholds.double.toString());
     slider_heighto_triple.val(speedoGroup.HeightoThresholds.triple.toString());
     slider_heighto_maxVel.val(speedoGroup.HeightoThresholds.maxVel.toString());
@@ -512,7 +407,8 @@ function updateMarkerSize() {
  */
 function updatePosition_x() {
     // update marker horizontal position
-    markerElm.css("left", (Number(xSliderElm.val()) * (markerBounds.width / Number(xSliderElm.attr("max")))).toString());
+    let markerLeft = Number(xSliderElm.val()) * (markerBounds.width / Number(xSliderElm.attr("max")));
+    markerElm.css("left", `${markerLeft}px`);
     // calculate vdf xpos
     let center = Number(xSliderElm.attr("max")) / 2;
     let xValue = Number(xSliderElm.val());
@@ -537,7 +433,8 @@ function updatePosition_x() {
  */
 function updatePosition_y() {
     // update marker vertical position
-    markerElm.css("top", (Number(ySliderElm.val()) * (markerBounds.height / Number(ySliderElm.attr("max")))).toString());
+    let markerTop = Number(ySliderElm.val()) * (markerBounds.height / Number(ySliderElm.attr("max")));
+    markerElm.css("top", `${markerTop}px`);
     // calculate vdf ypos
     let center = Number(ySliderElm.attr("max")) / 2;
     let yValue = Number(ySliderElm.val());
@@ -617,19 +514,19 @@ function changeImage(input, output) {
         };
     }
 }
-function processRangeMin(minSlider, maxSlider, sliderTrack, minText, color) {
-    process_slider_min(minSlider, maxSlider, minText);
-    slider_dual_fill_color(color, sliderTrack, minSlider, maxSlider);
-    return parseInt(minSlider.val());
+function processRangeMin(sliderMin, sliderMax, sliderTrack, textMin, color) {
+    processSliderMin(sliderMin, sliderMax, textMin);
+    fillDualSlider(color, sliderTrack, sliderMin, sliderMax);
+    return parseInt(sliderMin.val());
 }
-function processRangeMax(minSlider, maxSlider, sliderTrack, maxText, color) {
-    process_slider_max(minSlider, maxSlider, maxText);
-    slider_dual_fill_color(color, sliderTrack, minSlider, maxSlider);
-    return parseInt(maxSlider.val());
+function processRangeMax(sliderMin, sliderMax, sliderTrack, textMax, color) {
+    processSliderMax(sliderMin, sliderMax, textMax);
+    fillDualSlider(color, sliderTrack, sliderMin, sliderMax);
+    return parseInt(sliderMax.val());
 }
 function processRangeSingle(slider, text, sliderTrack, color) {
     text.val(slider.val());
-    slider_fill_color(color, sliderTrack, slider);
+    fillSingleSlider(color, sliderTrack, slider);
     return parseInt(slider.val());
 }
 // all sliders
@@ -641,7 +538,7 @@ function processRangeSingle(slider, text, sliderTrack, color) {
  * @param sliderMax
  * @param textMin
  */
-function process_slider_min(sliderMin, sliderMax, textMin) {
+function processSliderMin(sliderMin, sliderMax, textMin) {
     if (Number(sliderMin.val()) >= Number(sliderMax.val())) {
         sliderMin.val((Number(sliderMax.val()) - rangeGap).toString());
     }
@@ -657,7 +554,7 @@ function process_slider_min(sliderMin, sliderMax, textMin) {
  * @param sliderMax
  * @param textMin
  */
-function process_slider_max(sliderMin, sliderMax, textMax) {
+function processSliderMax(sliderMin, sliderMax, textMax) {
     if (Number(sliderMax.val()) <= Number(sliderMin.val())) {
         sliderMax.val((Number(sliderMin.val()) + rangeGap).toString());
     }
@@ -673,7 +570,7 @@ function process_slider_max(sliderMin, sliderMax, textMax) {
  * @param sliderMin Minimum value slider.
  * @param sliderMax Maximum value slider.
  */
-function slider_dual_fill_color(colorFocus, sliderTrack, sliderMin, sliderMax) {
+function fillDualSlider(colorFocus, sliderTrack, sliderMin, sliderMax) {
     let colorMainCSS = speedoGroup.colorMain.getCSSColor();
     let colorFocusCSS = colorFocus.getCSSColor();
     let percent1 = ((parseInt(sliderMin.val()) / parseInt(sliderMin.attr("max"))) *
@@ -682,8 +579,8 @@ function slider_dual_fill_color(colorFocus, sliderTrack, sliderMin, sliderMax) {
         100).toString();
     sliderTrack.css("background", `linear-gradient( to right, ` +
         `${colorMainCSS}, ` +
-        `${colorMainCSS}, ${percent1}%, ` +
-        `${colorFocusCSS}, ${percent1}%, ` +
+        `${colorMainCSS} ${percent1}%, ` +
+        `${colorFocusCSS} ${percent1}%, ` +
         `${colorFocusCSS} ${percent2}%, ` +
         `${colorMainCSS} ${percent2}% )`);
 }
@@ -694,7 +591,7 @@ function slider_dual_fill_color(colorFocus, sliderTrack, sliderMin, sliderMax) {
  * @param sliderTrack Div element to recolor.
  * @param slider
  */
-function slider_fill_color(color, sliderTrack, slider) {
+function fillSingleSlider(color, sliderTrack, slider) {
     let colorNull = speedoGroup.colorHeightoMain.getCSSColor();
     let colorFocus = color.getCSSColor();
     let percent = ((parseInt(slider.val()) / parseInt(slider.attr("max"))) *
@@ -703,4 +600,55 @@ function slider_fill_color(color, sliderTrack, slider) {
         `${colorNull}, ` +
         `${colorNull} ${percent}%, ` +
         `${colorFocus} ${percent}%)`);
+}
+/**
+ * Gets relevant data from within a dual range-container div
+ * @param container HTMLElement of a div with `.range-container.dual`
+ * @returns Relevant data from within a dual range-container div
+ */
+function getDualRangeContainer(container) {
+    let containerDetails = {
+        sliderMin: $(container).find(".range-slider.min").filter("input"),
+        sliderMax: $(container).find(".range-slider.max").filter("input"),
+        textMin: $(container).find(".range-text.min").filter("input"),
+        textMax: $(container).find(".range-text.max").filter("input"),
+        sliderTrack: $(container).find(".slider-track"),
+        isClose: $(container).hasClass("close"),
+        isGood: $(container).hasClass("good"),
+        range: { min: 0, max: 0 },
+    };
+    if ($(container).hasClass("hspeedo")) {
+        containerDetails.range = containerDetails.isClose
+            ? speedoGroup.HSpeedoCloseRange
+            : containerDetails.isGood
+                ? speedoGroup.HSpeedoGoodRange
+                : { min: 0, max: 0 };
+    }
+    else if ($(container).hasClass("vspeedo")) {
+        containerDetails.range = containerDetails.isClose
+            ? speedoGroup.VSpeedoCloseRange
+            : containerDetails.isGood
+                ? speedoGroup.VSpeedoGoodRange
+                : { min: 0, max: 0 };
+    }
+    else if ($(container).hasClass("aspeedo")) {
+        containerDetails.range = containerDetails.isClose
+            ? speedoGroup.ASpeedoCloseRange
+            : containerDetails.isGood
+                ? speedoGroup.ASpeedoGoodRange
+                : { min: 0, max: 0 };
+    }
+    return containerDetails;
+}
+/**
+ * Gets the focus color for the sliderTrack inside of a dual range-container div
+ * @param container
+ * @returns focus color for the sliderTrack
+ */
+function getDualRangeColor(container) {
+    return container.isClose
+        ? speedoGroup.colorClose
+        : container.isGood
+            ? speedoGroup.colorGood
+            : new Color(0, 0, 0);
 }

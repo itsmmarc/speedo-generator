@@ -41,24 +41,24 @@ export class Speedo {
                 switch (this.speedoType) {
                         case "HORIZONTAL":
                                 if (
-                                        this.playerSpeed > speedoGroup.HSpeedoRange.closeMin &&
-                                        this.playerSpeed < speedoGroup.HSpeedoRange.closeMax
+                                        this.playerSpeed > speedoGroup.HSpeedoCloseRange.min &&
+                                        this.playerSpeed < speedoGroup.HSpeedoCloseRange.max
                                 ) {
                                         return true;
                                 }
                                 return false;
                         case "VERTICAL":
                                 if (
-                                        this.playerSpeed > speedoGroup.VSpeedoRange.closeMin &&
-                                        this.playerSpeed < speedoGroup.VSpeedoRange.closeMax
+                                        this.playerSpeed > speedoGroup.VSpeedoCloseRange.min &&
+                                        this.playerSpeed < speedoGroup.VSpeedoCloseRange.max
                                 ) {
                                         return true;
                                 }
                                 return false;
                         case "ABSOLUTE":
                                 if (
-                                        this.playerSpeed > speedoGroup.ASpeedoRange.closeMin &&
-                                        this.playerSpeed < speedoGroup.ASpeedoRange.closeMax
+                                        this.playerSpeed > speedoGroup.ASpeedoCloseRange.min &&
+                                        this.playerSpeed < speedoGroup.ASpeedoCloseRange.max
                                 ) {
                                         return true;
                                 }
@@ -71,24 +71,24 @@ export class Speedo {
                 switch (this.speedoType) {
                         case "HORIZONTAL":
                                 if (
-                                        this.playerSpeed > speedoGroup.HSpeedoRange.goodMin &&
-                                        this.playerSpeed < speedoGroup.HSpeedoRange.goodMax
+                                        this.playerSpeed > speedoGroup.HSpeedoGoodRange.min &&
+                                        this.playerSpeed < speedoGroup.HSpeedoGoodRange.max
                                 ) {
                                         return true;
                                 }
                                 return false;
                         case "VERTICAL":
                                 if (
-                                        this.playerSpeed > speedoGroup.VSpeedoRange.goodMin &&
-                                        this.playerSpeed < speedoGroup.VSpeedoRange.goodMax
+                                        this.playerSpeed > speedoGroup.VSpeedoGoodRange.min &&
+                                        this.playerSpeed < speedoGroup.VSpeedoGoodRange.max
                                 ) {
                                         return true;
                                 }
                                 return false;
                         case "ABSOLUTE":
                                 if (
-                                        this.playerSpeed > speedoGroup.ASpeedoRange.goodMin &&
-                                        this.playerSpeed < speedoGroup.ASpeedoRange.goodMax
+                                        this.playerSpeed > speedoGroup.ASpeedoGoodRange.min &&
+                                        this.playerSpeed < speedoGroup.ASpeedoGoodRange.max
                                 ) {
                                         return true;
                                 }

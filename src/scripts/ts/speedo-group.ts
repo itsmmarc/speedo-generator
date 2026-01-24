@@ -20,10 +20,8 @@ export type Font =
         | "surface";
 
 export type Range = {
-        closeMin: number;
-        closeMax: number;
-        goodMin: number;
-        goodMax: number;
+        min: number;
+        max: number;
 };
 
 export class SpeedoGroup {
@@ -39,9 +37,12 @@ export class SpeedoGroup {
         colorDouble: Color;
         colorTriple: Color;
         colorMaxVel: Color;
-        HSpeedoRange: Range;
-        VSpeedoRange: Range;
-        ASpeedoRange: Range;
+        HSpeedoCloseRange: Range;
+        VSpeedoCloseRange: Range;
+        ASpeedoCloseRange: Range;
+        HSpeedoGoodRange: Range;
+        VSpeedoGoodRange: Range;
+        ASpeedoGoodRange: Range;
         HeightoThresholds: { double: number; triple: number; maxVel: number };
         framerate: number;
         frametime: number;
@@ -69,23 +70,29 @@ export class SpeedoGroup {
                 this.colorTriple = m0reColor.GREEN;
                 this.colorMaxVel = m0reColor.YELLOW;
 
-                this.HSpeedoRange = {
-                        closeMin: 0,
-                        closeMax: 0,
-                        goodMin: 0,
-                        goodMax: 0,
+                this.HSpeedoCloseRange = {
+                        min: 0,
+                        max: 0,
                 };
-                this.VSpeedoRange = {
-                        closeMin: 0,
-                        closeMax: 0,
-                        goodMin: 0,
-                        goodMax: 0,
+                this.VSpeedoCloseRange = {
+                        min: 0,
+                        max: 0,
                 };
-                this.ASpeedoRange = {
-                        closeMin: 0,
-                        closeMax: 0,
-                        goodMin: 0,
-                        goodMax: 0,
+                this.ASpeedoCloseRange = {
+                        min: 0,
+                        max: 0,
+                };
+                this.HSpeedoGoodRange = {
+                        min: 0,
+                        max: 0,
+                };
+                this.VSpeedoGoodRange = {
+                        min: 0,
+                        max: 0,
+                };
+                this.ASpeedoGoodRange = {
+                        min: 0,
+                        max: 0,
                 };
                 this.HeightoThresholds = {
                         double: 10000,
@@ -183,9 +190,12 @@ export class SpeedoGroup {
                         this.colorDouble.clone(temp.colorDouble);
                         this.colorTriple.clone(temp.colorTriple);
                         this.colorMaxVel.clone(temp.colorMaxVel);
-                        this.HSpeedoRange = temp.HSpeedoRange;
-                        this.VSpeedoRange = temp.VSpeedoRange;
-                        this.ASpeedoRange = temp.ASpeedoRange;
+                        this.HSpeedoCloseRange = temp.HSpeedoCloseRange;
+                        this.VSpeedoCloseRange = temp.VSpeedoCloseRange;
+                        this.ASpeedoCloseRange = temp.ASpeedoCloseRange;
+                        this.HSpeedoGoodRange = temp.HSpeedoGoodRange;
+                        this.VSpeedoGoodRange = temp.VSpeedoGoodRange;
+                        this.ASpeedoGoodRange = temp.ASpeedoGoodRange;
                         this.HeightoThresholds = temp.HeightoThresholds;
                         this.framerate = temp.framerate;
                         this.frametime = temp.frametime;
@@ -217,23 +227,29 @@ export const presetDemo = ((): SpeedoGroup => {
         speedoGroup.colorTriple = m0reColor.GREEN;
         speedoGroup.colorMaxVel = m0reColor.YELLOW;
 
-        speedoGroup.HSpeedoRange = {
-                closeMin: 700,
-                closeMax: 1200,
-                goodMin: 850,
-                goodMax: 900,
+        speedoGroup.HSpeedoCloseRange = {
+                min: 700,
+                max: 1200,
         };
-        speedoGroup.VSpeedoRange = {
-                closeMin: 800,
-                closeMax: 1500,
-                goodMin: 1100,
-                goodMax: 1200,
+        speedoGroup.HSpeedoGoodRange = {
+                min: 850,
+                max: 900,
         };
-        speedoGroup.ASpeedoRange = {
-                closeMin: -1,
-                closeMax: -1,
-                goodMin: -1,
-                goodMax: -1,
+        speedoGroup.VSpeedoCloseRange = {
+                min: 800,
+                max: 1500,
+        };
+        speedoGroup.VSpeedoGoodRange = {
+                min: 1100,
+                max: 1200,
+        };
+        speedoGroup.ASpeedoCloseRange = {
+                min: -1,
+                max: -1,
+        };
+        speedoGroup.ASpeedoGoodRange = {
+                min: -1,
+                max: -1,
         };
         speedoGroup.HeightoThresholds = {
                 double: 10000,
@@ -272,23 +288,29 @@ export const presetSoldier = ((): SpeedoGroup => {
         speedoGroup.colorTriple = m0reColor.GREEN;
         speedoGroup.colorMaxVel = m0reColor.YELLOW;
 
-        speedoGroup.HSpeedoRange = {
-                closeMin: 850,
-                closeMax: 1350,
-                goodMin: 1050,
-                goodMax: 1150,
+        speedoGroup.HSpeedoCloseRange = {
+                min: 850,
+                max: 1350,
         };
-        speedoGroup.VSpeedoRange = {
-                closeMin: -1,
-                closeMax: -1,
-                goodMin: -1,
-                goodMax: -1,
+        speedoGroup.HSpeedoGoodRange = {
+                min: 1050,
+                max: 1150,
         };
-        speedoGroup.ASpeedoRange = {
-                closeMin: 850,
-                closeMax: 1350,
-                goodMin: 1050,
-                goodMax: 1150,
+        speedoGroup.VSpeedoCloseRange = {
+                min: -1,
+                max: -1,
+        };
+        speedoGroup.VSpeedoGoodRange = {
+                min: -1,
+                max: -1,
+        };
+        speedoGroup.ASpeedoCloseRange = {
+                min: 850,
+                max: 1350,
+        };
+        speedoGroup.ASpeedoGoodRange = {
+                min: 1050,
+                max: 1150,
         };
         speedoGroup.HeightoThresholds = {
                 double: 1260,

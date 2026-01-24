@@ -47,18 +47,18 @@ function generateSpeedoConfig_vmt(speedoGroup) {
         `\t$colorDouble\t ${speedoGroup.colorDouble.getVMTColor()}\n` +
         `\t$colorTriple\t ${speedoGroup.colorTriple.getVMTColor()}\n` +
         `\t$colorMaxVel\t ${speedoGroup.colorMaxVel.getVMTColor()}\n` +
-        `\t$hCloseMin\t ${speedoGroup.HSpeedoRange.closeMin.toString()}\n` +
-        `\t$hCloseMax\t ${speedoGroup.HSpeedoRange.closeMax.toString()}\n` +
-        `\t$hGoodMin\t ${speedoGroup.HSpeedoRange.goodMin.toString()}\n` +
-        `\t$hGoodMax\t ${speedoGroup.HSpeedoRange.goodMax.toString()}\n` +
-        `\t$vCloseMin\t ${speedoGroup.HSpeedoRange.closeMin.toString()}\n` +
-        `\t$vCloseMax\t ${speedoGroup.HSpeedoRange.closeMax.toString()}\n` +
-        `\t$vGoodMin\t ${speedoGroup.HSpeedoRange.goodMin.toString()}\n` +
-        `\t$vGoodMax\t ${speedoGroup.HSpeedoRange.goodMax.toString()}\n` +
-        `\t$aCloseMin\t ${speedoGroup.HSpeedoRange.closeMin.toString()}\n` +
-        `\t$aCloseMax\t ${speedoGroup.HSpeedoRange.closeMax.toString()}\n` +
-        `\t$aGoodMin\t ${speedoGroup.HSpeedoRange.goodMin.toString()}\n` +
-        `\t$aGoodMax\t ${speedoGroup.HSpeedoRange.goodMax.toString()}\n` +
+        `\t$hCloseMin\t ${speedoGroup.HSpeedoCloseRange.min.toString()}\n` +
+        `\t$hCloseMax\t ${speedoGroup.HSpeedoCloseRange.max.toString()}\n` +
+        `\t$hGoodMin\t ${speedoGroup.HSpeedoGoodRange.min.toString()}\n` +
+        `\t$hGoodMax\t ${speedoGroup.HSpeedoGoodRange.max.toString()}\n` +
+        `\t$vCloseMin\t ${speedoGroup.HSpeedoCloseRange.min.toString()}\n` +
+        `\t$vCloseMax\t ${speedoGroup.HSpeedoCloseRange.max.toString()}\n` +
+        `\t$vGoodMin\t ${speedoGroup.HSpeedoGoodRange.min.toString()}\n` +
+        `\t$vGoodMax\t ${speedoGroup.HSpeedoGoodRange.max.toString()}\n` +
+        `\t$aCloseMin\t ${speedoGroup.HSpeedoCloseRange.min.toString()}\n` +
+        `\t$aCloseMax\t ${speedoGroup.HSpeedoCloseRange.max.toString()}\n` +
+        `\t$aGoodMin\t ${speedoGroup.HSpeedoGoodRange.min.toString()}\n` +
+        `\t$aGoodMax\t ${speedoGroup.HSpeedoGoodRange.max.toString()}\n` +
         `\t$doubleThreshold\t ${speedoGroup.HeightoThresholds.double.toString()}\n` +
         `\t$tripleThreshold\t ${speedoGroup.HeightoThresholds.triple.toString()}\n` +
         `\t$maxVelThreshold\t ${speedoGroup.HeightoThresholds.maxVel.toString()}\n` +
