@@ -630,7 +630,6 @@ function loadFont(fontdata) {
     const font = new FontFace(fontName, `url(${fontdata})`);
     document.fonts.add(font);
     font.load().then(() => {
-        console.log(`font: ${font.status}`);
         const css = `.font-${fontName}{font-family: ${fontName}}`;
         const style = document.createElement("style");
         style.innerText = css;

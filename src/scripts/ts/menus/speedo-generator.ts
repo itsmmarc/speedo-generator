@@ -1,5 +1,5 @@
 import { SpeedoType } from "../speedo.js";
-import { presetDemo, presetSoldier, SpeedoSize, Font, Range } from "../speedo-group.js";
+import { presetDemo, presetSoldier, SpeedoSize, Range } from "../speedo-group.js";
 import { Color } from "../color.js";
 import { zipSpeedos } from "../zip.js";
 import { matchClassStartingWith } from "../util.js";
@@ -419,7 +419,7 @@ function updateSpeedoSize(): void {
         }
 }
 function updateSpeedoFont(): void {
-        speedoGroup.font = speedoFontElm.val() as Font;
+        speedoGroup.font = speedoFontElm.val() as string;
         speedoGroup.hasCustomFont = speedoGroup.font.includes("custom");
 
         $(".speedo").removeClass((index, className) => {
@@ -850,8 +850,6 @@ function loadFont(fontdata: string) {
         const font = new FontFace(fontName, `url(${fontdata})`);
         document.fonts.add(font);
         font.load().then(() => {
-                console.log(`font: ${font.status}`);
-
                 const css = `.font-${fontName}{font-family: ${fontName}}`;
                 const style = document.createElement("style");
                 style.innerText = css;

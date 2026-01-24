@@ -1,21 +1,34 @@
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { unzip } from "unzipit";
+import { VFormats, VFrameCollection, VImageData, Vtf } from "vtf-js";
 export async function zipSpeedos(speedoGroup) {
-    const zip_name = "speedo-generator-hud-0.1.6.zip";
-    const hud_resources_url = `http://localhost:5173/files/${zip_name}`;
-    const speedo_materials_path = "YOURHUD/materials/vgui/replay/thumbnails/speedo/";
-    const speedo_resource_path = "YOURHUD/speedo/";
-    importHudResources(hud_resources_url).then((zip) => {
+    const downloadZipName = `generated-speedo-id`; // %PLACEHOLDER%
+    const hudResourcesName = "speedo-generator-hud-0.1.6.zip";
+    const hudResourcesUrl = `http://localhost:5173/files/${hudResourcesName}`; // %PLACEHOLDER%
+    const speedoMaterialsPath = "YOURHUD/materials/vgui/replay/thumbnails/speedo/";
+    const speedoResourcePath = "YOURHUD/speedo/";
+    importHudResources(hudResourcesUrl).then((zip) => {
         zip.file("README.md", createReadme());
-        zip.file(`${speedo_materials_path}speedo_config.vmt`, generateSpeedoConfig_vmt(speedoGroup));
-        zip.file(`${speedo_resource_path}speedo_config.res`, generateSpeedoConfig_res(speedoGroup));
-        zip.file("YOURHUD/speedo_config.json", generateSpeedoJSON(speedoGroup));
-        if (speedoGroup.hasCustomFont) {
-            generateSpeedoFrames(speedoGroup);
+        zip.file(`${speedoMaterialsPath}speedo_config.vmt`, generateSpeedoConfigVmt(speedoGroup));
+        zip.file(`${speedoResourcePath}speedo_config.res`, generateSpeedoConfigRes(speedoGroup));
+        zip.file("YOURHUD/speedo_config.json", generateSpeedoConfigJSON(speedoGroup));
+        if (!speedoGroup.hasCustomFont) {
+            downloadZip(zip, downloadZipName);
+            return;
         }
-        zip.generateAsync({ type: "blob" }).then(function (content) {
-            saveAs(content, "test.zip");
+        const fontPath = `${speedoMaterialsPath}fonts/${speedoGroup.font}/`;
+        const vtfPath = `${fontPath}${speedoGroup.font}/digits.vtf`;
+        const vmtPath = `${fontPath}${speedoGroup.font}/digits.vmt`;
+        const vtfHeight = 64;
+        const vtfWidth = vtfHeight * 4;
+        generateSpeedoFrames(speedoGroup, vtfWidth, vtfHeight).then((frames) => {
+            generateVTF(frames, vtfWidth, vtfHeight).then((vtf) => {
+                zip.file(vtfPath, vtf);
+                zip.file(vmtPath, generateFontVmt(speedoGroup));
+                downloadZip(zip, downloadZipName);
+                return;
+            });
         });
     });
 }
@@ -33,14 +46,14 @@ async function importHudResources(url) {
     const blobsByName = Object.fromEntries(names.map((name, i) => [name, blobs[i]]));
     let zip = new JSZip();
     for (let i = 0; i < arraySize; i++) {
-        // console.log(names[i]);
         zip.file(names[i], blobsByName[names[i]]);
     }
     return zip;
 }
-function generateSpeedoConfig_vmt(speedoGroup) {
+function generateSpeedoConfigVmt(speedoGroup) {
     return (`#base fonts/${speedoGroup.font}/digits.vmt` +
-        '\n"UnlitGeneric"{\n' +
+        `\n"UnlitGeneric"\n` +
+        `{\n` +
         `\t$round\t${speedoGroup.round ? 1 : 0}\n` +
         `\t$framerate\t${speedoGroup.framerate}\n` +
         `\t$colorMain\t ${speedoGroup.colorMain.getVMTColor()}\n` +
@@ -65,9 +78,9 @@ function generateSpeedoConfig_vmt(speedoGroup) {
         `\t$doubleThreshold\t ${speedoGroup.HeightoThresholds.double.toString()}\n` +
         `\t$tripleThreshold\t ${speedoGroup.HeightoThresholds.triple.toString()}\n` +
         `\t$maxVelThreshold\t ${speedoGroup.HeightoThresholds.maxVel.toString()}\n` +
-        "}");
+        `}`);
 }
-function generateSpeedoConfig_res(speedoGroup) {
+function generateSpeedoConfigRes(speedoGroup) {
     let s = "";
     let baseSlot;
     for (const [index, speedo] of speedoGroup.speedos.entries()) {
@@ -109,6 +122,15 @@ function generateSpeedoConfig_res(speedoGroup) {
     s = s.concat("\t}\n}\n");
     return s;
 }
+function generateSpeedoConfigJSON(speedoGroup) {
+    const tabSize = 4;
+    return JSON.stringify(speedoGroup, (key, val) => {
+        // exclude variables not relevant to config
+        if (key !== "previewSpeed" && key !== "playerSpeed" && key !== "color") {
+            return val;
+        }
+    }, tabSize);
+}
 function createReadme() {
     return ("# mmarc Speedo Generator\n\n" +
         "## Installation:\n" +
@@ -121,30 +143,50 @@ function createReadme() {
         "\n## Usage:\n" +
         "Use the command `speedo_toggle` (or `speedo_enable` and `speedo_disable`) ingame to toggle the speedos on and off");
 }
-function generateSpeedoJSON(speedoGroup) {
-    const tabSize = 4;
-    return JSON.stringify(speedoGroup, (key, val) => {
-        // exclude variables not relevant to config
-        if (key !== "previewSpeed" && key !== "playerSpeed" && key !== "color") {
-            return val;
-        }
-    }, tabSize);
-}
-function generateSpeedoFrames(speedoGroup) {
-    const width = 256;
-    const height = 64;
-    const fontSize = 64;
-    let imagesURL = [];
-    const canvas = document.getElementById("frame-canvas");
-    const ctx = canvas.getContext("2d");
-    ctx.font = `${fontSize}px ${speedoGroup.font}`;
-    for (let i = 0; i <= 10; i++) {
-        if (i !== 10) {
-            let textWidth = ctx.measureText(i.toString()).width;
+async function generateSpeedoFrames(speedoGroup, width, height) {
+    const fontSize = height;
+    return await Promise.all(Array.from({ length: 10 }).map((_, index) => {
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.font = `${fontSize}px ${speedoGroup.font}`;
+        if (index !== 10) {
+            let textWidth = ctx.measureText(index.toString()).width;
             let center = { x: width / 2 - textWidth / 2, y: height };
-            ctx.fillText(i.toString(), center.x, center.y);
+            ctx.fillText(index.toString(), center.x, center.y);
         }
-        imagesURL[i] = canvas.toDataURL("image/png");
-        ctx.clearRect(0, 0, width, height);
+        return convertCanvasToBlobAsync(canvas);
+    }));
+}
+async function generateVTF(imageArrBuffers, width, height) {
+    const frames = [];
+    let frame;
+    for (const imageArrBuffer of imageArrBuffers) {
+        frame = new Uint8Array(imageArrBuffer);
+        frames.push(new VImageData(frame, width, height));
     }
+    const frameColl = new VFrameCollection(frames);
+    const vtf = new Vtf(frameColl, { version: 4, format: VFormats.DXT5 });
+    return await vtf.encode();
+}
+function generateFontVmt(speedoGroup) {
+    return (`\"UnlitGeneric\"\n` +
+        `{\n` +
+        `\t$basetexture                  vgui/replay/thumbnails/speedo/fonts/${speedoGroup.font}/digits.vtf\n` +
+        `\t$translucent                  1\n` +
+        `\t$vertexcolor                  1\n` +
+        `\t$no_fullbright                1\n` +
+        `\t$ignorez                      1\n` +
+        `}`);
+}
+async function downloadZip(zip, name) {
+    zip.generateAsync({ type: "blob" }).then((content) => {
+        saveAs(content, `${name}.zip`);
+    });
+}
+async function convertCanvasToBlobAsync(canvas) {
+    return new Promise((resolve) => {
+        canvas.toBlob((blob) => resolve(blob.arrayBuffer()));
+    });
 }
