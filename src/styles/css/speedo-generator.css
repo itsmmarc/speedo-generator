@@ -40,6 +40,8 @@ body {
   background-attachment: fixed;
 }
 body nav {
+  min-height: 100vh;
+  min-height: 100dvh;
   background-color: rgba(17, 20, 20, 0.8);
 }
 body nav button {
@@ -283,7 +285,6 @@ body main .checkbox .checkmark:after {
 body main #markerbounds {
   position: relative;
   cursor: move;
-  background-color: rgb(150, 230, 255);
   width: 100%;
   height: 100%;
 }
@@ -318,7 +319,9 @@ body main #imageupload_container {
 }
 body main #marker {
   position: absolute;
-  background-color: rgba(35, 125, 235, 0.623);
+}
+body main #marker > * {
+  z-index: 1;
 }
 body main #xhair {
   position: absolute;
@@ -353,49 +356,63 @@ body main .slider-track {
   height: 0.3rem;
   pointer-events: none;
 }
-body aside {
+body .speedo-container {
   display: grid;
   position: sticky;
-  top: 0;
   grid-template-rows: max-content max-content max-content max-content;
   grid-template-columns: max-content;
   align-content: center;
   justify-content: center;
-  align-self: start;
-  height: 100vh;
-  height: 100dvh;
+  container-type: size;
 }
-body aside .slot_1 {
+body .speedo-container .slot_1 {
   grid-row: 1/2;
 }
-body aside .slot_2 {
+body .speedo-container .slot_2 {
   grid-row: 2/3;
 }
-body aside .slot_3 {
+body .speedo-container .slot_3 {
   grid-row: 3/4;
 }
-body aside .slot_4 {
+body .speedo-container .slot_4 {
   grid-row: 4/5;
 }
-body aside .speedo {
+body .speedo-container .speedo {
   grid-column: 1/2;
   color: white;
   text-align: center;
+  font-size: 19cqh;
 }
-body aside .shadow {
-  z-index: -1;
-  margin-top: 4px;
-  margin-left: 4px;
+body .speedo-container .shadow {
   color: rgba(0, 0, 0, 0.8) !important;
 }
-body aside .speedo-size-small {
-  font-size: 2rem !important;
+body aside.speedo-size-small {
+  height: 14.44dvh !important;
+  height: 14.44dvh !important;
 }
-body aside .speedo-size-medium {
-  font-size: 3rem !important;
+body aside.speedo-size-medium {
+  height: 20dvh !important;
+  height: 20dvh !important;
 }
-body aside .speedo-size-large {
-  font-size: 4rem !important;
+body aside.speedo-size-large {
+  height: 23.33dvh !important;
+  height: 23.33dvh !important;
+}
+body aside > .shadow {
+  margin-top: 4px;
+  margin-left: 4px;
+  z-index: -1;
+}
+body #marker > .shadow {
+  margin-top: 2px;
+  margin-left: 2px;
+  z-index: 0;
+}
+body aside {
+  top: 30vh;
+  align-self: start;
+  height: 20vh;
+  height: 20dvh;
 }
 
 .col-span-all {

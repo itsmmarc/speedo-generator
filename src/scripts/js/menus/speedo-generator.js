@@ -273,18 +273,18 @@ function updateSpeedoStyles() {
     updateSpeedoVisibility();
 }
 function updateSpeedoSize() {
-    $(".speedo").removeClass((index, className) => {
+    $(".speedo-container").removeClass((index, className) => {
         return matchClassStartingWith("speedo-size-", className);
     });
     switch (speedoGroup.getSize()) {
         case "SMALL":
-            $(".speedo").addClass("speedo-size-small");
+            $(".speedo-container").addClass("speedo-size-small");
             break;
         case "MEDIUM":
-            $(".speedo").addClass("speedo-size-medium");
+            $(".speedo-container").addClass("speedo-size-medium");
             break;
         case "LARGE":
-            $(".speedo").addClass("speedo-size-large");
+            $(".speedo-container").addClass("speedo-size-large");
             break;
         default:
             break;
