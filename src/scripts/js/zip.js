@@ -8,7 +8,7 @@ export async function zipSpeedos(speedoGroup) {
     const hudResourcesUrl = `http://localhost:5173/files/${hudResourcesName}`; // %PLACEHOLDER%
     const speedoMaterialsPath = "YOURHUD/materials/vgui/replay/thumbnails/speedo/";
     const speedoResourcePath = "YOURHUD/speedo/";
-    importHudResources(hudResourcesUrl).then((zip) => {
+    importZip(hudResourcesUrl).then((zip) => {
         zip.file("README.md", createReadme());
         zip.file(`${speedoMaterialsPath}speedo_config.vmt`, generateSpeedoConfigVmt(speedoGroup));
         zip.file(`${speedoResourcePath}speedo_config.res`, generateSpeedoConfigRes(speedoGroup));
@@ -32,7 +32,7 @@ export async function zipSpeedos(speedoGroup) {
         });
     });
 }
-async function importHudResources(url) {
+async function importZip(url) {
     const { entries } = await unzip(url);
     const names = Object.keys(entries);
     const blobs = await Promise.all(Object.values(entries).map((e) => e.blob()));
@@ -159,11 +159,11 @@ async function generateSpeedoFrames(speedoGroup, width, height) {
         return convertCanvasToBlobAsync(canvas);
     }));
 }
-async function generateVTF(imageArrBuffers, width, height) {
+async function generateVTF(images, width, height) {
     const frames = [];
     let frame;
-    for (const imageArrBuffer of imageArrBuffers) {
-        frame = new Uint8Array(imageArrBuffer);
+    for (const image of images) {
+        frame = new Uint8Array(image);
         frames.push(new VImageData(frame, width, height));
     }
     const frameColl = new VFrameCollection(frames);

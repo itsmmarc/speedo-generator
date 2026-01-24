@@ -11,7 +11,7 @@ export async function zipSpeedos(speedoGroup: SpeedoGroup) {
         const speedoMaterialsPath: string = "YOURHUD/materials/vgui/replay/thumbnails/speedo/";
         const speedoResourcePath: string = "YOURHUD/speedo/";
 
-        importHudResources(hudResourcesUrl).then((zip) => {
+        importZip(hudResourcesUrl).then((zip) => {
                 zip.file("README.md", createReadme());
                 zip.file(`${speedoMaterialsPath}speedo_config.vmt`, generateSpeedoConfigVmt(speedoGroup));
                 zip.file(`${speedoResourcePath}speedo_config.res`, generateSpeedoConfigRes(speedoGroup));
@@ -40,7 +40,7 @@ export async function zipSpeedos(speedoGroup: SpeedoGroup) {
         });
 }
 
-async function importHudResources(url: string): Promise<JSZip> {
+async function importZip(url: string): Promise<JSZip> {
         const { entries }: ZipInfo = await unzip(url);
         const names: string[] = Object.keys(entries);
         const blobs: Blob[] = await Promise.all(Object.values(entries).map((e) => e.blob()));
@@ -201,12 +201,12 @@ async function generateSpeedoFrames(speedoGroup: SpeedoGroup, width: number, hei
         );
 }
 
-async function generateVTF(imageArrBuffers: ArrayBuffer[], width: number, height: number): Promise<ArrayBuffer> {
+async function generateVTF(images: ArrayBuffer[], width: number, height: number): Promise<ArrayBuffer> {
         const frames: VImageData[] = [];
         let frame: Uint8Array;
 
-        for (const imageArrBuffer of imageArrBuffers) {
-                frame = new Uint8Array(imageArrBuffer);
+        for (const image of images) {
+                frame = new Uint8Array(image);
                 frames.push(new VImageData(frame, width, height));
         }
 
