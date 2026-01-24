@@ -273,7 +273,7 @@ function updateSpeedoStyles() {
     updateSpeedoVisibility();
 }
 function updateSpeedoSize() {
-    $(".speedo-container").removeClass((index, className) => {
+    $(".speedo-container").removeClass((_, className) => {
         return matchClassStartingWith("speedo-size-", className);
     });
     switch (speedoGroup.getSize()) {
@@ -291,7 +291,7 @@ function updateSpeedoSize() {
     }
 }
 function updateSpeedoFont() {
-    $(".speedo").removeClass((index, className) => {
+    $(".speedo").removeClass((_, className) => {
         return matchClassStartingWith("font-", className);
     });
     switch (speedoGroup.font) {

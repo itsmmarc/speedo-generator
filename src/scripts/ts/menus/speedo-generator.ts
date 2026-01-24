@@ -408,7 +408,7 @@ function updateSpeedoStyles(): void {
 }
 
 function updateSpeedoSize(): void {
-        $(".speedo-container").removeClass((index, className) => {
+        $(".speedo-container").removeClass((_, className) => {
                 return matchClassStartingWith("speedo-size-", className);
         });
 
@@ -427,7 +427,7 @@ function updateSpeedoSize(): void {
         }
 }
 function updateSpeedoFont(): void {
-        $(".speedo").removeClass((index, className) => {
+        $(".speedo").removeClass((_, className) => {
                 return matchClassStartingWith("font-", className);
         });
 
