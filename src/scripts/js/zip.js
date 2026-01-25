@@ -5,7 +5,7 @@ import { VFormats, VFrameCollection, VImageData, Vtf } from "vtf-js";
 export async function zipSpeedos(speedoGroup) {
     const downloadZipName = `generated-speedo-id`; // %PLACEHOLDER%
     const hudResourcesName = "speedo-generator-hud-0.1.6.zip";
-    const hudResourcesUrl = `http://localhost:5173/files/${hudResourcesName}`; // %PLACEHOLDER%
+    const hudResourcesUrl = `/resources/${hudResourcesName}`; // %PLACEHOLDER%
     const speedoMaterialsPath = "YOURHUD/materials/vgui/replay/thumbnails/speedo/";
     const speedoResourcePath = "YOURHUD/speedo/";
     importZip(hudResourcesUrl).then((zip) => {
