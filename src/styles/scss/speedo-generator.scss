@@ -1,7 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 
-$text-color: rgb(133, 133, 133);
-$text-color-light: rgb(255, 255, 255);
+$fg-color: rgb(245, 250, 251);
+$fg-color-soft: rgba(255, 255, 255, 0.268);
+$bg-color: rgba(47, 47, 47, 0.3);
+$bg-color-light: rgba(85, 85, 85, 0.297);
+
 $btn-color: rgb(104, 104, 104);
 $border-light: rgb(84, 84, 84);
 $border-dark: black;
@@ -17,15 +20,22 @@ $main-min-width: 600px;
 }
 
 // FONTS
-@mixin font-roboto {
+@mixin font-roboto-bold {
         font-style: normal;
         font-weight: 900;
         font-family: "Roboto", sans-serif;
         font-optical-sizing: auto;
         font-variation-settings: "wdth" 100;
 }
+@mixin font-roboto-rg {
+        font-style: normal;
+        font-weight: 400;
+        font-family: "Roboto", sans-serif;
+        font-optical-sizing: auto;
+        font-variation-settings: "wdth" 100;
+}
 .font-roboto {
-        @include font-roboto();
+        @include font-roboto-rg();
 }
 .font-montserrat {
         font-style: normal;
@@ -63,12 +73,12 @@ body {
                         background-color: rgb(16, 17, 17);
                         padding: 10px;
                         width: 100%;
-                        color: $text-color-light;
+                        color: $fg-color;
                         font-weight: 700;
                         font-size: 1.1rem;
                 }
                 #about button {
-                        color: $text-color;
+                        color: $fg-color;
                 }
                 button:hover {
                         background-color: rgb(81, 181, 182) !important;
@@ -101,7 +111,7 @@ body {
                                 margin: 0;
                                 color: rgb(174, 178, 178);
 
-                                @include font-roboto();
+                                @include font-roboto-bold();
 
                                 backdrop-filter: blur(5px);
 
@@ -110,6 +120,8 @@ body {
                                 border-color: $btn-color;
                                 background-color: rgba(0, 0, 0, 0.384);
                                 font-size: 4rem;
+
+                                text-transform: uppercase;
                         }
                         #top-bar-buttons {
                                 display: flex;
@@ -130,10 +142,10 @@ body {
                                 padding-block: 1px;
                                 height: 2.2rem;
 
-                                color: $text-color-light;
+                                color: $fg-color;
 
                                 font-size: 0.85rem;
-                                @include font-roboto();
+                                @include font-roboto-bold();
 
                                 align-content: center;
                                 text-align: center;
@@ -147,31 +159,10 @@ body {
                                 }
                         }
                 }
-                h2 {
-                        margin-bottom: 9px;
-                        color: $text-color;
-
-                        @include font-roboto();
-                        font-size: 2rem;
-                }
-                h3 {
-                        margin-top: 9px;
-                        margin-bottom: 9px;
-                        color: $text-color;
-
-                        @include font-roboto();
-                        font-size: 1.7rem;
-                }
-                label {
-                        color: $text-color;
-
-                        @include font-roboto();
-                        font-size: 1.5rem;
-                }
-
                 form {
                         display: grid;
                         grid-template-columns: minmax(340px, 33%) clamp(40rem, 67%, 100%);
+                        gap: 1rem;
                         width: 100%;
                         @media only screen and (max-width: 1550px) {
                                 grid-template-columns: max($main-min-width, 100%);
@@ -182,6 +173,41 @@ body {
                                 //         margin-left: auto !important;
                                 //         width: calc(100% - 3.5rem);
                                 // }
+                        }
+                        .options-container {
+                                background-color: $bg-color;
+                                backdrop-filter: blur(3px);
+                                border-radius: 0.3rem;
+
+                                label {
+                                        color: $fg-color;
+                                        @include font-roboto-rg();
+                                        font-size: 1.5rem;
+                                }
+                        }
+                        h2 {
+                                margin-top: 0.6rem;
+                                margin-bottom: 0.3rem;
+                                color: $fg-color;
+
+                                @include font-roboto-bold();
+                                font-size: 2rem;
+
+                                border-width: 0.2rem;
+                                border-bottom-style: solid;
+                                border-color: $fg-color-soft;
+
+                                text-transform: uppercase;
+                        }
+                        h3 {
+                                margin-top: 9px;
+                                margin-bottom: 9px;
+                                color: $fg-color;
+
+                                @include font-roboto-bold();
+                                font-size: 1.7rem;
+
+                                text-transform: uppercase;
                         }
                         .colors-container {
                                 display: grid;
@@ -203,7 +229,7 @@ body {
                                 .range-text {
                                         background-color: $btn-color;
                                         height: 1.7rem;
-                                        color: $text-color-light;
+                                        color: $fg-color;
                                         text-align: center;
                                 }
                                 .range-slider {
@@ -237,7 +263,7 @@ body {
                         background-color: $btn-color;
                         width: 180px;
                         height: 80px;
-                        color: $text-color-light;
+                        color: $fg-color;
                 }
                 select {
                         background-color: $btn-color;
