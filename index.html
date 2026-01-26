@@ -24,24 +24,25 @@
                 <div id="top-bar-buttons">
                     <button id="download-btn">Download</button>
                     <label class="fake-upload-btn">
-                        <input type="file" id="upload-btn"></input>
+                        <input type="file" accept=".json" id="upload-btn"></input>
                         Upload JSON
                     </label>
-                    <label class="fake-upload-btn">
-                        <input type="file" id="upload-font"></input>
-                        Upload Font
-                    </label>
-                    <button id="preset-soldier">Soldier</button>
-                    <button id="preset-demo">Demo</button>
-                    <button id="4x3">4:3</button>
-                    <button id="16x9">16:9</button>
+                    
                 </div>
             </div>
 
             <form>
+                <h2 class="col-span-all">Presets</h2>
+
+                <div class="options-container presets-container">
+                    <button type="button" id="preset-jh-soldier">JumpHUD Soldier</button>
+                    <button type="button" id="preset-jh-demo">JumpHUD Demo</button>
+                </div>
                 <h2 class="col-span-all">Settings</h2>
 
                 <div class="options-container">
+                    <h3>Config</h3>
+
                     <div class="option-container" id="option_slots">
                         <label>
                             Active Speedos
@@ -88,6 +89,10 @@
                                 <option value="poppins">poppins</option>
                                 <option value="roboto">roboto</option>
                             </select>
+                            <label id="upload-font-container">
+                                <img src="src/images/upload_file_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg" />
+                                <input type="file" accept=".ttf, .otf" id="upload-font"></input>
+                            </label>
                         </label>
                     </div>
                     <div class="option-container" id="option_size">
@@ -117,7 +122,11 @@
                     </div>
                 </div>
                 <div class="options-container" id="option_position">
-                    <h3 class="col-span-all">Position</h3>
+                    <div class="col-span-all option_position_header">
+                        <h3 >Position</h3>
+                        <button type="button" id="4x3">4:3</button>
+                        <button type="button" id="16x9">16:9</button>
+                    </div>
 
                     <input type="range" id="ypos" />
                     <div id="position_preview">

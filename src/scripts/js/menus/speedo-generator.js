@@ -9,8 +9,8 @@ let TF_SCREEN_WIDTH_CURRENT = TF_SCREEN_WIDTH_16_9;
 const TF_SCREEN_HEIGHT = 480;
 let hasReadVDF = false;
 let speedoGroup = _.cloneDeep(presetSoldier);
-const presetDemoElm = $("#preset-demo").filter("button");
-const presetSoldierElm = $("#preset-soldier").filter("button");
+const presetJHDemoElm = $("#preset-jh-demo").filter("button");
+const presetJHSoldierElm = $("#preset-jh-soldier").filter("button");
 const aspectRatio4x3Elm = $("#4x3").filter("button");
 const aspectRatio16x9Elm = $("#16x9").filter("button");
 const downloadElm = $("#download-btn").filter("button");
@@ -63,11 +63,11 @@ window.addEventListener("resize", () => {
     updatePositionSize();
 });
 function addListeners() {
-    presetDemoElm.on("click", () => {
+    presetJHDemoElm.on("click", () => {
         speedoGroup = _.cloneDeep(presetDemo);
         initialize();
     });
-    presetSoldierElm.on("click", () => {
+    presetJHSoldierElm.on("click", () => {
         speedoGroup = _.cloneDeep(presetSoldier);
         initialize();
     });
