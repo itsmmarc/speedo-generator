@@ -1,13 +1,6 @@
 * text=auto
 
 node_modules/** linguist-vendored=true
-src/scripts/js/** linguist-generated=true
-src/styles/css/** linguist-generated=true
-
-# Marking vdf as vendored even though it was code that I wrote as it misrepresents the project by considering ~80% of code to be VDF
-*.vdf linguist-vendored=true
-*.res linguist-vendored=true
-*.vmt linguist-vendored=true
 
 .gitattributes export-ignore
 .gitignore export-ignore
