@@ -54,6 +54,11 @@ $main-min-width-narrow: 600px;
         font-variation-settings: "wdth" 100;
 }
 
+.disclaimer {
+        color: red;
+        @include font-roboto-rg();
+}
+
 body {
         display: grid;
         grid-template-columns: clamp(120px, 15%, 200px) 3fr 1fr;
