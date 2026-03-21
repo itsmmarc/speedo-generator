@@ -1,5 +1,5 @@
 import { SpeedoType } from "../speedo.js";
-import { presetDemo, presetSoldier, SpeedoSize, Range } from "../speedo-group.js";
+import { speedoPresets, SpeedoSize, Range } from "../speedo-group.js";
 import { Color } from "../color.js";
 import { zipSpeedos } from "../zip.js";
 import { matchClassStartingWith } from "../util.js";
@@ -12,7 +12,7 @@ const TF_SCREEN_HEIGHT = 480;
 
 let hasReadVDF: boolean = false;
 
-let speedoGroup = _.cloneDeep(presetSoldier);
+let speedoGroup = _.cloneDeep(speedoPresets.jumphudSoldier);
 
 const presetJHDemoElm = $("#preset-jh-demo").filter("button");
 const presetJHSoldierElm = $("#preset-jh-soldier").filter("button");
@@ -84,12 +84,12 @@ window.addEventListener("resize", () => {
 
 function addListeners() {
         presetJHDemoElm.on("click", () => {
-                speedoGroup = _.cloneDeep(presetDemo);
+                speedoGroup = _.cloneDeep(speedoPresets.jumphudDemo);
                 initialize();
         });
 
         presetJHSoldierElm.on("click", () => {
-                speedoGroup = _.cloneDeep(presetSoldier);
+                speedoGroup = _.cloneDeep(speedoPresets.jumphudSoldier);
                 initialize();
         });
 

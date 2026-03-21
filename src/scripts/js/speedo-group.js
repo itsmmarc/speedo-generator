@@ -172,7 +172,7 @@ export class SpeedoGroup {
         }
     }
 }
-export const presetDemo = (() => {
+function createPresetJHDemo() {
     let speedoGroup = new SpeedoGroup();
     speedoGroup.setSize("MEDIUM");
     speedoGroup.vdfElm.xpos = "cs-0.5";
@@ -223,9 +223,8 @@ export const presetDemo = (() => {
     speedoGroup.speedos[2] = new Speedo("VERTICAL", speedoGroup.colorMain);
     speedoGroup.speedos[3] = new Speedo("NONE", speedoGroup.colorMain);
     return speedoGroup;
-})();
-Object.freeze(presetDemo);
-export const presetSoldier = (() => {
+}
+function createPresetJHSoldier() {
     let speedoGroup = new SpeedoGroup();
     speedoGroup.setSize("MEDIUM");
     speedoGroup.vdfElm.xpos = "cs-0.5";
@@ -276,5 +275,9 @@ export const presetSoldier = (() => {
     speedoGroup.speedos[2] = new Speedo("HEIGHTO", speedoGroup.colorMain);
     speedoGroup.speedos[3] = new Speedo("NONE", speedoGroup.colorMain);
     return speedoGroup;
-})();
-Object.freeze(presetSoldier);
+}
+const jumphudSoldier = createPresetJHSoldier();
+Object.freeze(jumphudSoldier);
+const jumphudDemo = createPresetJHDemo();
+Object.freeze(jumphudDemo);
+export const speedoPresets = { jumphudSoldier, jumphudDemo };

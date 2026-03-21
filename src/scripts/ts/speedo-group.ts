@@ -194,7 +194,7 @@ export class SpeedoGroup {
         }
 }
 
-export const presetDemo = ((): SpeedoGroup => {
+function createPresetJHDemo(): SpeedoGroup {
         let speedoGroup = new SpeedoGroup();
 
         speedoGroup.setSize("MEDIUM");
@@ -252,10 +252,9 @@ export const presetDemo = ((): SpeedoGroup => {
         speedoGroup.speedos[3] = new Speedo("NONE" as SpeedoType, speedoGroup.colorMain);
 
         return speedoGroup;
-})();
-Object.freeze(presetDemo);
+}
 
-export const presetSoldier = ((): SpeedoGroup => {
+function createPresetJHSoldier(): SpeedoGroup {
         let speedoGroup = new SpeedoGroup();
 
         speedoGroup.setSize("MEDIUM");
@@ -313,5 +312,12 @@ export const presetSoldier = ((): SpeedoGroup => {
         speedoGroup.speedos[3] = new Speedo("NONE" as SpeedoType, speedoGroup.colorMain);
 
         return speedoGroup;
-})();
-Object.freeze(presetSoldier);
+}
+
+const jumphudSoldier = createPresetJHSoldier();
+Object.freeze(jumphudSoldier);
+
+const jumphudDemo = createPresetJHDemo();
+Object.freeze(jumphudDemo);
+
+export const speedoPresets = { jumphudSoldier, jumphudDemo };
