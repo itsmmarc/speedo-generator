@@ -521,13 +521,16 @@ function updatePosition_x(): void {
                 newXPos = "0";
         } else if (xValue === Number(xSliderElm.attr("max"))) {
                 newXPos = "rs1";
+        } else if (xOffset == 0) {
+                newXPos = `cs-0.5`;
         } else if (xOffset > 0) {
-                newXPos = `+${xOffset}`;
+                newXPos = `cs-0.5+${xOffset}`;
         } else if (xOffset < 0) {
-                newXPos = xOffset.toString();
+                newXPos = `cs-0.5${xOffset}`;
         }
 
         speedoGroup.vdfElm.xpos = newXPos;
+        console.log(newXPos);
 }
 
 /**
@@ -548,10 +551,12 @@ function updatePosition_y(): void {
                 newYPos = "0";
         } else if (yValue === Number(ySliderElm.attr("max"))) {
                 newYPos = "rs1";
+        } else if (yOffset == 0) {
+                newYPos = `cs-0.5`;
         } else if (yOffset > 0) {
-                newYPos = `+${yOffset}`;
+                newYPos = `cs-0.5+${yOffset}`;
         } else if (yOffset < 0) {
-                newYPos = yOffset.toString();
+                newYPos = `cs-0.5${yOffset}`;
         }
 
         speedoGroup.vdfElm.ypos = newYPos;
