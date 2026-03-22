@@ -530,7 +530,6 @@ function updatePosition_x(): void {
         }
 
         speedoGroup.vdfElm.xpos = newXPos;
-        console.log(newXPos);
 }
 
 /**
