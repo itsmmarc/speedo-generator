@@ -32,10 +32,69 @@
             </div>
 
             <ul class="disclaimer">
-                EARLY ALPHA
+                <strong>EARLY ALPHA</strong>
                 <li>Only works on chrome</li>
                 <li>UI is obviously still very unpolished</li>
             </ul>
+            <br>
+            <ol class="disclaimer">
+                <strong>Instructions for using custom fonts</strong>
+                <li>
+                    Upload your font using the icon next to the font option.
+                </li>
+                <li>
+                    When you download the zip, you will see 11 png images in the root folder.
+                </li>
+                <li>
+                    Extract the zip.
+                </li>
+                <li>Convert these images to a VTF using vtfedit with the following settings:
+                    <ul>
+                        <li>Color Format: DXT5</li>
+                        <li>Alpha Format: DXT5</li>
+                    </ul>
+                </li>
+                <li>Check that the numbers are in order in the VTF, frames 0-9 should have their respective number, 10 should be blank</li>
+                <li>
+                    The VMT for the speedo you download will look for a VTF at the path "materials/vgui/replay/thumbnails/speedo/fonts/_custom1/digits.vtf". Place your VTF here.
+                </li>
+            </ol>
+            <br>
+            <ol class="disclaimer">
+                <strong>General Installation</strong>
+                <li>
+                    Linux users must edit `cfg/speedo_config.cfg` and replace `%YOURHUD%` with the exact name of your HUD's folder
+                </li>
+                <li>
+                    Drag and drop the contents of `YOURHUD` into your HUD's folder. eg: `tf/custom/m0rehud/`.
+                </li>
+                <li>
+                    Add the following line to the top of your HUD's `resource/ui/hudplayerclass.res`
+                    <ul>
+                        <li>
+                            #base ../../speedo/speedo.res
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    Add the following line to `tf/cfg/autoexec.cfg'
+                    <ul>
+                        <li>
+                            exec speedo_config
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                <strong>Usage</strong> 
+                    <ul>
+                        <li>
+                            Use the command `speedo_toggle` (or `speedo_enable` and `speedo_disable`) ingame to toggle the speedos on and off
+                        </li>
+                    </ul>
+                </li>
+            </ol>
+
+
 
             <form>
                 <h2 class="col-span-all">Presets</h2>

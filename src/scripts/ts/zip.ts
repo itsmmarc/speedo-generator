@@ -2,11 +2,11 @@ import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { SpeedoGroup } from "./speedo-group";
 import { unzip, ZipInfo } from "unzipit";
-import { VFormats, VFrameCollection, VImageData, Vtf } from "vtf-js";
+// import { VFormats, VFrameCollection, VImageData, Vtf } from "vtf-js";
 
 export async function zipSpeedos(speedoGroup: SpeedoGroup) {
         const downloadZipName = `generated-speedo-id`; // %PLACEHOLDER%
-        const hudResourcesName = "speedo-generator-hud-0.1.6.zip";
+        const hudResourcesName = "speedo-generator-hud-0.1.7.zip";
         const hudResourcesUrl = `/resources/${hudResourcesName}`; // %PLACEHOLDER%
         const speedoMaterialsPath: string = "YOURHUD/materials/vgui/replay/thumbnails/speedo/";
         const speedoResourcePath: string = "YOURHUD/speedo/";
@@ -21,21 +21,29 @@ export async function zipSpeedos(speedoGroup: SpeedoGroup) {
                         downloadZip(zip, downloadZipName);
                         return;
                 }
-                const fontPath: string = `${speedoMaterialsPath}fonts/${speedoGroup.font}/`;
-                const vtfPath = `${fontPath}${speedoGroup.font}/digits.vtf`;
-                const vmtPath = `${fontPath}${speedoGroup.font}/digits.vmt`;
+                const fontPath: string = `${speedoMaterialsPath}fonts/${speedoGroup.font}`;
+                // const vtfPath = `${fontPath}${speedoGroup.font}/digits.vtf`;
+                const vmtPath = `${fontPath}/digits.vmt`;
 
                 const vtfHeight = 64;
                 const vtfWidth = vtfHeight * 4;
 
-                generateSpeedoFrames(speedoGroup, vtfWidth, vtfHeight).then((frames) => {
-                        generateVTF(frames, vtfWidth, vtfHeight).then((vtf) => {
-                                zip.file(vtfPath, vtf);
-                                zip.file(vmtPath, generateFontVmt(speedoGroup));
+                generateSpeedoFramesBlob(speedoGroup, vtfWidth, vtfHeight).then((frames) => {
+                        let i = 0;
+                        for (const frame of frames) {
+                                zip.file(`${i++}.png`, frame);
+                        }
+                        zip.file(vmtPath, generateFontVmt(speedoGroup));
+                        downloadZip(zip, downloadZipName);
+                        return;
 
-                                downloadZip(zip, downloadZipName);
-                                return;
-                        });
+                        // generateVTF(frames, vtfWidth, vtfHeight).then((vtf) => {
+                        //         zip.file(vtfPath, vtf);
+                        //         zip.file(vmtPath, generateFontVmt(speedoGroup));
+
+                        //         downloadZip(zip, downloadZipName);
+                        //         return;
+                        // });
                 });
         });
 }
@@ -81,14 +89,14 @@ function generateSpeedoConfigVmt(speedoGroup: SpeedoGroup): string {
                 `\t$hCloseMax\t ${speedoGroup.HSpeedoCloseRange.max.toString()}\n` +
                 `\t$hGoodMin\t ${speedoGroup.HSpeedoGoodRange.min.toString()}\n` +
                 `\t$hGoodMax\t ${speedoGroup.HSpeedoGoodRange.max.toString()}\n` +
-                `\t$vCloseMin\t ${speedoGroup.HSpeedoCloseRange.min.toString()}\n` +
-                `\t$vCloseMax\t ${speedoGroup.HSpeedoCloseRange.max.toString()}\n` +
-                `\t$vGoodMin\t ${speedoGroup.HSpeedoGoodRange.min.toString()}\n` +
-                `\t$vGoodMax\t ${speedoGroup.HSpeedoGoodRange.max.toString()}\n` +
-                `\t$aCloseMin\t ${speedoGroup.HSpeedoCloseRange.min.toString()}\n` +
-                `\t$aCloseMax\t ${speedoGroup.HSpeedoCloseRange.max.toString()}\n` +
-                `\t$aGoodMin\t ${speedoGroup.HSpeedoGoodRange.min.toString()}\n` +
-                `\t$aGoodMax\t ${speedoGroup.HSpeedoGoodRange.max.toString()}\n` +
+                `\t$vCloseMin\t ${speedoGroup.VSpeedoCloseRange.min.toString()}\n` +
+                `\t$vCloseMax\t ${speedoGroup.VSpeedoCloseRange.max.toString()}\n` +
+                `\t$vGoodMin\t ${speedoGroup.VSpeedoGoodRange.min.toString()}\n` +
+                `\t$vGoodMax\t ${speedoGroup.VSpeedoGoodRange.max.toString()}\n` +
+                `\t$aCloseMin\t ${speedoGroup.ASpeedoCloseRange.min.toString()}\n` +
+                `\t$aCloseMax\t ${speedoGroup.ASpeedoCloseRange.max.toString()}\n` +
+                `\t$aGoodMin\t ${speedoGroup.ASpeedoGoodRange.min.toString()}\n` +
+                `\t$aGoodMax\t ${speedoGroup.ASpeedoGoodRange.max.toString()}\n` +
                 `\t$doubleThreshold\t ${speedoGroup.HeightoThresholds.double.toString()}\n` +
                 `\t$tripleThreshold\t ${speedoGroup.HeightoThresholds.triple.toString()}\n` +
                 `\t$maxVelThreshold\t ${speedoGroup.HeightoThresholds.maxVel.toString()}\n` +
@@ -180,20 +188,42 @@ function createReadme(): string {
         );
 }
 
-async function generateSpeedoFrames(speedoGroup: SpeedoGroup, width: number, height: number): Promise<ArrayBuffer[]> {
+// async function generateSpeedoFrames(speedoGroup: SpeedoGroup, width: number, height: number): Promise<ArrayBuffer[]> {
+//         const fontSize = height;
+
+//         return await Promise.all(
+//                 Array.from({ length: 10 }).map((_, index) => {
+//                         const canvas = document.createElement("canvas");
+//                         canvas.width = width;
+//                         canvas.height = height;
+//                         const ctx = canvas.getContext("2d")!;
+//                         ctx.font = `${fontSize}px ${speedoGroup.font}`;
+
+//                         if (index !== 10) {
+//                                 let textWidth = ctx.measureText(index.toString()).width;
+//                                 let center = { x: width / 2 - textWidth / 2, y: height };
+//                                 ctx.fillText(index.toString(), center.x, center.y);
+//                         }
+//                         return convertCanvasToArrBuffAsync(canvas);
+//                 }),
+//         );
+// }
+
+async function generateSpeedoFramesBlob(speedoGroup: SpeedoGroup, width: number, height: number): Promise<Blob[]> {
         const fontSize = height;
 
         return await Promise.all(
-                Array.from({ length: 10 }).map((_, index) => {
+                Array.from({ length: 11 }).map((_, index) => {
                         const canvas = document.createElement("canvas");
                         canvas.width = width;
                         canvas.height = height;
                         const ctx = canvas.getContext("2d")!;
                         ctx.font = `${fontSize}px ${speedoGroup.font}`;
+                        ctx.fillStyle = "white";
 
                         if (index !== 10) {
                                 let textWidth = ctx.measureText(index.toString()).width;
-                                let center = { x: width / 2 - textWidth / 2, y: height };
+                                let center = { x: width / 2 - textWidth / 2, y: height - 4 };
                                 ctx.fillText(index.toString(), center.x, center.y);
                         }
                         return convertCanvasToBlobAsync(canvas);
@@ -201,19 +231,19 @@ async function generateSpeedoFrames(speedoGroup: SpeedoGroup, width: number, hei
         );
 }
 
-async function generateVTF(images: ArrayBuffer[], width: number, height: number): Promise<ArrayBuffer> {
-        const frames: VImageData[] = [];
-        let frame: Uint8Array;
+// async function generateVTF(images: ArrayBuffer[], width: number, height: number): Promise<ArrayBuffer> {
+//         const frames: VImageData[] = [];
+//         let frame: Uint8Array;
 
-        for (const image of images) {
-                frame = new Uint8Array(image);
-                frames.push(new VImageData(frame, width, height));
-        }
+//         for (const image of images) {
+//                 frame = new Uint8Array(image);
+//                 frames.push(new VImageData(frame, width, height));
+//         }
 
-        const frameColl = new VFrameCollection(frames);
-        const vtf = new Vtf(frameColl, { version: 4, format: VFormats.DXT5 });
-        return await vtf.encode();
-}
+//         const frameColl = new VFrameCollection(frames);
+//         const vtf = new Vtf(frameColl, { version: 4, format: VFormats.DXT5 });
+//         return await vtf.encode();
+// }
 
 function generateFontVmt(speedoGroup: SpeedoGroup): string {
         return (
@@ -234,8 +264,14 @@ async function downloadZip(zip: JSZip, name: string) {
         });
 }
 
-async function convertCanvasToBlobAsync(canvas: HTMLCanvasElement): Promise<ArrayBuffer> {
+// async function convertCanvasToArrBuffAsync(canvas: HTMLCanvasElement): Promise<ArrayBuffer> {
+//         return new Promise((resolve) => {
+//                 canvas.toBlob((blob) => resolve(blob!.arrayBuffer()));
+//         });
+// }
+
+async function convertCanvasToBlobAsync(canvas: HTMLCanvasElement): Promise<Blob> {
         return new Promise((resolve) => {
-                canvas.toBlob((blob) => resolve(blob!.arrayBuffer()));
+                canvas.toBlob((blob) => resolve(blob!));
         });
 }
