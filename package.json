@@ -18,6 +18,7 @@
         "wrangler": "^4.60.0"
     },
     "dependencies": {
+        "-": "^0.0.1",
         "@types/jszip": "^3.4.0",
         "@types/node": "^25.0.6",
         "file-saver": "^2.0.5",
@@ -26,6 +27,8 @@
         "jszip-utils": "^0.1.0",
         "lodash": "^4.17.21",
         "npm": "^11.7.0",
+        "sass": "^1.98.0",
+        "save-dev": "^0.0.1-security",
         "unzipit": "^1.4.3",
         "vtf-js": "^0.9.4"
     }

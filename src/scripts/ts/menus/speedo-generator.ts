@@ -846,7 +846,7 @@ function uploadFont(input: JQuery<HTMLInputElement>) {
 }
 
 function loadFont(fontdata: string) {
-        const fontName = `custom${customFontCounter++}`;
+        const fontName = `_custom${customFontCounter++}`;
         const font = new FontFace(fontName, `url(${fontdata})`);
         document.fonts.add(font);
         font.load().then(() => {
