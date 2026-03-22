@@ -1,3 +1,5 @@
+import "../../../styles/scss/main.scss";
+
 import { SpeedoType } from "../speedo.js";
 import { speedoPresets, SpeedoSize, Range } from "../speedo-group.js";
 import { Color } from "../color.js";
