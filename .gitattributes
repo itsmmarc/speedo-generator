@@ -1,6 +1,0 @@
-* text=auto
-
-node_modules/** linguist-vendored=true
-
-.gitattributes export-ignore
-.gitignore export-ignore
